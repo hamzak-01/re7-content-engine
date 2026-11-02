@@ -91,7 +91,7 @@ You are given (a) this week's insights per channel, (b) the top-performing recen
 - 1 Telegram summary (five short bullets, under 100 words)
 Apply the insights: prefer the themes, formats and attributes that index highest on each channel; where a post names a person or partner, name them. Every number must come from a source document, quoted the way the source states it. Yields are market observations, never Re7 returns. Never say earn, guaranteed, safe, or address the reader as an investor; no calls to invest. Tone: a research desk, dry and specific; no emojis, no exclamation marks, at most one hashtag per X post.
 For each post give: day, time_uk, account, channel, format, text, source_title, source_url, hypothesis (one line: which insight this post tests, e.g. 'media_appearance + names_person on linkedin'), experiment_tag (short slug like 'wk45-li-media-person').
-Output a JSON list."""
+Output a JSON list. Inside string values use \\n for line breaks, never raw newlines."""
 
 
 def compliance_flags(text: str, names_partner: bool) -> str:
@@ -116,7 +116,7 @@ def run(df: pd.DataFrame, insights: dict, live: bool = True) -> pd.DataFrame:
     if not live:
         return pd.DataFrame()
     user = json.dumps({"week_number": week, "insights": insights, "voice_references": refs, "sources": sources}, ensure_ascii=False)
-    raw = llm.complete_json(CREATE_SYSTEM, user, max_tokens=6000)
+    raw = llm.complete_json(CREATE_SYSTEM, user, max_tokens=8000)
     items = _flatten_posts(raw)
     if not items:
         raise RuntimeError(f"model returned no posts (sources={len(sources)}; reply shape={type(raw).__name__})")

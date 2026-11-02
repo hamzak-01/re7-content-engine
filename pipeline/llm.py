@@ -49,21 +49,58 @@ def complete(system: str, user: str, max_tokens: int = 4000, temperature: float 
     raise RuntimeError(f"Claude API call failed: {last}")
 
 
+def _loads(t: str):
+    return json.loads(t, strict=False)  # allow raw newlines/tabs inside strings
+
+
+def _salvage_array(text: str):
+    """A reply cut off mid-array: keep the complete objects and close the array."""
+    a = text.find("[")
+    if a < 0:
+        return None
+    depth, in_str, esc, last_obj_end = 0, False, False, -1
+    for i, ch in enumerate(text[a:], start=a):
+        if in_str:
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == '"':
+                in_str = False
+            continue
+        if ch == '"':
+            in_str = True
+        elif ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth == 0:
+                last_obj_end = i
+    if last_obj_end > a:
+        try:
+            return _loads(text[a:last_obj_end + 1] + "]")
+        except json.JSONDecodeError:
+            return None
+    return None
+
+
 def _parse_json(text: str):
     text = text.strip().lstrip("\ufeff")
     text = re.sub(r"^```(?:json)?\s*|\s*```$", "", text).strip()
     try:
-        return json.loads(text)
+        return _loads(text)
     except json.JSONDecodeError:
         pass
-    # take the outermost array or object found anywhere in the reply
     for open_c, close_c in (("[", "]"), ("{", "}")):
         a, b = text.find(open_c), text.rfind(close_c)
         if a >= 0 and b > a:
             try:
-                return json.loads(text[a:b + 1])
+                return _loads(text[a:b + 1])
             except json.JSONDecodeError:
                 continue
+    salvaged = _salvage_array(text)
+    if salvaged:
+        return salvaged
     raise ValueError(f"model did not return JSON; reply began: {text[:160]!r}")
 
 
