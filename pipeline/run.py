@@ -102,6 +102,8 @@ def main(live: bool = True) -> dict:
     summary["persist"] = persist.push(f"run {summary['started'][:16]}")
     with open(os.path.join(store.OUTPUT, "last_run.json"), "w") as f:
         json.dump(summary, f, indent=2)
+    if summary["persist"].get("status") == "ok":
+        persist.push_one("output/last_run.json", f"run {summary['started'][:16]}: log")
     return summary
 
 

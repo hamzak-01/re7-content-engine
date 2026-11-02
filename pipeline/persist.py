@@ -91,3 +91,21 @@ def pull() -> dict:
     except Exception as e:  # noqa: BLE001
         report = {"status": "failed", "error": str(e)[:200]}
     return report
+
+
+def push_one(rel: str, message: str) -> None:
+    """Commit a single file to the data branch (used to update the run log after the main push)."""
+    if not os.environ.get("GITHUB_TOKEN"):
+        return
+    try:
+        path = os.path.join(ROOT, rel)
+        with open(path, "rb") as f:
+            content = base64.b64encode(f.read()).decode()
+        url = f"{API}/repos/{REPO}/contents/{rel}"
+        cur = requests.get(url, headers=_headers(), params={"ref": BRANCH}, timeout=20)
+        body = {"message": message, "content": content, "branch": BRANCH}
+        if cur.status_code == 200:
+            body["sha"] = cur.json()["sha"]
+        requests.put(url, headers=_headers(), json=body, timeout=30)
+    except Exception:  # noqa: BLE001
+        pass

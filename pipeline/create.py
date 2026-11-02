@@ -13,6 +13,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from . import llm
+from .analyse import memo_digest
 from .taxonomy import COMPLIANCE_TRIGGERS
 from .store import OUTPUT
 
@@ -50,8 +51,10 @@ def fetch_sources(df: pd.DataFrame | None = None, max_items: int = 3) -> list[di
             urls = BLOG_RE.findall(text)
             key = urls[0] if urls else None
             is_source_post = bool(urls) or re.search(r"weekly is out|new report|new episode|launched|vault", text, re.I)
-            if not is_source_post or (key and key in seen):
+            title_key = re.sub(r"[^a-z0-9]", "", text[:70].lower())
+            if not is_source_post or (key and key in seen) or title_key in seen:
                 continue
+            seen.add(title_key)
             if key:
                 seen.add(key)
             page = _fetch_page(key) if key else None
@@ -115,8 +118,10 @@ def run(df: pd.DataFrame, insights: dict, live: bool = True) -> pd.DataFrame:
     week = date.today().isocalendar()[1]
     if not live:
         return pd.DataFrame()
-    user = json.dumps({"week_number": week, "insights": insights, "voice_references": refs, "sources": sources}, ensure_ascii=False)
-    raw = llm.complete_json(CREATE_SYSTEM, user, max_tokens=8000)
+    digest = memo_digest(insights)
+    digest = {k: digest[k] for k in ("effort_vs_return", "theme_by_channel", "who_drives_it", "reach_vs_resonance_x", "channels") if k in digest}
+    user = json.dumps({"week_number": week, "insights": digest, "voice_references": refs, "sources": sources[:4]}, ensure_ascii=False)
+    raw = llm.complete_json(CREATE_SYSTEM, user, max_tokens=6000)
     items = _flatten_posts(raw)
     if not items:
         raise RuntimeError(f"model returned no posts (sources={len(sources)}; reply shape={type(raw).__name__})")

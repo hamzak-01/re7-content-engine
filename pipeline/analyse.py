@@ -155,8 +155,33 @@ Sample sizes, directional groups, what the data cannot show (e.g. LinkedIn impre
 Plain English, UK spelling, no hype, no bullet soup: short paragraphs with numbers in them. Under 450 words."""
 
 
+def memo_digest(st: dict) -> dict:
+    """What the memo needs, without the bulk: no post texts beyond 100 chars, no long lists."""
+    so = st.get("second_order", {})
+    d = {"as_of": st.get("as_of"), "min_n_for_confidence": so.get("min_n_for_confidence", 3), "channels": {}}
+    for ch, c in st.get("channels", {}).items():
+        d["channels"][ch] = {
+            "posts": c["posts"], "by_account": c.get("by_account", []),
+            "by_theme": [{k: v for k, v in t.items() if k != "median_views"} for t in c["by_theme"]],
+            "by_format": [{k: v for k, v in t.items() if k != "median_views"} for t in c["by_format"][:6]],
+            "by_attribute": c.get("by_attribute", {}),
+        }
+    d["effort_vs_return"] = so.get("effort_vs_return", {})
+    d["theme_by_channel"] = so.get("cross_channel", {}).get("theme_by_channel", {})
+    d["same_piece_across_channels"] = so.get("cross_channel", {}).get("editions", [])[:5]
+    d["who_drives_it"] = so.get("who_drives_it", [])[:8]
+    d["reach_vs_resonance_x"] = so.get("reach_vs_resonance_x", {})
+    d["weekly_trend"] = {ch: rows[-6:] for ch, rows in so.get("weekly_trend", {}).items()}
+    d["day_of_week"] = so.get("day_of_week", {})
+    d["extremes"] = {ch: {"top": [{**p, "text": p["text"][:100]} for p in ex["top"][:2]],
+                          "bottom": [{**p, "text": p["text"][:100]} for p in ex["bottom"][:2]]}
+                     for ch, ex in so.get("extremes", {}).items()}
+    d["experiments"] = st.get("experiments", [])[:10]
+    return d
+
+
 def write_memo(st: dict) -> str:
-    return llm.complete(MEMO_SYSTEM, json.dumps(st, ensure_ascii=False), max_tokens=2000)
+    return llm.complete(MEMO_SYSTEM, json.dumps(memo_digest(st), ensure_ascii=False), max_tokens=1800)
 
 
 def run(df: pd.DataFrame, live: bool = True) -> tuple[pd.DataFrame, dict, str, int, list]:

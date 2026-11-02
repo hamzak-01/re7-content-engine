@@ -40,7 +40,12 @@ def complete(system: str, user: str, max_tokens: int = 4000, temperature: float 
                 if temperature is not None and "temperature" in _CREATE_PARAMS:
                     kwargs["temperature"] = temperature
                 msg = client.messages.create(**kwargs)
-                return "".join(b.text for b in msg.content if getattr(b, "type", "") == "text")
+                text = "".join(b.text for b in msg.content if getattr(b, "type", "") == "text")
+                if text.strip():
+                    return text
+                last = RuntimeError(f"empty reply from {model} (stop_reason={getattr(msg, 'stop_reason', '?')}, "
+                                    f"input_chars={len(system) + len(user)})")
+                break  # an empty reply will not improve on retry; try the next model
             except Exception as e:  # noqa: BLE001
                 last = e
                 if "not_found" in str(e).lower() or "404" in str(e):
