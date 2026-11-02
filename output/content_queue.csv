@@ -1,0 +1,31 @@
+day,time_uk,account,channel,format,text,source_title,source_url,hypothesis,experiment_tag,compliance_flag,status
+Monday,08:30,Re7 Capital,x,image,"The $6.3bn Binance exploit was the largest crypto hack on record. Circle, Tether and other issuers froze approximately $2.8bn. Sunday's $3.6bn in net withdrawals was 2.1% of customer assets, which does not read as a run.
+
+The Weekly, 2 Nov.",The Weekly: The Binance Hack and What Comes Next,https://re7.capital/blog/9c4a3d8e-83d6-4b4e-af89-5e33ed3215ed,"names_partner (Circle, Tether) + chart_data image on x; tests whether named partners lift a bottom-ranked market_commentary theme",wk45-x-mktcomm-partner,quotes yields/performance,draft - needs review
+Tuesday,08:00,Re7 Capital,linkedin,video,"Corporate treasury is where tokenised real-world assets stop being a concept.
+
+On Crypto Minutes, Bloomberg TV, Re7's Founder and CIO Evgeny Gokhberg hosts Yuval Rooz, Co-Founder and CEO of Digital Asset, the company behind Canton Network, on the next phase of finance moving on-chain.
+
+For Rooz, RWAs have always been the most compelling use case on-chain, and corporate treasury is where that becomes real:
+
+""You're going to start seeing corporates on Canton very soon using yield products that can be liquidated in real time into tokenized deposits or stablecoins. They'll start doing treasury management using on-chain finance.""
+
+The detail worth watching is the liquidation path. Real-time conversion into tokenized deposits or stablecoins is what would let a treasury team treat an on-chain product as working capital rather than a position held apart.
+
+Full episode linked in the comments.",The Weekly: The Binance Hack and What Comes Next,https://re7.capital/blog/9c4a3d8e-83d6-4b4e-af89-5e33ed3215ed,media_appearance + names_person + names_partner + video on linkedin,wk45-li-media-person-video,quotes yields/performance; names a third party,draft - needs review
+Wednesday,12:30,Re7 Capital,x,image,"New report with Clear Street: A Framework for Decomposing DeFi Risk in the Age of AI.
+
+Led by Evgeny Gokhberg, it breaks exposure into chain, protocol and asset layers and looks at how AI is reshaping risk monitoring.",The Weekly: The Binance Hack and What Comes Next,https://re7.capital/blog/9c4a3d8e-83d6-4b4e-af89-5e33ed3215ed,research_report + names_partner + names_person on x,wk45-x-report-partner-person,names a third party,draft - needs review
+Thursday,09:30,Re7 Capital,x,video,"Crypto Minutes, Bloomberg TV: Evgeny Gokhberg hosts Yuval Rooz, Co-Founder and CEO of Digital Asset, the company behind Canton Network, on corporate treasury moving on-chain.
+
+""They'll start doing treasury management using on-chain finance.""",The Weekly: The Binance Hack and What Comes Next,https://re7.capital/blog/9c4a3d8e-83d6-4b4e-af89-5e33ed3215ed,media_appearance + names_person + video on x (highest-indexing theme and format on x),wk45-x-media-person-video,names a third party,draft - needs review
+Friday,11:00,Re7 Labs,x,image,"Re7 Labs has launched a Frax USDai Ecosystem Vault on Mainnet with Frax Finance and USD.AI.
+
+The vault deploys frxUSD across curated opportunities in the USDai ecosystem.",The Weekly: The Binance Hack and What Comes Next,https://re7.capital/blog/9c4a3d8e-83d6-4b4e-af89-5e33ed3215ed,"labs_product + names_partner (Frax Finance, USD.AI) on x",wk45-labs-x-product-partner,names a third party,draft - needs review
+Friday,15:00,Re7 Labs,telegram,link,"This week at Re7
+
+- The Weekly: the $6.3bn Binance exploit, with approximately $2.8bn frozen by Circle, Tether and other issuers.
+- Bitcoin is likely to trade between its 50-week MA and $80k.
+- New report with Clear Street: A Framework for Decomposing DeFi Risk in the Age of AI.
+- Crypto Minutes, Bloomberg TV: Evgeny Gokhberg hosts Yuval Rooz of Digital Asset.
+- Re7 Labs: Frax USDai Ecosystem Vault live on Mainnet with Frax Finance and USD.AI.",The Weekly: The Binance Hack and What Comes Next,https://re7.capital/blog/9c4a3d8e-83d6-4b4e-af89-5e33ed3215ed,media_appearance + labs_product + names_person in a link-format roundup on telegram,wk45-tg-roundup-media-labs,names a third party,draft - needs review
