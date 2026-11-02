@@ -6,7 +6,7 @@ import os
 import re
 import time
 
-MODEL = os.environ.get("RE7_MODEL", "claude-sonnet-4-5")
+MODELS = [m for m in [os.environ.get("RE7_MODEL", "")] if m] + ["claude-sonnet-5-5", "claude-haiku-5-5", "claude-sonnet-4-5"]
 
 
 def _client():
@@ -19,18 +19,21 @@ def _client():
 
 def complete(system: str, user: str, max_tokens: int = 4000, temperature: float = 0.2) -> str:
     client = _client()
-    for attempt in range(3):
-        try:
-            msg = client.messages.create(
-                model=MODEL, max_tokens=max_tokens, temperature=temperature,
-                system=system, messages=[{"role": "user", "content": user}],
-            )
-            return "".join(b.text for b in msg.content if getattr(b, "type", "") == "text")
-        except Exception as e:  # noqa: BLE001 - retry on transient API errors
-            if attempt == 2:
-                raise
-            time.sleep(2 * (attempt + 1))
-    return ""
+    last = None
+    for model in MODELS:
+        for attempt in range(2):
+            try:
+                msg = client.messages.create(
+                    model=model, max_tokens=max_tokens, temperature=temperature,
+                    system=system, messages=[{"role": "user", "content": user}],
+                )
+                return "".join(b.text for b in msg.content if getattr(b, "type", "") == "text")
+            except Exception as e:  # noqa: BLE001
+                last = e
+                if "not_found" in str(e).lower() or "404" in str(e):
+                    break  # try the next model name
+                time.sleep(2 * (attempt + 1))
+    raise RuntimeError(f"Claude API call failed: {last}")
 
 
 def complete_json(system: str, user: str, max_tokens: int = 4000):

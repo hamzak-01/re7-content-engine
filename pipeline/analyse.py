@@ -23,8 +23,9 @@ names_partner: {npart}
 Be conservative: if a post is a short reply or disclaimer, theme = other. Output a JSON list of objects with keys post_id, theme, format, names_person, names_partner."""
 
 
-def label_posts(df: pd.DataFrame, batch: int = 25, force: bool = False) -> tuple[pd.DataFrame, int]:
+def label_posts(df: pd.DataFrame, batch: int = 25, force: bool = False, errors: list | None = None) -> tuple[pd.DataFrame, int]:
     """Fill theme / names_person / names_partner (and correct format) where missing."""
+    errors = errors if errors is not None else []
     need = df[(df["theme"] == "") | (df["label_source"] == "heuristic") | force].copy()
     need = need[need["text"].str.strip() != ""]  # cannot label what we cannot read
     if need.empty:
@@ -39,7 +40,11 @@ def label_posts(df: pd.DataFrame, batch: int = 25, force: bool = False) -> tuple
         chunk = need.iloc[i:i + batch]
         payload = [{"post_id": r.post_id, "channel": r.channel, "format_hint": r.format, "text": r.text[:600]}
                    for r in chunk.itertuples()]
-        out = llm.complete_json(system, json.dumps(payload, ensure_ascii=False))
+        try:
+            out = llm.complete_json(system, json.dumps(payload, ensure_ascii=False))
+        except Exception as e:  # noqa: BLE001 - keep going; report the batch
+            errors.append(f"label batch {i // batch + 1}: {str(e)[:160]}")
+            continue
         for item in out:
             pid = item.get("post_id")
             if pid not in df.index:
@@ -64,11 +69,16 @@ def compute_index(df: pd.DataFrame) -> pd.DataFrame:
     """engagement_index = engagement_score / median score of main posts on that channel.
     1.0 = a typical post for that channel; 5.0 = five times a typical post."""
     df = df.copy()
-    df["engagement_score"] = _num(df["likes"]).fillna(0) + 2 * _num(df["reposts"]).fillna(0) + 3 * _num(df["comments"]).fillna(0)
+    score = _num(df["likes"]).fillna(0) + 2 * _num(df["reposts"]).fillna(0) + 3 * _num(df["comments"]).fillna(0)
+    # Telegram exposes views only, so views are its engagement measure.
+    tg = df["channel"] == "telegram"
+    score[tg] = _num(df.loc[tg, "views"]).fillna(0)
+    df["engagement_score"] = score
     main = df[df["is_reply"].astype(str) != "True"]
-    med = main.groupby("channel")["engagement_score"].median().replace(0, 1)
+    # Median per channel AND account: Re7 Labs and Re7 Capital have different baselines on X.
+    med = main.groupby(["channel", "account"])["engagement_score"].median().replace(0, 1)
     df["engagement_index"] = df.apply(
-        lambda r: round(r["engagement_score"] / med.get(r["channel"], 1), 2) if r["is_reply"] != "True" else "", axis=1)
+        lambda r: round(r["engagement_score"] / med.get((r["channel"], r["account"]), 1), 2) if r["is_reply"] != "True" else "", axis=1)
     return df
 
 
@@ -97,6 +107,11 @@ def stats(df: pd.DataFrame) -> dict:
             c["by_attribute"][attr] = {"with": round(float(t), 2) if pd.notna(t) else None,
                                        "without": round(float(f), 2) if pd.notna(f) else None,
                                        "n_with": int((g[attr].astype(str) == "True").sum())}
+        acc = g.groupby("account").agg(n=("post_id", "count"), mean_index=("engagement_index", "mean"),
+                                       median_score=("engagement_score", "median"), median_views=("views", "median")).reset_index()
+        c["by_account"] = [{"account": r["account"], "n": int(r["n"]), "mean_index": round(float(r["mean_index"]), 2),
+                            "median_score": float(r["median_score"]),
+                            "median_views": (None if pd.isna(r["median_views"]) else int(r["median_views"]))} for _, r in acc.iterrows()]
         top = g.sort_values("engagement_index", ascending=False).head(3)
         c["top_posts"] = [{"date": r.date, "theme": r.theme, "format": r.format, "index": float(r.engagement_index),
                            "text": (r.text or "")[:140]} for r in top.itertuples()]
@@ -110,7 +125,7 @@ def stats(df: pd.DataFrame) -> dict:
 
 
 MEMO_SYSTEM = """You write a one-page weekly insights memo for the Head of Investor Relations at Re7 Capital, an FCA-regulated institutional DeFi investment firm.
-You are given per-channel statistics only. engagement_index is relative to each channel's median post (1.0 = typical; 5.0 = five times typical), so it is comparable across channels; raw likes are not.
+You are given per-channel statistics only. engagement_index is relative to each channel's median post (1.0 = typical; 5.0 = five times typical), so it is comparable across channels and accounts; raw likes are not. Telegram has no reactions, so its score is views. Re7 Capital and Re7 Labs are separate accounts with separate baselines; compare within account where the data allows.
 Rules: lead with the single most important finding; give numbers with their sample sizes; call anything with n < 5 'directional'; name the best and worst theme and format per channel; report the person/partner attribute effect; if experiments exist, say how system-generated posts performed against their hypothesis; end with three concrete recommendations for next week's content, each tied to a number. Plain English, no hype, under 350 words, UK spelling. Markdown with short headings."""
 
 
@@ -118,20 +133,28 @@ def write_memo(st: dict) -> str:
     return llm.complete(MEMO_SYSTEM, json.dumps(st, ensure_ascii=False), max_tokens=1500, temperature=0.3)
 
 
-def run(df: pd.DataFrame, live: bool = True) -> tuple[pd.DataFrame, dict, str, int]:
+def run(df: pd.DataFrame, live: bool = True) -> tuple[pd.DataFrame, dict, str, int, list]:
     labelled = 0
+    errors: list = []
     df, _ = prelabel(df)
     if live:
-        df, labelled = label_posts(df)
+        df, labelled = label_posts(df, errors=errors)
     df = compute_index(df)
     st = stats(df)
-    memo = write_memo(st) if live else "(memo not regenerated: offline run)"
+    if live:
+        try:
+            memo = write_memo(st)
+        except Exception as e:  # noqa: BLE001
+            errors.append(f"memo: {str(e)[:160]}")
+            memo = open(os.path.join(OUTPUT, "memo.md")).read() if os.path.exists(os.path.join(OUTPUT, "memo.md")) else ""
+    else:
+        memo = "(memo not regenerated: offline run)"
     os.makedirs(OUTPUT, exist_ok=True)
     with open(os.path.join(OUTPUT, "insights.json"), "w") as f:
         json.dump(st, f, indent=2)
     with open(os.path.join(OUTPUT, "memo.md"), "w") as f:
         f.write(memo)
-    return df, st, memo, labelled
+    return df, st, memo, labelled, errors
 
 
 # ---------------------------------------------------------------------------

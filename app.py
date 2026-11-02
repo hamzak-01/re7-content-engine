@@ -120,6 +120,18 @@ if not lr:
     st.warning("No run yet. Press the button.")
     st.stop()
 
+if lr.get("status") != "ok" or (lr.get("analyse") or {}).get("errors") or "error" in (lr.get("create") or {}):
+    probs = []
+    if lr.get("error"):
+        probs.append(lr["error"])
+    probs += (lr.get("analyse") or {}).get("errors", [])
+    if "error" in (lr.get("create") or {}):
+        probs.append("content generation: " + lr["create"]["error"])
+    st.error("This run hit a problem: " + " | ".join(probs))
+
+with st.expander("Run log (last_run.json)", expanded=False):
+    st.json({k: v for k, v in lr.items() if k != "trace"})
+
 # ----------------------------------------------------------------------------- collection status
 with st.expander("Where this run's data came from", expanded=False):
     rows = []
@@ -147,6 +159,9 @@ with tab_stats:
             with b:
                 st.markdown("**By format**")
                 st.dataframe(pd.DataFrame(c["by_format"]), hide_index=True, use_container_width=True)
+            if c.get("by_account"):
+                st.markdown("**By account**")
+                st.dataframe(pd.DataFrame(c["by_account"]), hide_index=True, use_container_width=True)
             attr = c.get("by_attribute", {})
             if attr:
                 st.markdown("**Does naming a person or a partner matter?**")

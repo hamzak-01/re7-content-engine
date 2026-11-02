@@ -36,7 +36,15 @@ def merge(df: pd.DataFrame, posts: list[Post]) -> tuple[pd.DataFrame, int]:
     Returns (df, number_of_new_rows)."""
     if not posts:
         return df, 0
-    new = pd.DataFrame([p.row() for p in posts]).astype(str)
+    new = pd.DataFrame([p.row() for p in posts]).astype(str).drop_duplicates("post_id")
+    # A live row supersedes a manual seed row describing the same post: same channel,
+    # account, date and identical like/repost/comment counts.
+    live = new[new["collected_via"] != "seed"]
+    if len(live) and len(df):
+        key = ["channel", "account", "date", "likes", "reposts", "comments"]
+        seed_rows = df[df["collected_via"] == "seed"]
+        hit = seed_rows.merge(live[key].drop_duplicates(), on=key, how="inner")["post_id"]
+        df = df[~df["post_id"].isin(set(hit))]
     existing = set(df["post_id"])
     fresh = new[~new["post_id"].isin(existing)]
     # update engagement counts on rows we already hold (numbers grow over time)
@@ -69,3 +77,16 @@ def load_seed() -> list[Post]:
                               likes=r["likes"], reposts=r["reposts"], comments=r["comments"],
                               collected_via="seed"))
     return posts
+
+
+def dedupe_seed(df: pd.DataFrame) -> tuple[pd.DataFrame, int]:
+    """Remove manual seed rows that a live collector has since covered (same channel,
+    account, date and identical counts). Safe to run on every pass."""
+    key = ["channel", "account", "date", "likes", "reposts", "comments"]
+    live = df[df["collected_via"] != "seed"]
+    seed = df[df["collected_via"] == "seed"]
+    if live.empty or seed.empty:
+        return df, 0
+    covered = seed.set_index(key).index.isin(live.set_index(key).index.drop_duplicates())
+    gone = set(seed[covered]["post_id"])
+    return df[~df["post_id"].isin(gone)], len(gone)

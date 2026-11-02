@@ -59,7 +59,7 @@ def _date(v) -> str:
 
 
 def collect_x(handle: str, account: str, max_items: int = 60) -> list[Post]:
-    items = _run(X_ACTOR, {"twitterHandles": [handle.lstrip("@")], "maxItems": max_items,
+    items = _run(X_ACTOR, {"twitterHandles": [handle.lstrip("@")], "maxItems": max_items, "maxTweets": max_items,
                            "sort": "Latest", "includeSearchTerms": False})
     posts = []
     for it in items:
@@ -86,7 +86,11 @@ def collect_x(handle: str, account: str, max_items: int = 60) -> list[Post]:
 
 
 def collect_linkedin(company_url: str, account: str, max_items: int = 40) -> list[Post]:
-    items = _run(LI_ACTOR, {"companies": [company_url], "maxPosts": max_items})
+    # Different actors name the input differently; send the common spellings together.
+    payload = {"companies": [company_url], "companyUrls": [company_url], "urls": [company_url],
+               "startUrls": [{"url": company_url}], "company_url": company_url, "companyUrl": company_url,
+               "maxPosts": max_items, "maxItems": max_items, "limit": max_items, "resultsLimit": max_items}
+    items = _run(LI_ACTOR, payload)
     posts = []
     for it in items:
         text = _first(it, "text", "content", "commentary", default="")

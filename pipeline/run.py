@@ -63,18 +63,24 @@ def main(live: bool = True) -> dict:
     df = store.load()
     try:
         df, summary["collect"] = collect_all(df, live)
+        df, superseded = store.dedupe_seed(df)
+        summary["collect"]["seed_rows_superseded_by_live"] = superseded
         store.save(df)
         summary["posts_total"] = int(len(df))
 
-        df, insights, memo, labelled = analyse.run(df, live=live)
+        df, insights, memo, labelled, errors = analyse.run(df, live=live)
         store.save(df)
         summary["analyse"] = {"labelled_now": labelled,
                               "labelled_total": int((df["theme"] != "").sum()),
-                              "channels": {k: v["posts"] for k, v in insights["channels"].items()}}
+                              "channels": {k: v["posts"] for k, v in insights["channels"].items()},
+                              "errors": errors}
 
-        queue = create.run(df, insights, live=live)
-        summary["create"] = {"posts_generated": int(len(queue)),
-                             "flagged_for_compliance": int((queue["compliance_flag"] != "").sum()) if len(queue) else 0}
+        try:
+            queue = create.run(df, insights, live=live)
+            summary["create"] = {"posts_generated": int(len(queue)),
+                                 "flagged_for_compliance": int((queue["compliance_flag"] != "").sum()) if len(queue) else 0}
+        except Exception as e:  # noqa: BLE001
+            summary["create"] = {"error": f"{type(e).__name__}: {str(e)[:200]}"}
         summary["status"] = "ok"
     except Exception as e:  # noqa: BLE001
         summary["status"] = "failed"
