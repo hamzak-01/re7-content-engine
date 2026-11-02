@@ -14,15 +14,15 @@
         },
         {
           "label": "media_appearance",
-          "n": 11,
-          "mean_index": 2.42,
+          "n": 12,
+          "mean_index": 2.31,
           "median_views": null,
           "directional": false
         },
         {
           "label": "research_report",
-          "n": 6,
-          "mean_index": 1.82,
+          "n": 5,
+          "mean_index": 1.86,
           "median_views": null,
           "directional": false
         },
@@ -34,16 +34,9 @@
           "directional": false
         },
         {
-          "label": "other",
-          "n": 4,
-          "mean_index": 1.36,
-          "median_views": null,
-          "directional": false
-        },
-        {
           "label": "market_commentary",
-          "n": 36,
-          "mean_index": 0.75,
+          "n": 38,
+          "mean_index": 0.79,
           "median_views": null,
           "directional": false
         },
@@ -65,6 +58,13 @@
           "label": "labs_product",
           "n": 1,
           "mean_index": 2.0,
+          "median_views": null,
+          "directional": true
+        },
+        {
+          "label": "other",
+          "n": 2,
+          "mean_index": 1.44,
           "median_views": null,
           "directional": true
         },
@@ -107,8 +107,8 @@
         },
         "names_partner": {
           "with": 2.01,
-          "without": 0.8,
-          "n_with": 39
+          "without": 0.85,
+          "n_with": 37
         }
       },
       "top_posts": [
@@ -135,7 +135,7 @@
         }
       ],
       "bottom_themes": [
-        "labs_product",
+        "other",
         "hiring_culture"
       ],
       "by_account": [
@@ -225,9 +225,9 @@
           "n_with": 1
         },
         "names_partner": {
-          "with": 1.37,
-          "without": 0.86,
-          "n_with": 41
+          "with": 1.4,
+          "without": 0.84,
+          "n_with": 40
         }
       },
       "top_posts": [
@@ -287,9 +287,9 @@
         },
         {
           "label": "labs_product",
-          "n": 14,
-          "mean_index": 1.93,
-          "median_views": 1645,
+          "n": 13,
+          "mean_index": 2.05,
+          "median_views": 1520,
           "directional": false
         },
         {
@@ -321,6 +321,13 @@
           "directional": false
         },
         {
+          "label": "partner_announcement",
+          "n": 3,
+          "mean_index": 0.49,
+          "median_views": 1771,
+          "directional": false
+        },
+        {
           "label": "hiring_culture",
           "n": 2,
           "mean_index": 2.18,
@@ -332,13 +339,6 @@
           "n": 2,
           "mean_index": 1.78,
           "median_views": 1128,
-          "directional": true
-        },
-        {
-          "label": "partner_announcement",
-          "n": 2,
-          "mean_index": 0.59,
-          "median_views": 1452,
           "directional": true
         }
       ],
@@ -379,9 +379,9 @@
           "n_with": 15
         },
         "names_partner": {
-          "with": 1.92,
-          "without": 1.0,
-          "n_with": 38
+          "with": 1.98,
+          "without": 1.03,
+          "n_with": 35
         }
       },
       "top_posts": [
@@ -408,8 +408,8 @@
         }
       ],
       "bottom_themes": [
-        "award_recognition",
-        "partner_announcement"
+        "hiring_culture",
+        "award_recognition"
       ],
       "by_account": [
         {
@@ -450,10 +450,10 @@
         },
         {
           "theme": "media_appearance",
-          "n": 11,
-          "share_of_posts": 0.131,
-          "share_of_engagement": 0.233,
-          "return_on_effort": 1.78,
+          "n": 12,
+          "share_of_posts": 0.143,
+          "share_of_engagement": 0.242,
+          "return_on_effort": 1.7,
           "directional": false
         },
         {
@@ -466,10 +466,10 @@
         },
         {
           "theme": "research_report",
-          "n": 6,
-          "share_of_posts": 0.071,
-          "share_of_engagement": 0.095,
-          "return_on_effort": 1.33,
+          "n": 5,
+          "share_of_posts": 0.06,
+          "share_of_engagement": 0.081,
+          "return_on_effort": 1.37,
           "directional": false
         },
         {
@@ -482,11 +482,11 @@
         },
         {
           "theme": "other",
-          "n": 4,
-          "share_of_posts": 0.048,
-          "share_of_engagement": 0.048,
-          "return_on_effort": 1.0,
-          "directional": false
+          "n": 2,
+          "share_of_posts": 0.024,
+          "share_of_engagement": 0.025,
+          "return_on_effort": 1.06,
+          "directional": true
         },
         {
           "theme": "hiring_culture",
@@ -498,10 +498,10 @@
         },
         {
           "theme": "market_commentary",
-          "n": 36,
-          "share_of_posts": 0.429,
-          "share_of_engagement": 0.235,
-          "return_on_effort": 0.55,
+          "n": 38,
+          "share_of_posts": 0.452,
+          "share_of_engagement": 0.262,
+          "return_on_effort": 0.58,
           "directional": false
         },
         {
@@ -566,10 +566,10 @@
       "x": [
         {
           "theme": "labs_product",
-          "n": 14,
-          "share_of_posts": 0.226,
-          "share_of_engagement": 0.553,
-          "return_on_effort": 2.45,
+          "n": 13,
+          "share_of_posts": 0.21,
+          "share_of_engagement": 0.547,
+          "return_on_effort": 2.61,
           "directional": false
         },
         {
@@ -606,11 +606,11 @@
         },
         {
           "theme": "partner_announcement",
-          "n": 2,
-          "share_of_posts": 0.032,
-          "share_of_engagement": 0.022,
-          "return_on_effort": 0.7,
-          "directional": true
+          "n": 3,
+          "share_of_posts": 0.048,
+          "share_of_engagement": 0.029,
+          "return_on_effort": 0.6,
+          "directional": false
         },
         {
           "theme": "other",
@@ -766,14 +766,14 @@
             "n": 33
           },
           "x": {
-            "mean_index": 1.93,
-            "n": 14
+            "mean_index": 2.05,
+            "n": 13
           }
         },
         "market_commentary": {
           "linkedin": {
-            "mean_index": 0.75,
-            "n": 36
+            "mean_index": 0.79,
+            "n": 38
           },
           "telegram": {
             "mean_index": 0.94,
@@ -786,8 +786,8 @@
         },
         "media_appearance": {
           "linkedin": {
-            "mean_index": 2.42,
-            "n": 11
+            "mean_index": 2.31,
+            "n": 12
           },
           "telegram": {
             "mean_index": 0.84,
@@ -800,8 +800,8 @@
         },
         "other": {
           "linkedin": {
-            "mean_index": 1.36,
-            "n": 4
+            "mean_index": 1.44,
+            "n": 2
           },
           "telegram": {
             "mean_index": 0.22,
@@ -818,14 +818,14 @@
             "n": 1
           },
           "x": {
-            "mean_index": 0.59,
-            "n": 2
+            "mean_index": 0.49,
+            "n": 3
           }
         },
         "research_report": {
           "linkedin": {
-            "mean_index": 1.82,
-            "n": 6
+            "mean_index": 1.86,
+            "n": 5
           },
           "telegram": {
             "mean_index": 0.59,
@@ -871,8 +871,8 @@
       },
       {
         "entity": "Sharplink",
-        "mentions": 7,
-        "mean_index": 3.95
+        "mentions": 6,
+        "mean_index": 4.4
       },
       {
         "entity": "Zodia Custody",
@@ -880,9 +880,9 @@
         "mean_index": 3.91
       },
       {
-        "entity": "Bloomberg TV",
-        "mentions": 7,
-        "mean_index": 3.75
+        "entity": "Bloomberg",
+        "mentions": 8,
+        "mean_index": 3.62
       },
       {
         "entity": "Tim Renew",
@@ -906,15 +906,15 @@
         "median_views": 2900,
         "likes_per_1000_views": 7.6
       },
-      "labs_product": {
-        "n": 14,
-        "median_views": 1645,
-        "likes_per_1000_views": 14.6
-      },
       "partner_announcement": {
-        "n": 2,
-        "median_views": 1452,
-        "likes_per_1000_views": 2.7
+        "n": 3,
+        "median_views": 1771,
+        "likes_per_1000_views": 2.4
+      },
+      "labs_product": {
+        "n": 13,
+        "median_views": 1520,
+        "likes_per_1000_views": 15.6
       },
       "award_recognition": {
         "n": 2,
@@ -949,7 +949,7 @@
       "market_commentary": {
         "n": 12,
         "median_views": 302,
-        "likes_per_1000_views": 7.0
+        "likes_per_1000_views": 6.9
       }
     },
     "weekly_trend": {
@@ -1213,20 +1213,20 @@
         ],
         "bottom": [
           {
-            "date": "2026-10-12",
-            "theme": "market_commentary",
-            "format": "link",
-            "index": 0.14,
-            "views": null,
-            "text": "Re7's Weekly is out: From Record September to Midterm Uncertainty\n\nWe breakdown:\n\n \ud83d\udd39 Looking back at a significant quarter for crypto and what it signals for th"
-          },
-          {
             "date": "2026-09-07",
             "theme": "market_commentary",
             "format": "link",
             "index": 0.14,
             "views": null,
             "text": "Re7's Weekly is out: Can the Move Sustain?\n\nWe breakdown:\n\n- Why the breakout from a 20-month consolidation looks likely to be sustained\n- How technicals, flows"
+          },
+          {
+            "date": "2026-10-12",
+            "theme": "market_commentary",
+            "format": "link",
+            "index": 0.14,
+            "views": null,
+            "text": "Re7's Weekly is out: From Record September to Midterm Uncertainty\n\nWe breakdown:\n\n \ud83d\udd39 Looking back at a significant quarter for crypto and what it signals for th"
           },
           {
             "date": "2026-08-24",
