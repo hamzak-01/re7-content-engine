@@ -11,6 +11,7 @@ import os
 from datetime import datetime, timezone, timedelta
 
 import pandas as pd
+import time
 import streamlit as st
 
 from pipeline import store, persist, run as pipeline_run
@@ -133,7 +134,8 @@ with c2:
     if not allowed:
         st.info(reason)
     else:
-        st.caption(f"Live runs remaining today: {left}. A run takes 1–3 minutes and costs roughly 20p in API usage.")
+        st.caption(f"Live runs remaining today: {left}. A run takes about two minutes and costs roughly 20p in API usage. "
+                   f"The results below are from the last run, so there is something to read while it works.")
 with c3:
     lr = load_outputs()["last_run"]
     if lr:
@@ -141,17 +143,28 @@ with c3:
 
 if pressed and allowed:
     record_run()
-    with st.status("Running the pipeline", expanded=True) as status:
-        st.write("1. Collecting posts (seed, imports, Telegram, Apify for X and LinkedIn)")
-        st.write("2. Labelling new posts against the taxonomy with Claude")
-        st.write("3. Computing per-channel statistics and writing the insights memo")
-        st.write("4. Generating next week's content from Re7's own sources")
-        summary = pipeline_run.main(live=True)
+    t_start = time.time()
+    with st.status("Running the pipeline. The last run's results stay visible below until this one replaces them.", expanded=True) as status:
+        stage_names = {"start": "Preparing", "collect": "1/4 Collecting posts from X, LinkedIn and Telegram",
+                       "analyse": "2/4 Labelling and analysing with Claude", "create": "3/4 Drafting next week's content",
+                       "persist": "4/4 Saving"}
+        seen: list[str] = []
+        log = st.empty()
+        lines: list[str] = []
+
+        def progress(stage: str, detail: str) -> None:
+            if stage not in seen:
+                seen.append(stage)
+                status.update(label=f"{stage_names.get(stage, stage)} · {int(time.time() - t_start)}s", expanded=True)
+            lines.append(f"{int(time.time() - t_start):>3}s  {detail}")
+            log.code("\n".join(lines[-12:]), language=None)
+
+        summary = pipeline_run.main(live=True, progress=progress)
         if summary.get("status") == "ok":
-            status.update(label="Run complete", state="complete")
+            status.update(label=f"Run complete in {int(time.time() - t_start)}s. Loading the new results.", state="complete")
         else:
             status.update(label=f"Run finished with an error: {summary.get('error')}", state="error")
-        st.json({k: v for k, v in summary.items() if k != "trace"})
+            st.json({k: v for k, v in summary.items() if k != "trace"})
     st.rerun()
 
 data = load_outputs()

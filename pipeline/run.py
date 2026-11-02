@@ -13,6 +13,7 @@ import json
 import os
 import time
 import traceback
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 
 from . import store, analyse, create, persist
@@ -25,66 +26,111 @@ CONFIG = {
 }
 
 
-def collect_all(df, live: bool) -> tuple[object, dict]:
+def _noop(stage: str, detail: str) -> None:
+    pass
+
+
+def collect_all(df, live: bool, progress=_noop) -> tuple[object, dict]:
+    """Run every collector; the network ones run in parallel, then merge in a fixed order."""
     report: dict = {}
 
-    def attempt(name, fn):
+    def fetch(name, fn):
         t0 = time.time()
         try:
-            posts = fn()
-            nonlocal df
-            df, new = store.merge(df, posts)
-            report[name] = {"status": "ok", "fetched": len(posts), "new": new, "seconds": round(time.time() - t0, 1)}
+            return name, fn(), None, round(time.time() - t0, 1)
         except Exception as e:  # noqa: BLE001 - a failed collector must not stop the run
-            report[name] = {"status": "failed", "error": str(e)[:200], "seconds": round(time.time() - t0, 1)}
+            return name, [], str(e)[:200], round(time.time() - t0, 1)
+
+    def absorb(name, posts, err, secs):
+        nonlocal df
+        if err is not None:
+            report[name] = {"status": "failed", "error": err, "seconds": secs}
+            progress("collect", f"{name}: failed ({err[:60]})")
+            return
+        df, new = store.merge(df, posts)
+        report[name] = {"status": "ok", "fetched": len(posts), "new": new, "seconds": secs}
+        progress("collect", f"{name}: {len(posts)} posts, {new} new")
 
     # Seed (manual captures from 1 Nov 2026) is always merged first: it is the floor.
-    attempt("seed", store.load_seed)
+    absorb(*fetch("seed", store.load_seed))
     # Admin exports dropped in data/imports/ (production path for LinkedIn).
-    attempt("csv_import", lambda: csv_import.collect("linkedin"))
-    if live:
-        if CONFIG["telegram_handle"]:
-            attempt("telegram", lambda: telegram.collect(CONFIG["telegram_handle"], account="Re7 Labs"))
-        else:
-            report["telegram"] = {"status": "skipped", "error": "RE7_TELEGRAM_HANDLE not set"}
-        for h, acct in CONFIG["x_handles"].items():
-            if os.environ.get("APIFY_TOKEN"):
-                attempt(f"x:{h}", lambda h=h, acct=acct: apify.collect_x(h, acct))
-            if report.get(f"x:{h}", {}).get("status") != "ok":
-                attempt(f"x:{h}:public", lambda h=h, acct=acct: x_public.collect(h, acct))
-        if os.environ.get("APIFY_TOKEN"):
-            for u, acct in CONFIG["linkedin_pages"].items():
-                attempt("linkedin:apify", lambda u=u, acct=acct: apify.collect_linkedin(u, acct))
+    absorb(*fetch("csv_import", lambda: csv_import.collect("linkedin")))
+    if not live:
+        return df, report
+
+    jobs = []
+    if CONFIG["telegram_handle"]:
+        jobs.append(("telegram", lambda: telegram.collect(CONFIG["telegram_handle"], account="Re7 Labs")))
+    else:
+        report["telegram"] = {"status": "skipped", "error": "RE7_TELEGRAM_HANDLE not set"}
+    have_apify = bool(os.environ.get("APIFY_TOKEN"))
+
+    def x_job(h, acct):
+        """Apify first; public syndication only if that fails. Returns a list of (name, result) rows."""
+        rows = []
+        if have_apify:
+            r = fetch(f"x:{h}", lambda: apify.collect_x(h, acct))
+            rows.append(r)
+            if r[2] is None:
+                return rows
+        rows.append(fetch(f"x:{h}:public", lambda: x_public.collect(h, acct)))
+        return rows
+
+    with ThreadPoolExecutor(max_workers=5) as ex:
+        futs = [ex.submit(fetch, n, f) for n, f in jobs]
+        xfuts = [ex.submit(x_job, h, a) for h, a in CONFIG["x_handles"].items()]
+        if have_apify:
+            futs += [ex.submit(fetch, "linkedin:apify", lambda u=u, a=a: apify.collect_linkedin(u, a))
+                     for u, a in CONFIG["linkedin_pages"].items()]
         else:
             report["apify"] = {"status": "skipped", "error": "APIFY_TOKEN not set; using seed/imports"}
+        results = [f.result() for f in futs]
+        for xf in xfuts:
+            results += xf.result()
+    # merge in a stable order so post_ids and supersession behave the same every run
+    for name, posts, err, secs in sorted(results, key=lambda r: r[0]):
+        absorb(name, posts, err, secs)
     return df, report
 
 
-def main(live: bool = True) -> dict:
+def main(live: bool = True, progress=_noop) -> dict:
+    """progress(stage, detail) is called from the main thread as each step finishes."""
     started = datetime.now(timezone.utc)
     summary: dict = {"started": started.isoformat(timespec="seconds"), "mode": "live" if live else "offline"}
+    progress("start", "loading the last run's data")
     summary["pull"] = persist.pull()
     df = store.load()
     try:
-        df, summary["collect"] = collect_all(df, live)
+        df, summary["collect"] = collect_all(df, live, progress)
         df, superseded = store.dedupe_seed(df)
         summary["collect"]["seed_rows_superseded_by_live"] = superseded
         store.save(df)
         summary["posts_total"] = int(len(df))
+        progress("collect", f"single source now holds {len(df)} posts")
 
-        df, insights, memo, labelled, errors = analyse.run(df, live=live)
+        to_label = int(((df["theme"] == "") | (df["label_source"] == "heuristic")).sum()) if live else 0
+        progress("analyse", f"labelling {to_label} new posts with Claude" if to_label else "nothing new to label")
+        df, insights, _, labelled, errors = analyse.run(df, live=live, with_memo=False)
         store.save(df)
         summary["analyse"] = {"labelled_now": labelled,
                               "labelled_total": int((df["theme"] != "").sum()),
                               "channels": {k: v["posts"] for k, v in insights["channels"].items()},
                               "errors": errors}
+        progress("analyse", "statistics computed; writing the memo and drafting content (in parallel)")
 
-        try:
-            queue = create.run(df, insights, live=live)
-            summary["create"] = {"posts_generated": int(len(queue)),
-                                 "flagged_for_compliance": int((queue["compliance_flag"] != "").sum()) if len(queue) else 0}
-        except Exception as e:  # noqa: BLE001
-            summary["create"] = {"error": f"{type(e).__name__}: {str(e)[:200]}"}
+        with ThreadPoolExecutor(max_workers=2) as ex:
+            f_memo = ex.submit(analyse.finish_memo, insights, live, errors)
+            f_create = ex.submit(create.run, df, insights, live)
+            memo = f_memo.result()
+            progress("analyse", "memo written" if memo else "memo failed; kept the previous one")
+            try:
+                queue = f_create.result()
+                summary["create"] = {"posts_generated": int(len(queue)),
+                                     "flagged_for_compliance": int((queue["compliance_flag"] != "").sum()) if len(queue) else 0}
+                progress("create", f"{len(queue)} draft posts ready")
+            except Exception as e:  # noqa: BLE001
+                summary["create"] = {"error": f"{type(e).__name__}: {str(e)[:200]}"}
+                progress("create", f"content drafting failed: {str(e)[:80]}")
         summary["status"] = "ok"
     except Exception as e:  # noqa: BLE001
         summary["status"] = "failed"
@@ -99,6 +145,7 @@ def main(live: bool = True) -> dict:
     hist = os.path.join(store.OUTPUT, "run_history.jsonl")
     with open(hist, "a") as f:
         f.write(json.dumps({k: v for k, v in summary.items() if k != "trace"}) + "\n")
+    progress("persist", "saving results")
     summary["persist"] = persist.push(f"run {summary['started'][:16]}")
     with open(os.path.join(store.OUTPUT, "last_run.json"), "w") as f:
         json.dump(summary, f, indent=2)

@@ -37,14 +37,23 @@ def label_posts(df: pd.DataFrame, batch: int = 25, force: bool = False, errors: 
         np=ATTRIBUTES["names_person"], npart=ATTRIBUTES["names_partner"])
     labelled = 0
     df = df.set_index("post_id")
-    for i in range(0, len(need), batch):
-        chunk = need.iloc[i:i + batch]
+    chunks = [need.iloc[i:i + batch] for i in range(0, len(need), batch)]
+
+    def _label_chunk(k_chunk):
+        k, chunk = k_chunk
         payload = [{"post_id": r.post_id, "channel": r.channel, "format_hint": r.format, "text": r.text[:600]}
                    for r in chunk.itertuples()]
         try:
-            out = llm.complete_json(system, json.dumps(payload, ensure_ascii=False))
+            return k, llm.complete_json(system, json.dumps(payload, ensure_ascii=False)), None
         except Exception as e:  # noqa: BLE001 - keep going; report the batch
-            errors.append(f"label batch {i // batch + 1}: {str(e)[:160]}")
+            return k, [], f"label batch {k + 1}: {str(e)[:160]}"
+
+    from concurrent.futures import ThreadPoolExecutor
+    with ThreadPoolExecutor(max_workers=4) as ex:
+        results = list(ex.map(_label_chunk, enumerate(chunks)))
+    for k, out, err in results:
+        if err:
+            errors.append(err)
             continue
         for item in out:
             pid = item.get("post_id")
@@ -198,15 +207,8 @@ def write_memo(st: dict) -> str:
     return llm.complete(MEMO_SYSTEM, json.dumps(memo_digest(st), ensure_ascii=False), max_tokens=2800)
 
 
-def run(df: pd.DataFrame, live: bool = True) -> tuple[pd.DataFrame, dict, str, int, list]:
-    labelled = 0
-    errors: list = []
-    df, _ = prelabel(df)
-    if live:
-        df, labelled = label_posts(df, errors=errors)
-    df = compute_index(df)
-    df = ins2.assign_content_keys(df)
-    st = stats(df)
+def finish_memo(st: dict, live: bool, errors: list) -> str:
+    """Write the memo (or keep the previous one on failure) and save it. Safe to run in a thread."""
     if live:
         try:
             memo = write_memo(st)
@@ -216,10 +218,24 @@ def run(df: pd.DataFrame, live: bool = True) -> tuple[pd.DataFrame, dict, str, i
     else:
         memo = "(memo not regenerated: offline run)"
     os.makedirs(OUTPUT, exist_ok=True)
-    with open(os.path.join(OUTPUT, "insights.json"), "w") as f:
-        json.dump(st, f, indent=2)
     with open(os.path.join(OUTPUT, "memo.md"), "w") as f:
         f.write(memo)
+    return memo
+
+
+def run(df: pd.DataFrame, live: bool = True, with_memo: bool = True) -> tuple[pd.DataFrame, dict, str, int, list]:
+    labelled = 0
+    errors: list = []
+    df, _ = prelabel(df)
+    if live:
+        df, labelled = label_posts(df, errors=errors)
+    df = compute_index(df)
+    df = ins2.assign_content_keys(df)
+    st = stats(df)
+    os.makedirs(OUTPUT, exist_ok=True)
+    with open(os.path.join(OUTPUT, "insights.json"), "w") as f:
+        json.dump(st, f, indent=2)
+    memo = finish_memo(st, live, errors) if with_memo else ""
     return df, st, memo, labelled, errors
 
 
