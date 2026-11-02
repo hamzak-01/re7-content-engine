@@ -98,5 +98,8 @@ def run(df: pd.DataFrame, insights: dict, live: bool = True) -> pd.DataFrame:
         })
     queue = pd.DataFrame(rows)
     os.makedirs(OUTPUT, exist_ok=True)
-    queue.to_csv(os.path.join(OUTPUT, "content_queue.csv"), index=False)
+    if len(queue):
+        queue.to_csv(os.path.join(OUTPUT, "content_queue.csv"), index=False)
+    else:
+        raise RuntimeError("model returned no posts")
     return queue

@@ -73,8 +73,14 @@ def load_outputs():
     p = os.path.join(store.OUTPUT, "memo.md")
     out["memo"] = open(p).read() if os.path.exists(p) else ""
     p = os.path.join(store.OUTPUT, "content_queue.csv")
-    out["queue"] = pd.read_csv(p) if os.path.exists(p) else pd.DataFrame()
-    out["posts"] = store.load()
+    try:
+        out["queue"] = pd.read_csv(p) if os.path.exists(p) and os.path.getsize(p) > 0 else pd.DataFrame()
+    except Exception:  # noqa: BLE001 - a malformed or empty queue file must not break the page
+        out["queue"] = pd.DataFrame()
+    try:
+        out["posts"] = store.load()
+    except Exception:  # noqa: BLE001
+        out["posts"] = pd.DataFrame(columns=store.COLUMNS)
     return out
 
 
