@@ -38,6 +38,33 @@ except Exception:  # noqa: BLE001
     pass
 
 
+def friendly(df: pd.DataFrame) -> pd.DataFrame:
+    """Rename analyst columns to plain English and format indices as multiples of a typical post."""
+    d = df.copy()
+    for col in ("mean_index", "index", "index with", "index without"):
+        if col in d.columns:
+            d[col] = d[col].apply(lambda v: "" if v is None or pd.isna(v) else f"{float(v):.1f}×")
+    if "share_of_posts" in d.columns and d["share_of_posts"].dtype != object:
+        d["share_of_posts"] = (d["share_of_posts"] * 100).round(0).astype(int).astype(str) + "%"
+    if "share_of_engagement" in d.columns and d["share_of_engagement"].dtype != object:
+        d["share_of_engagement"] = (d["share_of_engagement"] * 100).round(0).astype(int).astype(str) + "%"
+    for col in ("theme", "format", "attribute"):
+        if col in d.columns:
+            d[col] = d[col].astype(str).str.replace("_", " ")
+    if "directional" in d.columns:
+        d["directional"] = d["directional"].apply(lambda v: "small sample" if v else "")
+    if "median_views" in d.columns and d["median_views"].isna().all():
+        d = d.drop(columns=["median_views"])
+    return d.rename(columns={
+        "label": "", "theme": "theme", "n": "posts", "mean_index": "vs a typical post", "index": "vs a typical post",
+        "median_views": "typical views", "share_of_posts": "share of posts", "share_of_engagement": "share of engagement",
+        "return_on_effort": "ratio", "verdict": "verdict", "directional": "confidence", "mentions": "mentions",
+        "entity": "named in post", "median_views": "typical views", "likes_per_1000_views": "likes per 1,000 views",
+        "index with": "when present", "index without": "when absent", "n with": "posts where present",
+        "week_starting": "week starting", "day": "day", "mean_score": "score", "median_score": "typical score",
+    })
+
+
 def _gate() -> dict:
     if os.path.exists(GATE):
         return json.load(open(GATE))
@@ -177,20 +204,19 @@ with tab_stats:
     if ins:
         so = ins.get("second_order", {})
         names = {"x": "X", "linkedin": "LinkedIn", "telegram": "Telegram"}
-        st.caption(f"Engagement index is relative to each channel-and-account's median post (1.0 = typical). "
-                   f"Groups with fewer than {so.get('min_n_for_confidence', 3)} posts are marked directional.")
+        st.info(f"How to read these tables: every post is compared with a typical post on the same channel and account, so "
+                f"\"3.0×\" means three times the engagement of a typical post there and \"0.5×\" means half. "
+                f"Groups with fewer than {so.get('min_n_for_confidence', 3)} posts are marked as small samples.")
 
-        st.subheader("Effort versus return")
-        st.caption("Share of posts against share of engagement, by theme. Return on effort of 2.0 means a theme earns twice its share of attention; 0.5 means half.")
+        st.subheader("Where the effort goes, and what it earns")
+        st.caption("For each theme: what share of posts it takes up, what share of engagement it brings back, and whether that is a fair return.")
         cols = st.columns(len(so.get("effort_vs_return", {})) or 1)
         for col, (ch, rows) in zip(cols, so.get("effort_vs_return", {}).items()):
             with col:
                 st.markdown(f"**{names.get(ch, ch)}**")
                 d = pd.DataFrame(rows)
                 if len(d):
-                    d["share_of_posts"] = (d["share_of_posts"] * 100).round(0).astype(int).astype(str) + "%"
-                    d["share_of_engagement"] = (d["share_of_engagement"] * 100).round(0).astype(int).astype(str) + "%"
-                    st.dataframe(d[["theme", "n", "share_of_posts", "share_of_engagement", "return_on_effort", "directional"]],
+                    st.dataframe(friendly(d)[["theme", "posts", "share of posts", "share of engagement", "verdict", "confidence"]],
                                  hide_index=True, use_container_width=True)
 
         cc = so.get("cross_channel", {})
@@ -200,28 +226,30 @@ with tab_stats:
             for theme, per in cc["theme_by_channel"].items():
                 row = {"theme": theme}
                 for ch, v in per.items():
-                    row[names.get(ch, ch)] = f"{v['mean_index']} (n={v['n']})"
+                    row[names.get(ch, ch)] = f"{v['mean_index']:.1f}× ({v['n']} posts)"
                 rows.append(row)
             st.dataframe(pd.DataFrame(rows), hide_index=True, use_container_width=True)
             if cc.get("editions"):
                 st.caption("Recent pieces posted on more than one channel, index per channel:")
-                st.dataframe(pd.DataFrame([{"content": e["content"], "date": e["date"],
-                                            **{names.get(k, k): v for k, v in e["by_channel"].items()}} for e in cc["editions"]]),
+                st.dataframe(pd.DataFrame([{"piece": e["content"], "date": e["date"],
+                                            **{names.get(k, k): f"{v:.1f}×" for k, v in e["by_channel"].items()}} for e in cc["editions"]]),
                              hide_index=True, use_container_width=True)
 
         if so.get("who_drives_it"):
             st.subheader("Who moves the needle")
-            st.caption("People and firms named in posts, ranked by the mean index of the posts that name them (2+ mentions).")
-            st.dataframe(pd.DataFrame(so["who_drives_it"]), hide_index=True, use_container_width=True)
+            st.caption("People and firms named in posts, ranked by how the posts that name them performed (named at least twice).")
+            st.dataframe(friendly(pd.DataFrame(so["who_drives_it"])), hide_index=True, use_container_width=True)
 
         if so.get("reach_vs_resonance_x"):
             st.subheader("Reach versus resonance on X")
             st.caption("Views show reach; likes per 1,000 views show whether the people who saw it cared.")
-            st.dataframe(pd.DataFrame([{"theme": k, **v} for k, v in so["reach_vs_resonance_x"].items()]),
+            st.dataframe(friendly(pd.DataFrame([{"theme": k, "posts": v["n"], "typical views": v["median_views"],
+                                                  "likes per 1,000 views": v["likes_per_1000_views"]} for k, v in so["reach_vs_resonance_x"].items()])),
                          hide_index=True, use_container_width=True)
 
         if so.get("weekly_trend"):
             st.subheader("Trend, last eight weeks")
+            st.caption("Average performance of each week's posts against a typical post (1.0×).")
             frames = []
             for ch, rows in so["weekly_trend"].items():
                 for r in rows:
@@ -236,15 +264,15 @@ with tab_stats:
             for col, (ch, rows) in zip(cols, so["day_of_week"].items()):
                 with col:
                     st.markdown(f"**{names.get(ch, ch)}**")
-                    st.dataframe(pd.DataFrame(rows), hide_index=True, use_container_width=True)
+                    st.dataframe(friendly(pd.DataFrame(rows)), hide_index=True, use_container_width=True)
 
         st.subheader("Best and worst posts")
         for ch, ex in so.get("extremes", {}).items():
             with st.expander(names.get(ch, ch)):
                 st.markdown("**Top**")
-                st.dataframe(pd.DataFrame(ex["top"]), hide_index=True, use_container_width=True)
+                st.dataframe(friendly(pd.DataFrame(ex["top"])), hide_index=True, use_container_width=True)
                 st.markdown("**Bottom**")
-                st.dataframe(pd.DataFrame(ex["bottom"]), hide_index=True, use_container_width=True)
+                st.dataframe(friendly(pd.DataFrame(ex["bottom"])), hide_index=True, use_container_width=True)
 
         st.subheader("Full breakdown by channel")
         for ch, c in ins["channels"].items():
@@ -252,18 +280,18 @@ with tab_stats:
                 a, b = st.columns(2)
                 with a:
                     st.markdown("**By theme**")
-                    st.dataframe(pd.DataFrame(c["by_theme"]), hide_index=True, use_container_width=True)
+                    st.dataframe(friendly(pd.DataFrame(c["by_theme"])), hide_index=True, use_container_width=True)
                 with b:
                     st.markdown("**By format**")
-                    st.dataframe(pd.DataFrame(c["by_format"]), hide_index=True, use_container_width=True)
+                    st.dataframe(friendly(pd.DataFrame(c["by_format"])), hide_index=True, use_container_width=True)
                 if c.get("by_account"):
                     st.markdown("**By account**")
-                    st.dataframe(pd.DataFrame(c["by_account"]), hide_index=True, use_container_width=True)
+                    st.dataframe(friendly(pd.DataFrame(c["by_account"])), hide_index=True, use_container_width=True)
                 attr = c.get("by_attribute", {})
                 if attr:
                     st.markdown("**Does naming a person or a partner matter?**")
-                    st.dataframe(pd.DataFrame([{"attribute": k, "index with": v["with"], "index without": v["without"], "n with": v["n_with"]}
-                                               for k, v in attr.items()]), hide_index=True, use_container_width=True)
+                    st.dataframe(friendly(pd.DataFrame([{"attribute": k.replace("names_", "names a "), "index with": v["with"], "index without": v["without"], "n with": v["n_with"]}
+                                               for k, v in attr.items()])), hide_index=True, use_container_width=True)
         if ins.get("experiments"):
             st.subheader("How this system's own posts performed")
             st.dataframe(pd.DataFrame(ins["experiments"]), hide_index=True, use_container_width=True)
@@ -279,14 +307,20 @@ with tab_queue:
         except Exception:  # noqa: BLE001
             pass
     if len(queue):
-        st.caption("Drafts for human review. Posts with a compliance flag need sign-off before scheduling. "
-                   "Each carries the hypothesis it tests; when published and collected next week it is scored against it.")
+        st.caption("Seven drafts for human review, built from this week's sources and the insights above. Posts with a compliance flag need "
+                   "sign-off before scheduling. Each carries the finding it acts on; once published and collected next week it is scored against it. "
+                   "Nothing already posted in the last three weeks is re-announced unless it is reframed and labelled as a re-promotion.")
         for _, r in queue.iterrows():
             with st.container(border=True):
                 st.markdown(f"**{r.get('day', '')} {r.get('time_uk', '')} · {r.get('account', '')} · {str(r.get('channel', '')).upper()} · {r.get('format', '')}**")
                 st.write(r.get("text", ""))
-                meta = f"Source: [{r.get('source_title', '')}]({r.get('source_url', '')}) · Hypothesis: {r.get('hypothesis', '')} · Tag: `{r.get('experiment_tag', '')}`"
-                st.caption(meta)
+                src = f"[{r.get('source_title', '')}]({r.get('source_url', '')})" if isinstance(r.get("source_url"), str) and r.get("source_url") else "none"
+                st.caption(f"Why this post: {r.get('hypothesis', '')}")
+                st.caption(f"Source: {src} · Tag: `{r.get('experiment_tag', '')}`")
+                if isinstance(r.get("distribution_note"), str) and r["distribution_note"]:
+                    st.caption(f"Distribution: {r['distribution_note']}")
+                if isinstance(r.get("repromotion"), str) and r["repromotion"]:
+                    st.caption(f"Re-promotion: {r['repromotion']}")
                 if isinstance(r.get("compliance_flag"), str) and r["compliance_flag"]:
                     st.warning(f"Compliance review: {r['compliance_flag']}")
         st.download_button("Download queue as CSV", queue.to_csv(index=False), "content_queue.csv", "text/csv")

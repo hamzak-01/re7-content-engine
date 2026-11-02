@@ -45,6 +45,16 @@ def assign_content_keys(df: pd.DataFrame) -> pd.DataFrame:
 
 
 # ---------------------------------------------------------------- effort vs return
+def verdict(ratio) -> str:
+    if ratio is None:
+        return ""
+    if ratio >= 1.3:
+        return "outperforms"
+    if ratio >= 0.8:
+        return "pulls its weight"
+    return "under-delivers"
+
+
 def effort_vs_return(m: pd.DataFrame) -> dict:
     out = {}
     for ch, g in m.groupby("channel"):
@@ -56,6 +66,7 @@ def effort_vs_return(m: pd.DataFrame) -> dict:
             rows.append({"theme": theme, "n": int(len(t)), "share_of_posts": round(share_posts, 3),
                          "share_of_engagement": round(share_eng, 3),
                          "return_on_effort": round(share_eng / share_posts, 2) if share_posts else None,
+                         "verdict": verdict(share_eng / share_posts if share_posts else None),
                          "directional": len(t) < MIN_N})
         rows.sort(key=lambda r: (-r["n"] >= MIN_N, -(r["return_on_effort"] or 0)))
         out[ch] = sorted(rows, key=lambda r: -(r["return_on_effort"] or 0))

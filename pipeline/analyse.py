@@ -154,7 +154,9 @@ One finding that cuts against the obvious reading.
 ## Caveats
 Sample sizes, directional groups, what the data cannot show (e.g. LinkedIn impressions), and whether any system-generated experiments have been scored yet.
 
-Plain English, UK spelling, no hype, no bullet soup: short paragraphs with numbers in them. Under 450 words."""
+How to express numbers, strictly: never print a bare ratio like 0.58 or 2.61. Express the index as "about 4× a typical post" or "roughly half a typical post". Express return on effort with the two shares and a plain verdict: "45% of posts but 26% of engagement: under-delivers" / "21% of posts and 55% of engagement: outperforms". Round to whole percentages and one decimal of ×. The reader is a senior communications professional, not an analyst.
+
+Plain English, UK spelling, no hype, no bullet soup: short paragraphs with numbers in them. Under 500 words, and finish every section."""
 
 
 PCT = re.compile(r"\d+(?:\.\d+)?\s?%|\bAPY\b|\bAPR\b", re.I)
@@ -193,7 +195,7 @@ def memo_digest(st: dict) -> dict:
 
 
 def write_memo(st: dict) -> str:
-    return llm.complete(MEMO_SYSTEM, json.dumps(memo_digest(st), ensure_ascii=False), max_tokens=1800)
+    return llm.complete(MEMO_SYSTEM, json.dumps(memo_digest(st), ensure_ascii=False), max_tokens=2800)
 
 
 def run(df: pd.DataFrame, live: bool = True) -> tuple[pd.DataFrame, dict, str, int, list]:
