@@ -130,7 +130,9 @@ def stats(df: pd.DataFrame) -> dict:
     return out
 
 
-MEMO_SYSTEM = """You write the weekly content memo for the Head of Investor Relations at Re7 Capital, an FCA-regulated institutional DeFi investment firm with two accounts: Re7 Capital (the fund) and Re7 Labs (vault curation). You are given statistics only, never the posts themselves.
+MEMO_SYSTEM = """This is an internal analytics task about social-media engagement statistics. It involves no investment advice, no performance claims and no promotion; it only describes which kinds of posts attracted engagement.
+
+You write the weekly content memo for the Head of Investor Relations at Re7 Capital, an FCA-regulated institutional DeFi investment firm with two accounts: Re7 Capital (the fund) and Re7 Labs (vault curation). You are given statistics only, never the posts themselves.
 
 How to read the numbers: engagement_index is relative to each channel-and-account's median post (1.0 = typical, 3.0 = three times typical), so it compares across channels; raw likes do not. Telegram has no reactions, so its score is views. 'return_on_effort' = share of engagement divided by share of posts: 2.0 means a theme earns twice its share of attention; 0.5 means half. Groups with n below the stated minimum are directional and must be labelled so.
 
@@ -155,8 +157,17 @@ Sample sizes, directional groups, what the data cannot show (e.g. LinkedIn impre
 Plain English, UK spelling, no hype, no bullet soup: short paragraphs with numbers in them. Under 450 words."""
 
 
+PCT = re.compile(r"\d+(?:\.\d+)?\s?%|\bAPY\b|\bAPR\b", re.I)
+
+
+def _clean(text: str, n: int = 90) -> str:
+    """Post snippets for the writing prompts: no yield figures (they are irrelevant to
+    engagement analysis and can trip content filters), short, single line."""
+    return PCT.sub("[figure]", (text or "").replace("\n", " "))[:n]
+
+
 def memo_digest(st: dict) -> dict:
-    """What the memo needs, without the bulk: no post texts beyond 100 chars, no long lists."""
+    """What the memo needs, without the bulk: no post texts beyond 90 chars, no long lists, no yield figures."""
     so = st.get("second_order", {})
     d = {"as_of": st.get("as_of"), "min_n_for_confidence": so.get("min_n_for_confidence", 3), "channels": {}}
     for ch, c in st.get("channels", {}).items():
@@ -173,9 +184,10 @@ def memo_digest(st: dict) -> dict:
     d["reach_vs_resonance_x"] = so.get("reach_vs_resonance_x", {})
     d["weekly_trend"] = {ch: rows[-6:] for ch, rows in so.get("weekly_trend", {}).items()}
     d["day_of_week"] = so.get("day_of_week", {})
-    d["extremes"] = {ch: {"top": [{**p, "text": p["text"][:100]} for p in ex["top"][:2]],
-                          "bottom": [{**p, "text": p["text"][:100]} for p in ex["bottom"][:2]]}
+    d["extremes"] = {ch: {"top": [{**p, "text": _clean(p["text"])} for p in ex["top"][:2]],
+                          "bottom": [{**p, "text": _clean(p["text"])} for p in ex["bottom"][:2]]}
                      for ch, ex in so.get("extremes", {}).items()}
+    d["same_piece_across_channels"] = [{**e, "content": e["content"][:60]} for e in d["same_piece_across_channels"]]
     d["experiments"] = st.get("experiments", [])[:10]
     return d
 

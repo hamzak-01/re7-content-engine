@@ -6,7 +6,7 @@ import os
 import re
 import time
 
-MODELS = [m for m in [os.environ.get("RE7_MODEL", "")] if m] + ["claude-sonnet-5-5", "claude-haiku-5-5", "claude-sonnet-4-5"]
+MODELS = [m for m in [os.environ.get("RE7_MODEL", "")] if m] + ["claude-sonnet-5-5", "claude-haiku-5-5", "claude-opus-5-5"]
 
 
 def _create_params() -> set:
@@ -32,6 +32,7 @@ def _client():
 def complete(system: str, user: str, max_tokens: int = 4000, temperature: float | None = None) -> str:
     client = _client()
     last = None
+    attempts: list[str] = []
     for model in MODELS:
         for attempt in range(2):
             try:
@@ -43,15 +44,17 @@ def complete(system: str, user: str, max_tokens: int = 4000, temperature: float 
                 text = "".join(b.text for b in msg.content if getattr(b, "type", "") == "text")
                 if text.strip():
                     return text
-                last = RuntimeError(f"empty reply from {model} (stop_reason={getattr(msg, 'stop_reason', '?')}, "
-                                    f"input_chars={len(system) + len(user)})")
+                last = RuntimeError(f"empty reply (stop_reason={getattr(msg, 'stop_reason', '?')}, "
+                                    f"blocks={[getattr(b, 'type', '?') for b in msg.content]}, input_chars={len(system) + len(user)})")
+                attempts.append(f"{model}: {last}")
                 break  # an empty reply will not improve on retry; try the next model
             except Exception as e:  # noqa: BLE001
                 last = e
+                attempts.append(f"{model}: {str(e)[:120]}")
                 if "not_found" in str(e).lower() or "404" in str(e):
                     break  # try the next model name
                 time.sleep(2 * (attempt + 1))
-    raise RuntimeError(f"Claude API call failed: {last}")
+    raise RuntimeError("Claude API call failed; attempts: " + " | ".join(attempts))
 
 
 def _loads(t: str):

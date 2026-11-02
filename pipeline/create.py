@@ -13,7 +13,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from . import llm
-from .analyse import memo_digest
+from .analyse import memo_digest, _clean
 from .taxonomy import COMPLIANCE_TRIGGERS
 from .store import OUTPUT
 
@@ -86,7 +86,9 @@ def _flatten_posts(obj) -> list[dict]:
     return out
 
 
-CREATE_SYSTEM = """You are the content assistant for Re7 Capital's IR and marketing team. Re7 Capital is a London-based, FCA-regulated institutional DeFi investment firm (market-neutral DeFi yield; founder and CIO Evgeny Gokhberg). Re7 Labs is its vault-curation arm.
+CREATE_SYSTEM = """This is a drafting task for an internal review queue: research-desk commentary and announcements about a firm's own published research and media appearances. Nothing here is investment advice or a promotion of returns; yields and performance figures are excluded by design.
+
+You are the content assistant for Re7 Capital's IR and marketing team. Re7 Capital is a London-based, FCA-regulated institutional DeFi investment firm (market-neutral DeFi yield; founder and CIO Evgeny Gokhberg). Re7 Labs is its vault-curation arm.
 You are given (a) this week's insights per channel, (b) the top-performing recent posts as voice references, and (c) source documents to repurpose. Produce a one-week schedule, Monday to Friday:
 - 3 posts for Re7 Capital on X (under 260 characters each)
 - 1 post for Re7 Capital on LinkedIn, written for allocators (120-180 words, one idea, first line is the hook)
@@ -113,8 +115,9 @@ def run(df: pd.DataFrame, insights: dict, live: bool = True) -> pd.DataFrame:
     sources = fetch_sources(df)
     main = df[(df["is_reply"].astype(str) != "True") & (df["theme"] != "")].copy()
     main["engagement_index"] = pd.to_numeric(main["engagement_index"], errors="coerce")
-    refs = main.sort_values("engagement_index", ascending=False).head(6)
-    refs = [{"channel": r.channel, "index": r.engagement_index, "theme": r.theme, "text": (r.text or "")[:300]} for r in refs.itertuples()]
+    refs = main[main["account"] == "Re7 Capital"].sort_values("engagement_index", ascending=False).head(5)
+    refs = [{"channel": r.channel, "index": r.engagement_index, "theme": r.theme, "text": _clean(r.text, 280)} for r in refs.itertuples()]
+    sources = [{**x, "text": _clean(x.get("text", ""), 3000)} for x in sources if "featured yield" not in x.get("text", "").lower()]
     week = date.today().isocalendar()[1]
     if not live:
         return pd.DataFrame()
