@@ -1,0 +1,31 @@
+date,format,text,likes,reposts,comments,views,is_reply
+2026-10-27,video,"Bloomberg TV Crypto Minutes conversation with Yuval Rooz (Digital Asset / Canton Network) on bringing corporate treasury on-chain and RWAs.",3,0,2,3000,False
+2026-10-26,image,"Re7's Weekly: Three Areas of Growth in On-Chain Markets (adoption, sentiment vs technicals, macro and Big Tech week).",2,0,1,300,False
+2026-10-20,video,"Bloomberg TV Crypto Minutes with Tim Renew (BCB Group) on TradFi to digital asset infrastructure and plumbing.",4,0,0,364,False
+2026-10-19,image,"Re7's Weekly: Markets Are Refusing to Break (BTC absorbing macro headlines, sentiment-price disconnect, year-end drivers).",4,0,0,429,False
+2026-10-15,repost,"Repost of @joechalom (Sharplink) about appearing on Bloomberg Crypto Minutes with @evgeny_re7.",0,12,0,47,True
+2026-10-15,text,"Short reply (emoji).",1,0,0,114,True
+2026-10-13,video,"Bloomberg TV Crypto Minutes with Joseph Chalom (Sharplink) on going beyond holding ETH: active management, working with managers like Re7.",32,7,1,2900,False
+2026-10-13,image,"New report with Clear Street: A Framework for Decomposing DeFi Risk in the Age of AI (layered risk model: chain, protocol, asset; compounding risks; AI monitoring).",7,2,2,496,False
+2026-10-12,image,"Re7's Weekly: From Record September to Midterm Uncertainty (quarter review, improving momentum vs scepticism, US midterms).",0,0,0,231,False
+2026-10-08,image,"Announcement: Re7 hosts Crypto Minutes, a new Bloomberg TV series with @evgeny_re7; lists upcoming featured guests.",21,5,2,3300,False
+2026-10-08,image,"@evgeny_re7 speaking at Vault Summit (Singapore) on vaults as TradFi assets move on-chain: transparency, liquidity, risk.",8,0,2,456,False
+2026-10-07,quote,"@evgeny_re7 speaking at LONGITUDE by Cointelegraph (Singapore) on smart money positioning: ETFs, onchain asset management. Quotes Cointelegraph post.",1,0,0,350,False
+2026-10-05,image,"Re7's Weekly: From Permission to Integration (US promoting dollar stablecoins, regulatory integration, banks adopting stablecoin rails).",2,0,0,287,False
+2026-10-05,quote,"@evgeny_re7 speaking at Digital Asset Yield Summit (Singapore) on Onchain Credit: Underwriting, Transparency and Risk. Quotes summit post.",5,1,0,336,False
+2026-10-05,image,"Hiring: Fund Operations Manager (valuation, DeFi ops, risk, investor onboarding).",3,0,3,255,False
+2026-10-02,quote,"@evgeny_re7 speaking at Vault Summit (Singapore) on What Vaults Demand of Traditional Assets. Quotes summit post.",5,0,0,340,False
+2026-09-24,text,"Short disclaimer reply (for informational purposes only).",0,0,0,207,True
+2026-09-24,image,"Chart of the week: Solana spot DEX activity more than doubled since July, nearing NYSE trade-count levels. Image plus disclaimer thread.",0,0,1,371,False
+2026-09-21,link,"Re7's Weekly: Markets Are Moving Onchain (CEX to DEX shift, tokenisation plus US regulation). Image plus link.",4,1,1,301,False
+2026-09-17,image,"New report with Zodia Custody: Decentralised Finance: Mapping Yield, Risk, and Institutional Participation.",8,1,2,667,False
+2026-09-14,text,"Promo for Re7 Alpha Telegram channel (real-time alpha and positioning).",1,0,0,284,False
+2026-09-14,image,"Re7's Weekly: Crypto Defies the Hikes (Robinhood Chain activity, Clarity Act, resilience vs rate-hike expectations).",1,0,1,430,False
+2026-09-10,text,"Short disclaimer reply.",0,0,0,171,True
+2026-09-10,image,"Chart of the week: Robinhood Chain DEX volume surge from stock-paired memecoins (peaked about $1.23B, pulled back but still elevated).",1,0,1,321,False
+2026-09-10,quote,"@evgeny_re7 speaking at AIM Summit Dubai (October). Quotes summit post.",2,1,0,298,False
+2026-09-07,image,"Re7's Weekly: Can the Move Sustain? (breakout from consolidation, technicals, flows and fundamentals alignment, mid-cap opportunity).",4,1,0,356,False
+2026-09-03,text,"Short disclaimer reply.",0,0,0,151,True
+2026-09-03,image,"Chart of the week: BTC 200-day MA turned up, ending a 277-day decline; historical forward returns after similar signals.",4,1,1,415,False
+2026-09-01,quote,"@evgeny_re7 speaking at Digital Asset Yield Summit Singapore (6 Oct) alongside other industry leaders. Quotes summit post.",5,1,0,466,False
+2026-08-31,image,"Re7's Weekly: The Rise of Interface Apps (growing share of trading volume, perpetuals leading, distribution and order flow as value layer).",1,0,0,229,False
