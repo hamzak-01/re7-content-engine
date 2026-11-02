@@ -9,6 +9,18 @@ import time
 MODELS = [m for m in [os.environ.get("RE7_MODEL", "")] if m] + ["claude-sonnet-5-5", "claude-haiku-5-5", "claude-sonnet-4-5"]
 
 
+def _create_params() -> set:
+    try:
+        import inspect
+        from anthropic.resources.messages import Messages
+        return set(inspect.signature(Messages.create).parameters)
+    except Exception:  # noqa: BLE001
+        return set()
+
+
+_CREATE_PARAMS = _create_params()
+
+
 def _client():
     import anthropic
     key = os.environ.get("ANTHROPIC_API_KEY")
@@ -17,16 +29,17 @@ def _client():
     return anthropic.Anthropic(api_key=key)
 
 
-def complete(system: str, user: str, max_tokens: int = 4000, temperature: float = 0.2) -> str:
+def complete(system: str, user: str, max_tokens: int = 4000, temperature: float | None = None) -> str:
     client = _client()
     last = None
     for model in MODELS:
         for attempt in range(2):
             try:
-                msg = client.messages.create(
-                    model=model, max_tokens=max_tokens, temperature=temperature,
-                    system=system, messages=[{"role": "user", "content": user}],
-                )
+                kwargs = dict(model=model, max_tokens=max_tokens, system=system,
+                              messages=[{"role": "user", "content": user}])
+                if temperature is not None and "temperature" in _CREATE_PARAMS:
+                    kwargs["temperature"] = temperature
+                msg = client.messages.create(**kwargs)
                 return "".join(b.text for b in msg.content if getattr(b, "type", "") == "text")
             except Exception as e:  # noqa: BLE001
                 last = e

@@ -15,7 +15,7 @@ import streamlit as st
 
 from pipeline import store, run as pipeline_run
 
-COOLDOWN_MIN = int(os.environ.get("RE7_COOLDOWN_MIN", "15"))
+COOLDOWN_MIN = int(os.environ.get("RE7_COOLDOWN_MIN", "3"))  # TODO restore to 15 before submission
 DAILY_CAP = int(os.environ.get("RE7_DAILY_CAP", "6"))
 GATE = os.path.join(store.OUTPUT, "gate.json")
 
@@ -136,9 +136,14 @@ with st.expander("Run log (last_run.json)", expanded=False):
 with st.expander("Where this run's data came from", expanded=False):
     rows = []
     for name, r in (lr.get("collect") or {}).items():
+        if not isinstance(r, dict):
+            continue
         rows.append({"source": name, "status": r.get("status"), "fetched": r.get("fetched", ""), "new": r.get("new", ""),
                      "note": r.get("error", "")})
     st.dataframe(pd.DataFrame(rows), hide_index=True, use_container_width=True)
+    sup = (lr.get("collect") or {}).get("seed_rows_superseded_by_live")
+    if sup:
+        st.caption(f"{sup} manual seed rows were replaced by live rows describing the same posts.")
     st.caption("'seed' = manual captures from 1 Nov 2026, always merged first so the dashboard never depends on a live scraper. "
                "LinkedIn in production uses the Page admin analytics export (csv_import); a third-party collector is used here for the exercise.")
 
