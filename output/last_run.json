@@ -1,5 +1,5 @@
 {
-  "started": "2026-11-02T22:32:29+00:00",
+  "started": "2026-11-02T22:45:41+00:00",
   "mode": "live",
   "pull": {
     "status": "skipped",
@@ -10,7 +10,7 @@
       "status": "ok",
       "fetched": 60,
       "new": 0,
-      "seconds": 0.1
+      "seconds": 0.0
     },
     "csv_import": {
       "status": "ok",
@@ -22,23 +22,23 @@
       "status": "ok",
       "fetched": 20,
       "new": 20,
-      "seconds": 0.9
+      "seconds": 0.7
     },
     "x:Re7Capital": {
       "status": "failed",
       "error": "Apify X actor apidojo~tweet-scraper returned 10 items, none usable for @Re7Capital; first item: {\"noResults\": true}",
-      "seconds": 3.9
+      "seconds": 2.3
     },
     "x:Re7Labs": {
       "status": "failed",
       "error": "Apify X actor apidojo~tweet-scraper returned 10 items, none usable for @Re7Labs; first item: {\"noResults\": true}",
-      "seconds": 5.1
+      "seconds": 3.8
     },
     "linkedin:apify": {
       "status": "ok",
       "fetched": 40,
       "new": 40,
-      "seconds": 6.5
+      "seconds": 7.3
     },
     "seed_rows_superseded_by_live": 0
   },
@@ -54,9 +54,10 @@
     "errors": []
   },
   "create": {
-    "error": "ValueError: model did not return JSON; reply began: '[\\n  {\\n    \"day\": \"Monday\",\\n    \"time_uk\": \"08:30\",\\n    \"account\": \"Re7 Capital\",\\n    \"channel\": \"x\",\\n    \"format\": \"video\",\\n    \"text\": \"Crypto Minutes,"
+    "posts_generated": 6,
+    "flagged_for_compliance": 6
   },
   "status": "ok",
-  "finished": "2026-11-02T22:34:50+00:00",
-  "seconds": 141.0
+  "finished": "2026-11-02T22:47:21+00:00",
+  "seconds": 99.9
 }
