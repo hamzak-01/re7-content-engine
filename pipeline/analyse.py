@@ -10,7 +10,7 @@ from datetime import date
 
 import pandas as pd
 
-from . import llm
+from . import llm, insights as ins2
 from .taxonomy import THEMES, FORMATS, ATTRIBUTES
 from .store import OUTPUT
 
@@ -20,7 +20,8 @@ Themes: {themes}
 Formats: {formats}
 names_person: {np}
 names_partner: {npart}
-Be conservative: if a post is a short reply or disclaimer, theme = other. Output a JSON list of objects with keys post_id, theme, format, names_person, names_partner."""
+entities: list of the specific people and organisations named or tagged in the post (e.g. ["Evgeny Gokhberg", "Bloomberg", "Sharplink"]); use the canonical name, not the handle; [] if none.
+Be conservative: if a post is a short reply or disclaimer, theme = other. Output a JSON list of objects with keys post_id, theme, format, names_person, names_partner, entities."""
 
 
 def label_posts(df: pd.DataFrame, batch: int = 25, force: bool = False, errors: list | None = None) -> tuple[pd.DataFrame, int]:
@@ -56,6 +57,8 @@ def label_posts(df: pd.DataFrame, batch: int = 25, force: bool = False, errors: 
                 df.at[pid, "format"] = fmt
             df.at[pid, "names_person"] = str(bool(item.get("names_person")))
             df.at[pid, "names_partner"] = str(bool(item.get("names_partner")))
+            ents = item.get("entities") or []
+            df.at[pid, "entities"] = "; ".join(str(e) for e in ents if e)[:300]
             df.at[pid, "label_source"] = "claude"
             labelled += 1
     return df.reset_index(), labelled
@@ -97,10 +100,12 @@ def stats(df: pd.DataFrame) -> dict:
         for key, name in (("theme", "by_theme"), ("format", "by_format")):
             agg = g.groupby(key).agg(n=("post_id", "count"), mean_index=("engagement_index", "mean"),
                                      median_views=("views", "median")).reset_index()
-            agg = agg.sort_values("mean_index", ascending=False)
+            agg = agg.rename(columns={key: "label"})
+            agg["directional"] = agg["n"] < ins2.MIN_N
+            agg = agg.sort_values(["directional", "mean_index"], ascending=[True, False])
             c[name] = [{"label": r["label"], "n": int(r["n"]), "mean_index": round(float(r["mean_index"]), 2),
-                        "median_views": (None if pd.isna(r["median_views"]) else int(r["median_views"]))}
-                       for _, r in agg.rename(columns={key: "label"}).iterrows()]
+                        "median_views": (None if pd.isna(r["median_views"]) else int(r["median_views"])),
+                        "directional": bool(r["directional"])} for _, r in agg.iterrows()]
         for attr in ("names_person", "names_partner"):
             t = g[g[attr].astype(str) == "True"]["engagement_index"].mean()
             f = g[g[attr].astype(str) != "True"]["engagement_index"].mean()
@@ -117,6 +122,7 @@ def stats(df: pd.DataFrame) -> dict:
                            "text": (r.text or "")[:140]} for r in top.itertuples()]
         c["bottom_themes"] = [t["label"] for t in c["by_theme"][-2:]] if len(c["by_theme"]) >= 2 else []
         out["channels"][ch] = c
+    out["second_order"] = ins2.build(main)
     # experiment feedback: how did posts this system generated perform?
     exp = main[main["experiment_tag"].astype(str) != ""]
     out["experiments"] = [{"tag": r.experiment_tag, "channel": r.channel, "index": float(r.engagement_index), "date": r.date}
@@ -124,13 +130,33 @@ def stats(df: pd.DataFrame) -> dict:
     return out
 
 
-MEMO_SYSTEM = """You write a one-page weekly insights memo for the Head of Investor Relations at Re7 Capital, an FCA-regulated institutional DeFi investment firm.
-You are given per-channel statistics only. engagement_index is relative to each channel's median post (1.0 = typical; 5.0 = five times typical), so it is comparable across channels and accounts; raw likes are not. Telegram has no reactions, so its score is views. Re7 Capital and Re7 Labs are separate accounts with separate baselines; compare within account where the data allows.
-Rules: lead with the single most important finding; give numbers with their sample sizes; call anything with n < 5 'directional'; name the best and worst theme and format per channel; report the person/partner attribute effect; if experiments exist, say how system-generated posts performed against their hypothesis; end with three concrete recommendations for next week's content, each tied to a number. Plain English, no hype, under 350 words, UK spelling. Markdown with short headings."""
+MEMO_SYSTEM = """You write the weekly content memo for the Head of Investor Relations at Re7 Capital, an FCA-regulated institutional DeFi investment firm with two accounts: Re7 Capital (the fund) and Re7 Labs (vault curation). You are given statistics only, never the posts themselves.
+
+How to read the numbers: engagement_index is relative to each channel-and-account's median post (1.0 = typical, 3.0 = three times typical), so it compares across channels; raw likes do not. Telegram has no reactions, so its score is views. 'return_on_effort' = share of engagement divided by share of posts: 2.0 means a theme earns twice its share of attention; 0.5 means half. Groups with n below the stated minimum are directional and must be labelled so.
+
+Write for someone who has four minutes and will act on Monday. Structure, with these exact headings:
+## The one thing
+One paragraph: the single most consequential finding, with its numbers and what it implies.
+## Do more of
+Two or three themes/formats/tactics, each with the effort-versus-return numbers and the channel.
+## Do less of (or do differently)
+What is absorbing posting effort for below-average return, with numbers, and the specific change (e.g. a different format, a person's profile instead of the company page, tagging the partner).
+## Where the same content travels best
+From the cross-channel data: which channel the Weekly and research reports perform best on, and what that implies for how each is adapted per channel.
+## Who moves the needle
+From the entity leaderboard and extremes: which named people or partners are associated with the best posts, and the tactic that follows (guest selection, asking partners to repost).
+## Three changes for next week
+Numbered, specific, each tied to a number above and to a channel.
+## Something I did not expect
+One finding that cuts against the obvious reading.
+## Caveats
+Sample sizes, directional groups, what the data cannot show (e.g. LinkedIn impressions), and whether any system-generated experiments have been scored yet.
+
+Plain English, UK spelling, no hype, no bullet soup: short paragraphs with numbers in them. Under 450 words."""
 
 
 def write_memo(st: dict) -> str:
-    return llm.complete(MEMO_SYSTEM, json.dumps(st, ensure_ascii=False), max_tokens=1500, temperature=0.3)
+    return llm.complete(MEMO_SYSTEM, json.dumps(st, ensure_ascii=False), max_tokens=2000)
 
 
 def run(df: pd.DataFrame, live: bool = True) -> tuple[pd.DataFrame, dict, str, int, list]:
@@ -140,6 +166,7 @@ def run(df: pd.DataFrame, live: bool = True) -> tuple[pd.DataFrame, dict, str, i
     if live:
         df, labelled = label_posts(df, errors=errors)
     df = compute_index(df)
+    df = ins2.assign_content_keys(df)
     st = stats(df)
     if live:
         try:

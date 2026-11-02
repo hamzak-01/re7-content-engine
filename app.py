@@ -175,24 +175,95 @@ with tab_memo:
 
 with tab_stats:
     if ins:
+        so = ins.get("second_order", {})
+        names = {"x": "X", "linkedin": "LinkedIn", "telegram": "Telegram"}
+        st.caption(f"Engagement index is relative to each channel-and-account's median post (1.0 = typical). "
+                   f"Groups with fewer than {so.get('min_n_for_confidence', 3)} posts are marked directional.")
+
+        st.subheader("Effort versus return")
+        st.caption("Share of posts against share of engagement, by theme. Return on effort of 2.0 means a theme earns twice its share of attention; 0.5 means half.")
+        cols = st.columns(len(so.get("effort_vs_return", {})) or 1)
+        for col, (ch, rows) in zip(cols, so.get("effort_vs_return", {}).items()):
+            with col:
+                st.markdown(f"**{names.get(ch, ch)}**")
+                d = pd.DataFrame(rows)
+                if len(d):
+                    d["share_of_posts"] = (d["share_of_posts"] * 100).round(0).astype(int).astype(str) + "%"
+                    d["share_of_engagement"] = (d["share_of_engagement"] * 100).round(0).astype(int).astype(str) + "%"
+                    st.dataframe(d[["theme", "n", "share_of_posts", "share_of_engagement", "return_on_effort", "directional"]],
+                                 hide_index=True, use_container_width=True)
+
+        cc = so.get("cross_channel", {})
+        if cc.get("theme_by_channel"):
+            st.subheader("Where the same content travels best")
+            rows = []
+            for theme, per in cc["theme_by_channel"].items():
+                row = {"theme": theme}
+                for ch, v in per.items():
+                    row[names.get(ch, ch)] = f"{v['mean_index']} (n={v['n']})"
+                rows.append(row)
+            st.dataframe(pd.DataFrame(rows), hide_index=True, use_container_width=True)
+            if cc.get("editions"):
+                st.caption("Recent pieces posted on more than one channel, index per channel:")
+                st.dataframe(pd.DataFrame([{"content": e["content"], "date": e["date"],
+                                            **{names.get(k, k): v for k, v in e["by_channel"].items()}} for e in cc["editions"]]),
+                             hide_index=True, use_container_width=True)
+
+        if so.get("who_drives_it"):
+            st.subheader("Who moves the needle")
+            st.caption("People and firms named in posts, ranked by the mean index of the posts that name them (2+ mentions).")
+            st.dataframe(pd.DataFrame(so["who_drives_it"]), hide_index=True, use_container_width=True)
+
+        if so.get("reach_vs_resonance_x"):
+            st.subheader("Reach versus resonance on X")
+            st.caption("Views show reach; likes per 1,000 views show whether the people who saw it cared.")
+            st.dataframe(pd.DataFrame([{"theme": k, **v} for k, v in so["reach_vs_resonance_x"].items()]),
+                         hide_index=True, use_container_width=True)
+
+        if so.get("weekly_trend"):
+            st.subheader("Trend, last eight weeks")
+            frames = []
+            for ch, rows in so["weekly_trend"].items():
+                for r in rows:
+                    frames.append({"week": r["week_starting"], "channel": names.get(ch, ch), "mean_index": r["mean_index"]})
+            if frames:
+                t = pd.DataFrame(frames).pivot(index="week", columns="channel", values="mean_index")
+                st.line_chart(t)
+
+        if so.get("day_of_week"):
+            st.subheader("Day of week")
+            cols = st.columns(len(so["day_of_week"]) or 1)
+            for col, (ch, rows) in zip(cols, so["day_of_week"].items()):
+                with col:
+                    st.markdown(f"**{names.get(ch, ch)}**")
+                    st.dataframe(pd.DataFrame(rows), hide_index=True, use_container_width=True)
+
+        st.subheader("Best and worst posts")
+        for ch, ex in so.get("extremes", {}).items():
+            with st.expander(names.get(ch, ch)):
+                st.markdown("**Top**")
+                st.dataframe(pd.DataFrame(ex["top"]), hide_index=True, use_container_width=True)
+                st.markdown("**Bottom**")
+                st.dataframe(pd.DataFrame(ex["bottom"]), hide_index=True, use_container_width=True)
+
+        st.subheader("Full breakdown by channel")
         for ch, c in ins["channels"].items():
-            st.subheader({"x": "X", "linkedin": "LinkedIn", "telegram": "Telegram"}.get(ch, ch))
-            st.caption(f"{c['posts']} labelled posts · engagement index is relative to this channel's median post (1.0 = typical)")
-            a, b = st.columns(2)
-            with a:
-                st.markdown("**By theme**")
-                st.dataframe(pd.DataFrame(c["by_theme"]), hide_index=True, use_container_width=True)
-            with b:
-                st.markdown("**By format**")
-                st.dataframe(pd.DataFrame(c["by_format"]), hide_index=True, use_container_width=True)
-            if c.get("by_account"):
-                st.markdown("**By account**")
-                st.dataframe(pd.DataFrame(c["by_account"]), hide_index=True, use_container_width=True)
-            attr = c.get("by_attribute", {})
-            if attr:
-                st.markdown("**Does naming a person or a partner matter?**")
-                st.dataframe(pd.DataFrame([{"attribute": k, "index with": v["with"], "index without": v["without"], "n with": v["n_with"]}
-                                           for k, v in attr.items()]), hide_index=True, use_container_width=True)
+            with st.expander(f"{names.get(ch, ch)} · {c['posts']} labelled posts"):
+                a, b = st.columns(2)
+                with a:
+                    st.markdown("**By theme**")
+                    st.dataframe(pd.DataFrame(c["by_theme"]), hide_index=True, use_container_width=True)
+                with b:
+                    st.markdown("**By format**")
+                    st.dataframe(pd.DataFrame(c["by_format"]), hide_index=True, use_container_width=True)
+                if c.get("by_account"):
+                    st.markdown("**By account**")
+                    st.dataframe(pd.DataFrame(c["by_account"]), hide_index=True, use_container_width=True)
+                attr = c.get("by_attribute", {})
+                if attr:
+                    st.markdown("**Does naming a person or a partner matter?**")
+                    st.dataframe(pd.DataFrame([{"attribute": k, "index with": v["with"], "index without": v["without"], "n with": v["n_with"]}
+                                               for k, v in attr.items()]), hide_index=True, use_container_width=True)
         if ins.get("experiments"):
             st.subheader("How this system's own posts performed")
             st.dataframe(pd.DataFrame(ins["experiments"]), hide_index=True, use_container_width=True)
@@ -200,6 +271,13 @@ with tab_stats:
             st.caption("No system-generated posts have been published and collected yet. Once the queue is used, each post is scored here against its hypothesis.")
 
 with tab_queue:
+    src_p = os.path.join(store.OUTPUT, "sources_cache.json")
+    if os.path.exists(src_p):
+        try:
+            srcs = json.load(open(src_p))
+            st.caption("Repurposed from: " + " · ".join(f"[{x.get('title','')[:60]}]({x.get('url','')})" for x in srcs[:5]))
+        except Exception:  # noqa: BLE001
+            pass
     if len(queue):
         st.caption("Drafts for human review. Posts with a compliance flag need sign-off before scheduling. "
                    "Each carries the hypothesis it tests; when published and collected next week it is scored against it.")

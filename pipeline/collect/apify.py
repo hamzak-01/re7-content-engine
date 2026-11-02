@@ -59,37 +59,66 @@ def _date(v) -> str:
     return m.group(0) if m else ""
 
 
-def collect_x(handle: str, account: str, max_items: int = 60) -> list[Post]:
-    items = _run(X_ACTOR, {"twitterHandles": [handle.lstrip("@")], "maxItems": max_items,
-                           "sort": "Latest", "includeSearchTerms": False})
-    if not isinstance(items, list):
-        raise RuntimeError(f"Apify X actor returned {type(items).__name__}: {str(items)[:160]}")
+X_ACTORS = [a for a in os.environ.get("APIFY_X_ACTORS", "").split(",") if a] or [X_ACTOR, "apidojo~twitter-scraper-lite"]
+
+
+def _x_payloads(handle: str, max_items: int) -> list[dict]:
+    h = handle.lstrip("@")
+    return [
+        {"twitterHandles": [h], "maxItems": max_items, "sort": "Latest", "includeSearchTerms": False},
+        {"searchTerms": [f"from:{h}"], "maxItems": max_items, "sort": "Latest"},
+        {"startUrls": [f"https://x.com/{h}"], "maxItems": max_items, "sort": "Latest"},
+    ]
+
+
+def _parse_x_items(items: list, account: str) -> list[Post]:
     posts = []
     for it in items:
+        if not isinstance(it, dict) or it.get("noResults"):
+            continue
         text = _first(it, "text", "full_text", "fullText", default="")
         url = _first(it, "url", "twitterUrl", default="")
         is_reply = bool(_first(it, "isReply", "in_reply_to_status_id", default=False))
-        is_rt = bool(_first(it, "isRetweet", "retweeted_status", default=False))
+        is_rt = bool(_first(it, "isRetweet", "retweeted_status", default=False)) or text.startswith("RT @")
         is_quote = bool(_first(it, "isQuote", "quoted_status", default=False))
         media = _first(it, "media", "extendedEntities.media", default=[]) or []
         fmt = "repost" if is_rt else "quote" if is_quote else \
               "video" if any("video" in str(m.get("type", "")) for m in media if isinstance(m, dict)) else \
               "image" if media else "link" if "http" in text else "text"
-        posts.append(Post(channel="x", account=account, date=_date(_first(it, "createdAt", "created_at")),
-                          url=url, text=text, format=fmt,
+        d = _date(_first(it, "createdAt", "created_at"))
+        if not d:
+            continue
+        posts.append(Post(channel="x", account=account, date=d, url=url, text=text, format=fmt,
                           likes=_first(it, "likeCount", "favorite_count", default=0),
                           reposts=_first(it, "retweetCount", "retweet_count", default=0),
                           comments=_first(it, "replyCount", "reply_count", default=0),
                           views=_first(it, "viewCount", "views_count", default=None),
                           is_reply=is_reply or is_rt, collected_via="apify_x"))
-    posts = [p for p in posts if p.date]
-    if not posts:
-        sample = json.dumps(items[0], default=str)[:200] if items else "empty list"
-        raise RuntimeError(f"Apify X actor {X_ACTOR} returned {len(items)} items, none usable for @{handle}; first item: {sample}")
     return posts
 
 
-def collect_linkedin(company_url: str, account: str, max_items: int = 40) -> list[Post]:
+def collect_x(handle: str, account: str, max_items: int = 60) -> list[Post]:
+    """Try several request shapes and actors; the first that yields posts wins."""
+    tried = []
+    for actor in X_ACTORS:
+        for payload in _x_payloads(handle, max_items):
+            try:
+                items = _run(actor, payload, timeout=180)
+            except Exception as e:  # noqa: BLE001
+                tried.append(f"{actor}/{list(payload)[0]}: {str(e)[:60]}")
+                continue
+            if not isinstance(items, list):
+                tried.append(f"{actor}/{list(payload)[0]}: non-list reply")
+                continue
+            posts = _parse_x_items(items, account)
+            if posts:
+                return posts
+            tried.append(f"{actor}/{list(payload)[0]}: {len(items)} items, none usable"
+                         + (" (noResults)" if items and isinstance(items[0], dict) and items[0].get("noResults") else ""))
+    raise RuntimeError(f"No X posts for @{handle}. Tried: " + "; ".join(tried))
+
+
+def collect_linkedin(company_url: str, account: str, max_items: int = 100) -> list[Post]:
     # Different actors name the input differently; send the common spellings together.
     payload = {"companies": [company_url], "companyUrls": [company_url], "urls": [company_url],
                "startUrls": [{"url": company_url}], "company_url": company_url, "companyUrl": company_url,
@@ -103,7 +132,11 @@ def collect_linkedin(company_url: str, account: str, max_items: int = 40) -> lis
         media_type = str(_first(it, "mediaType", "type", "postType", default="")).lower()
         fmt = "video" if "video" in media_type else "image" if "image" in media_type else \
               "document" if "document" in media_type else "link" if "http" in text or "article" in media_type else "text"
-        posts.append(Post(channel="linkedin", account=account, date=d, url=url, text=text, format=fmt,
+        # A URL slug not starting with the company's own handle is a reshare of someone else's post.
+        own = "/posts/re7capital" in url or "/posts/re7-capital" in url or not url
+        reshared = (not own) or bool(_first(it, "isRepost", "repost", "reshared", default=False))
+        posts.append(Post(channel="linkedin", account=account, date=d, url=url, text=text,
+                          format="repost" if reshared else fmt, is_reply=reshared,
                           likes=_first(it, "engagement.likes", "numLikes", "likeCount", "reactions", default=0),
                           reposts=_first(it, "engagement.shares", "numShares", "repostCount", default=0),
                           comments=_first(it, "engagement.comments", "numComments", "commentCount", default=0),

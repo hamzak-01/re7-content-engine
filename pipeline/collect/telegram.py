@@ -21,14 +21,11 @@ def _views(s: str) -> float | None:
     return n * {"": 1, "K": 1_000, "M": 1_000_000}[m.group(2)]
 
 
-def collect(handle: str, account: str = "Re7 Capital", limit: int = 60) -> list[Post]:
-    handle = handle.strip().lstrip("@").replace("https://t.me/", "").replace("t.me/", "").strip("/")
-    url = f"https://t.me/s/{handle}"
-    r = requests.get(url, headers=UA, timeout=20)
-    r.raise_for_status()
-    soup = BeautifulSoup(r.text, "html.parser")
+def _parse_page(html: str, account: str) -> tuple[list[Post], str | None]:
+    soup = BeautifulSoup(html, "html.parser")
     posts: list[Post] = []
-    for m in soup.select(".tgme_widget_message_wrap")[-limit:]:
+    oldest_id = None
+    for m in soup.select(".tgme_widget_message_wrap"):
         link = m.select_one("a.tgme_widget_message_date")
         t = m.select_one("time")
         body = m.select_one(".tgme_widget_message_text")
@@ -40,9 +37,35 @@ def collect(handle: str, account: str = "Re7 Capital", limit: int = 60) -> list[
         fmt = "video" if m.select_one(".tgme_widget_message_video_player") else \
               "image" if m.select_one(".tgme_widget_message_photo_wrap") else \
               "link" if m.select_one(".tgme_widget_message_link_preview") or "http" in text else "text"
+        mid = link["href"].rstrip("/").split("/")[-1]
+        if mid.isdigit() and (oldest_id is None or int(mid) < int(oldest_id)):
+            oldest_id = mid
         posts.append(Post(channel="telegram", account=account, date=d, url=link["href"], text=text,
                           format=fmt, views=_views(views.get_text()) if views else None,
                           likes=None, reposts=None, comments=None, collected_via="telegram_public"))
-    if not posts:
-        raise RuntimeError(f"No messages parsed from {url}; is the channel public?")
-    return posts
+    return posts, oldest_id
+
+
+def collect(handle: str, account: str = "Re7 Capital", limit: int = 80) -> list[Post]:
+    handle = handle.strip().lstrip("@").replace("https://t.me/", "").replace("t.me/", "").strip("/")
+    base = f"https://t.me/s/{handle}"
+    all_posts: list[Post] = []
+    before = None
+    for _ in range(6):  # pages of ~20
+        url = base + (f"?before={before}" if before else "")
+        r = requests.get(url, headers=UA, timeout=20)
+        r.raise_for_status()
+        posts, oldest = _parse_page(r.text, account)
+        if not posts:
+            break
+        all_posts = posts + all_posts
+        if len(all_posts) >= limit or not oldest or oldest == before:
+            break
+        before = oldest
+    if not all_posts:
+        raise RuntimeError(f"No messages parsed from {base}; is the channel public?")
+    seen, out = set(), []
+    for p in all_posts:
+        if p.post_id not in seen:
+            seen.add(p.post_id); out.append(p)
+    return out

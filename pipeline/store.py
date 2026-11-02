@@ -89,4 +89,8 @@ def dedupe_seed(df: pd.DataFrame) -> tuple[pd.DataFrame, int]:
         return df, 0
     covered = seed.set_index(key).index.isin(live.set_index(key).index.drop_duplicates())
     gone = set(seed[covered]["post_id"])
+    # Seed rows with no text cannot be labelled; once a channel has live data they only distort medians.
+    live_channels = set(live["channel"])
+    textless = seed[(seed["text"].str.strip() == "") & (seed["channel"].isin(live_channels))]
+    gone |= set(textless["post_id"])
     return df[~df["post_id"].isin(gone)], len(gone)

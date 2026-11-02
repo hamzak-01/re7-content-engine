@@ -16,7 +16,7 @@ import traceback
 from datetime import datetime, timezone
 
 from . import store, analyse, create, persist
-from .collect import telegram, apify, csv_import
+from .collect import telegram, apify, csv_import, x_public
 
 CONFIG = {
     "x_handles": {"Re7Capital": "Re7 Capital", "Re7Labs": "Re7 Labs"},
@@ -47,9 +47,12 @@ def collect_all(df, live: bool) -> tuple[object, dict]:
             attempt("telegram", lambda: telegram.collect(CONFIG["telegram_handle"], account="Re7 Labs"))
         else:
             report["telegram"] = {"status": "skipped", "error": "RE7_TELEGRAM_HANDLE not set"}
-        if os.environ.get("APIFY_TOKEN"):
-            for h, acct in CONFIG["x_handles"].items():
+        for h, acct in CONFIG["x_handles"].items():
+            if os.environ.get("APIFY_TOKEN"):
                 attempt(f"x:{h}", lambda h=h, acct=acct: apify.collect_x(h, acct))
+            if report.get(f"x:{h}", {}).get("status") != "ok":
+                attempt(f"x:{h}:public", lambda h=h, acct=acct: x_public.collect(h, acct))
+        if os.environ.get("APIFY_TOKEN"):
             for u, acct in CONFIG["linkedin_pages"].items():
                 attempt("linkedin:apify", lambda u=u, acct=acct: apify.collect_linkedin(u, acct))
         else:
