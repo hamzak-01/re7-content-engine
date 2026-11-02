@@ -1,5 +1,5 @@
 {
-  "started": "2026-11-02T23:03:05+00:00",
+  "started": "2026-11-02T23:11:29+00:00",
   "mode": "live",
   "pull": {
     "status": "skipped",
@@ -9,7 +9,7 @@
     "seed": {
       "status": "ok",
       "fetched": 60,
-      "new": 34,
+      "new": 0,
       "seconds": 0.1
     },
     "csv_import": {
@@ -21,44 +21,46 @@
     "telegram": {
       "status": "ok",
       "fetched": 80,
-      "new": 0,
-      "seconds": 3.3
+      "new": 80,
+      "seconds": 2.9
     },
     "x:Re7Capital": {
       "status": "ok",
       "fetched": 60,
-      "new": 50,
-      "seconds": 4.3
+      "new": 60,
+      "seconds": 3.7
     },
     "x:Re7Labs": {
       "status": "ok",
       "fetched": 60,
-      "new": 50,
-      "seconds": 5.2
+      "new": 60,
+      "seconds": 5.3
     },
     "linkedin:apify": {
       "status": "ok",
       "fetched": 100,
-      "new": 0,
-      "seconds": 8.2
+      "new": 100,
+      "seconds": 6.7
     },
     "seed_rows_superseded_by_live": 24
   },
   "posts_total": 307,
   "analyse": {
-    "labelled_now": 100,
+    "labelled_now": 307,
     "labelled_total": 307,
     "channels": {
       "linkedin": 84,
       "telegram": 80,
       "x": 62
     },
-    "errors": []
+    "errors": [
+      "memo: Claude API call failed: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-5'}, 'request_id': 'req_011C"
+    ]
   },
   "create": {
-    "error": "ValueError: model did not return JSON; reply began: ''"
+    "error": "RuntimeError: Claude API call failed: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-5'}, 'request_id': 'req_011CgexA6Z1Moa29xGFBmnBg'}"
   },
   "status": "ok",
-  "finished": "2026-11-02T23:06:11+00:00",
-  "seconds": 185.3
+  "finished": "2026-11-02T23:15:10+00:00",
+  "seconds": 221.0
 }
