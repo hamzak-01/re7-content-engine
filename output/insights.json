@@ -2,19 +2,49 @@
   "as_of": "2026-11-02",
   "channels": {
     "linkedin": {
-      "posts": 4,
+      "posts": 44,
       "median_engagement_score": 12.5,
       "by_theme": [
         {
+          "label": "other",
+          "n": 1,
+          "mean_index": 3.2,
+          "median_views": null
+        },
+        {
           "label": "media_appearance",
+          "n": 9,
+          "mean_index": 3.03,
+          "median_views": null
+        },
+        {
+          "label": "research_report",
           "n": 3,
-          "mean_index": 3.73,
+          "mean_index": 2.91,
+          "median_views": null
+        },
+        {
+          "label": "hiring_culture",
+          "n": 3,
+          "mean_index": 1.36,
           "median_views": null
         },
         {
           "label": "speaking_event",
-          "n": 1,
-          "mean_index": 3.12,
+          "n": 11,
+          "mean_index": 1.3,
+          "median_views": null
+        },
+        {
+          "label": "chart_data",
+          "n": 5,
+          "mean_index": 0.54,
+          "median_views": null
+        },
+        {
+          "label": "market_commentary",
+          "n": 12,
+          "mean_index": 0.53,
           "median_views": null
         }
       ],
@@ -27,21 +57,27 @@
         },
         {
           "label": "link",
-          "n": 2,
-          "mean_index": 3.28,
+          "n": 22,
+          "mean_index": 1.43,
+          "median_views": null
+        },
+        {
+          "label": "text",
+          "n": 20,
+          "mean_index": 1.38,
           "median_views": null
         }
       ],
       "by_attribute": {
         "names_person": {
-          "with": 3.58,
-          "without": null,
-          "n_with": 4
+          "with": 2.15,
+          "without": 0.99,
+          "n_with": 20
         },
         "names_partner": {
-          "with": 3.58,
-          "without": null,
-          "n_with": 4
+          "with": 2.13,
+          "without": 0.78,
+          "n_with": 24
         }
       },
       "top_posts": [
@@ -53,23 +89,124 @@
           "text": "Building the rails between TradFi and digital assets: a conversation with BCB Group's Tim Renew on Crypto Minutes, Bloomberg TV. Re7's Found"
         },
         {
-          "date": "2026-10-11",
+          "date": "2026-10-20",
           "theme": "media_appearance",
-          "format": "video",
-          "index": 3.76,
-          "text": "Re7 Capital hosts Crypto Minutes, the new Bloomberg TV show. Crypto Minutes is an interview series airing on Bloomberg TV, hosted by Evgeny "
+          "format": "text",
+          "index": 4.0,
+          "text": "Building the rails between TradFi and digital assets: a conversation with BCB Group\u2019s Tim Renew on Crypto Minutes, Bloomberg TV.\n\nRe7\u2019s Foun"
         },
         {
-          "date": "2026-10-18",
+          "date": "2026-10-08",
           "theme": "media_appearance",
-          "format": "link",
-          "index": 3.44,
-          "text": "Crypto Minutes, Bloomberg TV: Evgeny Gokhberg in conversation with Joseph Chalom of Sharplink on going beyond holding ETH and working with a"
+          "format": "text",
+          "index": 3.76,
+          "text": "Re7 Capital hosts Crypto Minutes, the new Bloomberg TV show.\n\nCrypto Minutes is an interview series airing on Bloomberg TV, hosted by Evgeny"
         }
       ],
       "bottom_themes": [
-        "media_appearance",
-        "speaking_event"
+        "chart_data",
+        "market_commentary"
+      ],
+      "by_account": [
+        {
+          "account": "Re7 Capital",
+          "n": 44,
+          "mean_index": 1.52,
+          "median_score": 14.0,
+          "median_views": null
+        }
+      ]
+    },
+    "telegram": {
+      "posts": 20,
+      "median_engagement_score": 231.0,
+      "by_theme": [
+        {
+          "label": "media_appearance",
+          "n": 1,
+          "mean_index": 1.52,
+          "median_views": 352
+        },
+        {
+          "label": "labs_product",
+          "n": 6,
+          "mean_index": 1.1,
+          "median_views": 256
+        },
+        {
+          "label": "research_report",
+          "n": 2,
+          "mean_index": 1.06,
+          "median_views": 246
+        },
+        {
+          "label": "market_commentary",
+          "n": 11,
+          "mean_index": 0.86,
+          "median_views": 203
+        }
+      ],
+      "by_format": [
+        {
+          "label": "link",
+          "n": 2,
+          "mean_index": 1.39,
+          "median_views": 320
+        },
+        {
+          "label": "image",
+          "n": 18,
+          "mean_index": 0.94,
+          "median_views": 219
+        }
+      ],
+      "by_attribute": {
+        "names_person": {
+          "with": 1.52,
+          "without": 0.96,
+          "n_with": 1
+        },
+        "names_partner": {
+          "with": 1.14,
+          "without": 0.86,
+          "n_with": 9
+        }
+      },
+      "top_posts": [
+        {
+          "date": "2026-08-26",
+          "theme": "media_appearance",
+          "format": "link",
+          "index": 1.52,
+          "text": "New episode of 1000x Media is out: What It's Like Running A Billion-Dollar Market-Neutral Fund In Crypto Avi Felman sits down with Evgeny Go"
+        },
+        {
+          "date": "2026-08-31",
+          "theme": "market_commentary",
+          "format": "image",
+          "index": 1.33,
+          "text": "Re7's Weekly is out: The Rise of Interface Apps In this week\u2019s note: \ud83d\udd39 Why interface apps are capturing a growing share of crypto trading vo"
+        },
+        {
+          "date": "2026-09-04",
+          "theme": "labs_product",
+          "format": "link",
+          "index": 1.25,
+          "text": "Re7 Labs x Optimism: Growing Re7ETH! Re7 Labs has been awarded an OP grant to grow Re7ETH, Re7's ETH Yield strategy. As part of phase 1, dep"
+        }
+      ],
+      "bottom_themes": [
+        "research_report",
+        "market_commentary"
+      ],
+      "by_account": [
+        {
+          "account": "Re7 Labs",
+          "n": 20,
+          "mean_index": 0.99,
+          "median_score": 231.0,
+          "median_views": 231
+        }
       ]
     },
     "x": {
@@ -153,14 +290,14 @@
       ],
       "by_attribute": {
         "names_person": {
-          "with": 1.9,
-          "without": 1.2,
-          "n_with": 23
+          "with": 2.74,
+          "without": 1.24,
+          "n_with": 10
         },
         "names_partner": {
-          "with": 3.8,
-          "without": 1.08,
-          "n_with": 7
+          "with": 2.83,
+          "without": 0.92,
+          "n_with": 12
         }
       },
       "top_posts": [
@@ -189,6 +326,15 @@
       "bottom_themes": [
         "market_commentary",
         "other"
+      ],
+      "by_account": [
+        {
+          "account": "Re7 Capital",
+          "n": 25,
+          "mean_index": 1.84,
+          "median_score": 5.0,
+          "median_views": 356
+        }
       ]
     }
   },
