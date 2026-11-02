@@ -275,129 +275,143 @@
       ]
     },
     "x": {
-      "posts": 31,
-      "median_engagement_score": 7.0,
+      "posts": 62,
+      "median_engagement_score": 8.0,
       "by_theme": [
         {
           "label": "media_appearance",
-          "n": 4,
-          "mean_index": 4.5,
-          "median_views": 2989,
-          "directional": false
-        },
-        {
-          "label": "chart_data",
           "n": 5,
-          "mean_index": 2.48,
-          "median_views": 415,
-          "directional": false
-        },
-        {
-          "label": "speaking_event",
-          "n": 6,
-          "mean_index": 1.15,
-          "median_views": 345,
-          "directional": false
-        },
-        {
-          "label": "labs_product",
-          "n": 3,
-          "mean_index": 0.99,
-          "median_views": 2686,
-          "directional": false
-        },
-        {
-          "label": "market_commentary",
-          "n": 9,
-          "mean_index": 0.89,
-          "median_views": 302,
+          "mean_index": 3.97,
+          "median_views": 2900,
           "directional": false
         },
         {
           "label": "research_report",
-          "n": 2,
-          "mean_index": 3.0,
-          "median_views": 583,
-          "directional": true
+          "n": 4,
+          "mean_index": 2.21,
+          "median_views": 699,
+          "directional": false
         },
         {
-          "label": "hiring_culture",
-          "n": 1,
-          "mean_index": 2.18,
-          "median_views": 255,
-          "directional": true
+          "label": "chart_data",
+          "n": 10,
+          "mean_index": 1.92,
+          "median_views": 390,
+          "directional": false
+        },
+        {
+          "label": "labs_product",
+          "n": 10,
+          "mean_index": 1.4,
+          "median_views": 1937,
+          "directional": false
         },
         {
           "label": "other",
-          "n": 1,
-          "mean_index": 0.18,
-          "median_views": 284,
+          "n": 6,
+          "mean_index": 1.16,
+          "median_views": 552,
+          "directional": false
+        },
+        {
+          "label": "speaking_event",
+          "n": 10,
+          "mean_index": 1.05,
+          "median_views": 398,
+          "directional": false
+        },
+        {
+          "label": "market_commentary",
+          "n": 11,
+          "mean_index": 0.78,
+          "median_views": 302,
+          "directional": false
+        },
+        {
+          "label": "hiring_culture",
+          "n": 2,
+          "mean_index": 2.18,
+          "median_views": 361,
+          "directional": true
+        },
+        {
+          "label": "award_recognition",
+          "n": 2,
+          "mean_index": 1.78,
+          "median_views": 1128,
+          "directional": true
+        },
+        {
+          "label": "partner_announcement",
+          "n": 2,
+          "mean_index": 0.59,
+          "median_views": 1452,
           "directional": true
         }
       ],
       "by_format": [
         {
-          "label": "quote",
-          "n": 6,
-          "mean_index": 2.14,
-          "median_views": 345,
-          "directional": false
-        },
-        {
           "label": "image",
-          "n": 21,
-          "mean_index": 1.55,
-          "median_views": 415,
+          "n": 33,
+          "mean_index": 1.51,
+          "median_views": 432,
           "directional": false
-        },
-        {
-          "label": "video",
-          "n": 1,
-          "mean_index": 8.91,
-          "median_views": 2900,
-          "directional": true
         },
         {
           "label": "link",
-          "n": 1,
-          "mean_index": 1.64,
-          "median_views": 301,
-          "directional": true
+          "n": 14,
+          "mean_index": 1.17,
+          "median_views": 430,
+          "directional": false
         },
         {
           "label": "text",
+          "n": 12,
+          "mean_index": 0.83,
+          "median_views": 498,
+          "directional": false
+        },
+        {
+          "label": "quote",
+          "n": 1,
+          "mean_index": 10.15,
+          "median_views": 1520,
+          "directional": true
+        },
+        {
+          "label": "video",
           "n": 2,
-          "mean_index": 0.4,
-          "median_views": 1485,
+          "mean_index": 5.18,
+          "median_views": 1668,
           "directional": true
         }
       ],
       "by_attribute": {
         "names_person": {
-          "with": 2.49,
-          "without": 1.51,
-          "n_with": 10
+          "with": 2.02,
+          "without": 1.42,
+          "n_with": 15
         },
         "names_partner": {
-          "with": 2.27,
-          "without": 1.02,
-          "n_with": 20
+          "with": 1.88,
+          "without": 1.07,
+          "n_with": 38
         }
       },
       "top_posts": [
+        {
+          "date": "2026-10-02",
+          "theme": "chart_data",
+          "format": "quote",
+          "index": 10.15,
+          "text": "frxUSD lenders are making 9.31% APY lending to sUSDai. \n\nsUSDai loopers are earning up to 35.3% APY. \n\nLink below \ud83d\udc47 https://t.co/juam29g5hy"
+        },
         {
           "date": "2026-10-13",
           "theme": "media_appearance",
           "format": "video",
           "index": 8.91,
           "text": "Bloomberg TV Crypto Minutes with Joseph Chalom (Sharplink) on going beyond holding ETH: active management, working with managers like Re7."
-        },
-        {
-          "date": "2026-10-02",
-          "theme": "chart_data",
-          "format": "quote",
-          "index": 8.46,
-          "text": "frxUSD lenders are making 9.31% APY lending to sUSDai. \n\nsUSDai loopers are earning up to 35.3% APY. \n\nLink below \ud83d\udc47 https://t.co/juam29g5hy"
         },
         {
           "date": "2026-10-08",
@@ -408,23 +422,23 @@
         }
       ],
       "bottom_themes": [
-        "hiring_culture",
-        "other"
+        "award_recognition",
+        "partner_announcement"
       ],
       "by_account": [
         {
           "account": "Re7 Capital",
-          "n": 26,
-          "mean_index": 1.7,
+          "n": 46,
+          "mean_index": 1.5,
           "median_score": 5.5,
-          "median_views": 353
+          "median_views": 398
         },
         {
           "account": "Re7 Labs",
-          "n": 5,
-          "mean_index": 2.48,
-          "median_score": 24.0,
-          "median_views": 1520
+          "n": 16,
+          "mean_index": 1.74,
+          "median_score": 20.0,
+          "median_views": 1645
         }
       ]
     }
@@ -574,67 +588,83 @@
       "x": [
         {
           "theme": "chart_data",
-          "n": 5,
+          "n": 10,
           "share_of_posts": 0.161,
-          "share_of_engagement": 0.449,
-          "return_on_effort": 2.78,
-          "directional": false
-        },
-        {
-          "theme": "media_appearance",
-          "n": 4,
-          "share_of_posts": 0.129,
-          "share_of_engagement": 0.183,
-          "return_on_effort": 1.42,
+          "share_of_engagement": 0.288,
+          "return_on_effort": 1.79,
           "directional": false
         },
         {
           "theme": "labs_product",
-          "n": 3,
-          "share_of_posts": 0.097,
-          "share_of_engagement": 0.131,
-          "return_on_effort": 1.36,
+          "n": 10,
+          "share_of_posts": 0.161,
+          "share_of_engagement": 0.276,
+          "return_on_effort": 1.71,
+          "directional": false
+        },
+        {
+          "theme": "media_appearance",
+          "n": 5,
+          "share_of_posts": 0.081,
+          "share_of_engagement": 0.116,
+          "return_on_effort": 1.44,
           "directional": false
         },
         {
           "theme": "research_report",
-          "n": 2,
+          "n": 4,
           "share_of_posts": 0.065,
-          "share_of_engagement": 0.061,
-          "return_on_effort": 0.95,
+          "share_of_engagement": 0.067,
+          "return_on_effort": 1.04,
+          "directional": false
+        },
+        {
+          "theme": "award_recognition",
+          "n": 2,
+          "share_of_posts": 0.032,
+          "share_of_engagement": 0.026,
+          "return_on_effort": 0.79,
           "directional": true
         },
         {
           "theme": "hiring_culture",
-          "n": 1,
+          "n": 2,
           "share_of_posts": 0.032,
-          "share_of_engagement": 0.022,
-          "return_on_effort": 0.69,
+          "share_of_engagement": 0.026,
+          "return_on_effort": 0.79,
           "directional": true
         },
         {
-          "theme": "speaking_event",
+          "theme": "partner_announcement",
+          "n": 2,
+          "share_of_posts": 0.032,
+          "share_of_engagement": 0.022,
+          "return_on_effort": 0.7,
+          "directional": true
+        },
+        {
+          "theme": "other",
           "n": 6,
-          "share_of_posts": 0.194,
-          "share_of_engagement": 0.07,
-          "return_on_effort": 0.36,
+          "share_of_posts": 0.097,
+          "share_of_engagement": 0.066,
+          "return_on_effort": 0.68,
+          "directional": false
+        },
+        {
+          "theme": "speaking_event",
+          "n": 10,
+          "share_of_posts": 0.161,
+          "share_of_engagement": 0.062,
+          "return_on_effort": 0.38,
           "directional": false
         },
         {
           "theme": "market_commentary",
-          "n": 9,
-          "share_of_posts": 0.29,
-          "share_of_engagement": 0.081,
+          "n": 11,
+          "share_of_posts": 0.177,
+          "share_of_engagement": 0.05,
           "return_on_effort": 0.28,
           "directional": false
-        },
-        {
-          "theme": "other",
-          "n": 1,
-          "share_of_posts": 0.032,
-          "share_of_engagement": 0.002,
-          "return_on_effort": 0.06,
-          "directional": true
         }
       ]
     },
@@ -690,7 +720,8 @@
           "date": "2026-10-05",
           "by_channel": {
             "linkedin": 0.34,
-            "telegram": 0.51
+            "telegram": 0.51,
+            "x": 0.36
           }
         },
         {
@@ -698,7 +729,8 @@
           "date": "2026-09-28",
           "by_channel": {
             "linkedin": 0.21,
-            "telegram": 0.45
+            "telegram": 0.45,
+            "x": 0.0
           }
         },
         {
@@ -706,11 +738,22 @@
           "date": "2026-09-21",
           "by_channel": {
             "linkedin": 0.55,
-            "telegram": 0.47
+            "telegram": 0.47,
+            "x": 1.64
           }
         }
       ],
       "theme_by_channel": {
+        "award_recognition": {
+          "linkedin": {
+            "mean_index": 2.69,
+            "n": 4
+          },
+          "x": {
+            "mean_index": 1.78,
+            "n": 2
+          }
+        },
         "chart_data": {
           "linkedin": {
             "mean_index": 0.66,
@@ -721,8 +764,8 @@
             "n": 2
           },
           "x": {
-            "mean_index": 2.48,
-            "n": 5
+            "mean_index": 1.92,
+            "n": 10
           }
         },
         "hiring_culture": {
@@ -732,7 +775,7 @@
           },
           "x": {
             "mean_index": 2.18,
-            "n": 1
+            "n": 2
           }
         },
         "labs_product": {
@@ -745,8 +788,8 @@
             "n": 31
           },
           "x": {
-            "mean_index": 0.99,
-            "n": 3
+            "mean_index": 1.4,
+            "n": 10
           }
         },
         "market_commentary": {
@@ -759,8 +802,8 @@
             "n": 37
           },
           "x": {
-            "mean_index": 0.89,
-            "n": 9
+            "mean_index": 0.78,
+            "n": 11
           }
         },
         "media_appearance": {
@@ -773,8 +816,8 @@
             "n": 1
           },
           "x": {
-            "mean_index": 4.5,
-            "n": 4
+            "mean_index": 3.97,
+            "n": 5
           }
         },
         "other": {
@@ -787,8 +830,8 @@
             "n": 5
           },
           "x": {
-            "mean_index": 0.18,
-            "n": 1
+            "mean_index": 1.16,
+            "n": 6
           }
         },
         "partner_announcement": {
@@ -798,6 +841,10 @@
           },
           "telegram": {
             "mean_index": 1.71,
+            "n": 2
+          },
+          "x": {
+            "mean_index": 0.59,
             "n": 2
           }
         },
@@ -811,8 +858,8 @@
             "n": 2
           },
           "x": {
-            "mean_index": 3.0,
-            "n": 2
+            "mean_index": 2.21,
+            "n": 4
           }
         },
         "speaking_event": {
@@ -821,22 +868,22 @@
             "n": 7
           },
           "x": {
-            "mean_index": 1.15,
-            "n": 6
+            "mean_index": 1.05,
+            "n": 10
           }
         }
       }
     },
     "who_drives_it": [
       {
-        "entity": "Frax Finance",
-        "mentions": 2,
-        "mean_index": 5.07
-      },
-      {
         "entity": "USDai",
         "mentions": 2,
-        "mean_index": 5.07
+        "mean_index": 6.08
+      },
+      {
+        "entity": "Frax Finance",
+        "mentions": 2,
+        "mean_index": 6.08
       },
       {
         "entity": "Peter Smith",
@@ -874,51 +921,61 @@
         "mean_index": 3.47
       },
       {
-        "entity": "Re7",
-        "mentions": 7,
-        "mean_index": 3.34
+        "entity": "David Schamis",
+        "mentions": 2,
+        "mean_index": 3.24
       }
     ],
     "reach_vs_resonance_x": {
       "media_appearance": {
-        "n": 4,
-        "median_views": 2989,
-        "likes_per_1000_views": 7.3
+        "n": 5,
+        "median_views": 2900,
+        "likes_per_1000_views": 7.6
       },
       "labs_product": {
-        "n": 3,
-        "median_views": 2686,
+        "n": 10,
+        "median_views": 1937,
+        "likes_per_1000_views": 6.0
+      },
+      "partner_announcement": {
+        "n": 2,
+        "median_views": 1452,
+        "likes_per_1000_views": 2.7
+      },
+      "award_recognition": {
+        "n": 2,
+        "median_views": 1128,
         "likes_per_1000_views": 4.5
       },
       "research_report": {
-        "n": 2,
-        "median_views": 583,
-        "likes_per_1000_views": 13.0
+        "n": 4,
+        "median_views": 699,
+        "likes_per_1000_views": 9.3
       },
-      "chart_data": {
-        "n": 5,
-        "median_views": 415,
-        "likes_per_1000_views": 30.0
+      "other": {
+        "n": 6,
+        "median_views": 552,
+        "likes_per_1000_views": 5.3
       },
       "speaking_event": {
-        "n": 6,
-        "median_views": 345,
+        "n": 10,
+        "median_views": 398,
+        "likes_per_1000_views": 10.7
+      },
+      "chart_data": {
+        "n": 10,
+        "median_views": 390,
+        "likes_per_1000_views": 18.2
+      },
+      "hiring_culture": {
+        "n": 2,
+        "median_views": 361,
         "likes_per_1000_views": 11.2
       },
       "market_commentary": {
-        "n": 9,
+        "n": 11,
         "median_views": 302,
-        "likes_per_1000_views": 7.7
-      },
-      "other": {
-        "n": 1,
-        "median_views": 284,
-        "likes_per_1000_views": 3.5
-      },
-      "hiring_culture": {
-        "n": 1,
-        "median_views": 255,
-        "likes_per_1000_views": 11.8
+        "likes_per_1000_views": 7.2
       }
     },
     "weekly_trend": {
@@ -1019,23 +1076,23 @@
       "x": [
         {
           "week_starting": "2026-09-07",
-          "posts": 3,
-          "mean_index": 0.85
+          "posts": 5,
+          "mean_index": 1.12
         },
         {
           "week_starting": "2026-09-14",
-          "posts": 3,
-          "mean_index": 1.27
+          "posts": 2,
+          "mean_index": 1.82
         },
         {
           "week_starting": "2026-09-21",
-          "posts": 3,
-          "mean_index": 1.06
+          "posts": 5,
+          "mean_index": 1.68
         },
         {
           "week_starting": "2026-09-28",
-          "posts": 4,
-          "mean_index": 2.93
+          "posts": 6,
+          "mean_index": 2.55
         },
         {
           "week_starting": "2026-10-05",
@@ -1055,7 +1112,7 @@
         {
           "week_starting": "2026-10-26",
           "posts": 3,
-          "mean_index": 1.06
+          "mean_index": 1.1
         },
         {
           "week_starting": "2026-11-02",
@@ -1127,28 +1184,28 @@
       "x": [
         {
           "day": "Monday",
-          "n": 12,
-          "mean_index": 0.97
+          "n": 20,
+          "mean_index": 1.15
         },
         {
           "day": "Tuesday",
-          "n": 5,
-          "mean_index": 3.13
+          "n": 9,
+          "mean_index": 2.8
         },
         {
           "day": "Wednesday",
-          "n": 2,
-          "mean_index": 0.43
+          "n": 9,
+          "mean_index": 0.5
         },
         {
           "day": "Thursday",
-          "n": 8,
-          "mean_index": 2.19
+          "n": 15,
+          "mean_index": 1.65
         },
         {
           "day": "Friday",
-          "n": 4,
-          "mean_index": 2.75
+          "n": 9,
+          "mean_index": 2.15
         }
       ]
     },
@@ -1244,25 +1301,33 @@
             "text": "Re7 Alpha pinned a photo"
           },
           {
-            "date": "2025-09-30",
-            "theme": "other",
-            "format": "text",
-            "index": 0.0,
-            "views": null,
-            "text": "Re7 Alpha pinned a photo"
-          },
-          {
             "date": "2026-07-06",
             "theme": "other",
             "format": "text",
             "index": 0.0,
             "views": null,
             "text": "Channel name was changed to \u00ab Re7 Alpha \u00bb"
+          },
+          {
+            "date": "2025-09-30",
+            "theme": "other",
+            "format": "text",
+            "index": 0.0,
+            "views": null,
+            "text": "Re7 Alpha pinned a photo"
           }
         ]
       },
       "x": {
         "top": [
+          {
+            "date": "2026-10-02",
+            "theme": "chart_data",
+            "format": "quote",
+            "index": 10.15,
+            "views": 1520,
+            "text": "frxUSD lenders are making 9.31% APY lending to sUSDai. \n\nsUSDai loopers are earning up to 35.3% APY. \n\nLink below \ud83d\udc47 https://t.co/juam29g5hy"
+          },
           {
             "date": "2026-10-13",
             "theme": "media_appearance",
@@ -1270,14 +1335,6 @@
             "index": 8.91,
             "views": 2900,
             "text": "Bloomberg TV Crypto Minutes with Joseph Chalom (Sharplink) on going beyond holding ETH: active management, working with managers like Re7."
-          },
-          {
-            "date": "2026-10-02",
-            "theme": "chart_data",
-            "format": "quote",
-            "index": 8.46,
-            "views": 1520,
-            "text": "frxUSD lenders are making 9.31% APY lending to sUSDai. \n\nsUSDai loopers are earning up to 35.3% APY. \n\nLink below \ud83d\udc47 https://t.co/juam29g5hy"
           },
           {
             "date": "2026-10-08",
@@ -1290,20 +1347,20 @@
         ],
         "bottom": [
           {
-            "date": "2026-10-07",
-            "theme": "speaking_event",
-            "format": "quote",
-            "index": 0.18,
-            "views": 350,
-            "text": "@evgeny_re7 speaking at LONGITUDE by Cointelegraph (Singapore) on smart money positioning: ETFs, onchain asset management. Quotes Cointelegraph post."
-          },
-          {
             "date": "2026-08-31",
             "theme": "market_commentary",
-            "format": "image",
+            "format": "link",
             "index": 0.18,
-            "views": 229,
-            "text": "Re7's Weekly: The Rise of Interface Apps (growing share of trading volume, perpetuals leading, distribution and order flow as value layer)."
+            "views": 230,
+            "text": "Re7's Weekly is out: The Rise of Interface Apps\n\nWe breakdown:\n\n- Why interface apps are capturing a growing share of crypto trading volume\n- Why perpetuals are"
+          },
+          {
+            "date": "2026-09-28",
+            "theme": "market_commentary",
+            "format": "image",
+            "index": 0.0,
+            "views": 261,
+            "text": "Re7's Weekly is out: Trading Cards Move Onchain\n\nWe breakdown:\n\n \ud83d\udd39 Why trading cards are becoming increasingly financialised.\n \ud83d\udd39 How tokenisation improves the t"
           },
           {
             "date": "2026-10-12",
