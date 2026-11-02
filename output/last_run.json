@@ -1,5 +1,5 @@
 {
-  "started": "2026-11-02T22:45:41+00:00",
+  "started": "2026-11-02T22:51:49+00:00",
   "mode": "live",
   "pull": {
     "status": "skipped",
@@ -20,44 +20,45 @@
     },
     "telegram": {
       "status": "ok",
-      "fetched": 20,
-      "new": 20,
-      "seconds": 0.7
+      "fetched": 80,
+      "new": 80,
+      "seconds": 3.2
     },
     "x:Re7Capital": {
-      "status": "failed",
-      "error": "Apify X actor apidojo~tweet-scraper returned 10 items, none usable for @Re7Capital; first item: {\"noResults\": true}",
-      "seconds": 2.3
+      "status": "ok",
+      "fetched": 10,
+      "new": 10,
+      "seconds": 13.4
     },
     "x:Re7Labs": {
-      "status": "failed",
-      "error": "Apify X actor apidojo~tweet-scraper returned 10 items, none usable for @Re7Labs; first item: {\"noResults\": true}",
-      "seconds": 3.8
+      "status": "ok",
+      "fetched": 10,
+      "new": 10,
+      "seconds": 14.1
     },
     "linkedin:apify": {
       "status": "ok",
-      "fetched": 40,
-      "new": 40,
-      "seconds": 7.3
+      "fetched": 100,
+      "new": 100,
+      "seconds": 7.4
     },
-    "seed_rows_superseded_by_live": 0
+    "seed_rows_superseded_by_live": 24
   },
-  "posts_total": 118,
+  "posts_total": 226,
   "analyse": {
-    "labelled_now": 94,
-    "labelled_total": 94,
+    "labelled_now": 226,
+    "labelled_total": 226,
     "channels": {
-      "linkedin": 44,
-      "telegram": 20,
-      "x": 25
+      "linkedin": 84,
+      "telegram": 80,
+      "x": 31
     },
     "errors": []
   },
   "create": {
-    "posts_generated": 6,
-    "flagged_for_compliance": 6
+    "error": "ValueError: model did not return JSON; reply began: ''"
   },
   "status": "ok",
-  "finished": "2026-11-02T22:47:21+00:00",
-  "seconds": 99.9
+  "finished": "2026-11-02T22:56:00+00:00",
+  "seconds": 251.0
 }
