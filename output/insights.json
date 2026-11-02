@@ -6,15 +6,9 @@
       "median_engagement_score": 12.5,
       "by_theme": [
         {
-          "label": "other",
-          "n": 1,
-          "mean_index": 3.2,
-          "median_views": null
-        },
-        {
           "label": "media_appearance",
-          "n": 9,
-          "mean_index": 3.03,
+          "n": 10,
+          "mean_index": 3.05,
           "median_views": null
         },
         {
@@ -26,7 +20,7 @@
         {
           "label": "hiring_culture",
           "n": 3,
-          "mean_index": 1.36,
+          "mean_index": 1.39,
           "median_views": null
         },
         {
@@ -75,9 +69,9 @@
           "n_with": 20
         },
         "names_partner": {
-          "with": 2.13,
-          "without": 0.78,
-          "n_with": 24
+          "with": 2.05,
+          "without": 0.75,
+          "n_with": 26
         }
       },
       "top_posts": [
@@ -96,11 +90,11 @@
           "text": "Building the rails between TradFi and digital assets: a conversation with BCB Group\u2019s Tim Renew on Crypto Minutes, Bloomberg TV.\n\nRe7\u2019s Foun"
         },
         {
-          "date": "2026-10-08",
+          "date": "2026-10-11",
           "theme": "media_appearance",
-          "format": "text",
+          "format": "video",
           "index": 3.76,
-          "text": "Re7 Capital hosts Crypto Minutes, the new Bloomberg TV show.\n\nCrypto Minutes is an interview series airing on Bloomberg TV, hosted by Evgeny"
+          "text": "Re7 Capital hosts Crypto Minutes, the new Bloomberg TV show. Crypto Minutes is an interview series airing on Bloomberg TV, hosted by Evgeny "
         }
       ],
       "bottom_themes": [
@@ -167,9 +161,9 @@
           "n_with": 1
         },
         "names_partner": {
-          "with": 1.14,
-          "without": 0.86,
-          "n_with": 9
+          "with": 1.03,
+          "without": 0.93,
+          "n_with": 11
         }
       },
       "top_posts": [
@@ -295,9 +289,9 @@
           "n_with": 10
         },
         "names_partner": {
-          "with": 2.83,
-          "without": 0.92,
-          "n_with": 12
+          "with": 2.54,
+          "without": 0.95,
+          "n_with": 14
         }
       },
       "top_posts": [
