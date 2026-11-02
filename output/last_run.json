@@ -1,5 +1,5 @@
 {
-  "started": "2026-11-02T22:51:49+00:00",
+  "started": "2026-11-02T23:03:05+00:00",
   "mode": "live",
   "pull": {
     "status": "skipped",
@@ -9,8 +9,8 @@
     "seed": {
       "status": "ok",
       "fetched": 60,
-      "new": 0,
-      "seconds": 0.0
+      "new": 34,
+      "seconds": 0.1
     },
     "csv_import": {
       "status": "ok",
@@ -21,37 +21,37 @@
     "telegram": {
       "status": "ok",
       "fetched": 80,
-      "new": 80,
-      "seconds": 3.2
+      "new": 0,
+      "seconds": 3.3
     },
     "x:Re7Capital": {
       "status": "ok",
-      "fetched": 10,
-      "new": 10,
-      "seconds": 13.4
+      "fetched": 60,
+      "new": 50,
+      "seconds": 4.3
     },
     "x:Re7Labs": {
       "status": "ok",
-      "fetched": 10,
-      "new": 10,
-      "seconds": 14.1
+      "fetched": 60,
+      "new": 50,
+      "seconds": 5.2
     },
     "linkedin:apify": {
       "status": "ok",
       "fetched": 100,
-      "new": 100,
-      "seconds": 7.4
+      "new": 0,
+      "seconds": 8.2
     },
     "seed_rows_superseded_by_live": 24
   },
-  "posts_total": 226,
+  "posts_total": 307,
   "analyse": {
-    "labelled_now": 226,
-    "labelled_total": 226,
+    "labelled_now": 100,
+    "labelled_total": 307,
     "channels": {
       "linkedin": 84,
       "telegram": 80,
-      "x": 31
+      "x": 62
     },
     "errors": []
   },
@@ -59,6 +59,6 @@
     "error": "ValueError: model did not return JSON; reply began: ''"
   },
   "status": "ok",
-  "finished": "2026-11-02T22:56:00+00:00",
-  "seconds": 251.0
+  "finished": "2026-11-02T23:06:11+00:00",
+  "seconds": 185.3
 }
