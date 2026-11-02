@@ -1,5 +1,5 @@
 {
-  "started": "2026-11-02T23:11:29+00:00",
+  "started": "2026-11-02T23:18:41+00:00",
   "mode": "live",
   "pull": {
     "status": "skipped",
@@ -22,25 +22,25 @@
       "status": "ok",
       "fetched": 80,
       "new": 80,
-      "seconds": 2.9
+      "seconds": 3.0
     },
     "x:Re7Capital": {
       "status": "ok",
       "fetched": 60,
       "new": 60,
-      "seconds": 3.7
+      "seconds": 3.4
     },
     "x:Re7Labs": {
       "status": "ok",
       "fetched": 60,
       "new": 60,
-      "seconds": 5.3
+      "seconds": 5.2
     },
     "linkedin:apify": {
       "status": "ok",
       "fetched": 100,
       "new": 100,
-      "seconds": 6.7
+      "seconds": 5.5
     },
     "seed_rows_superseded_by_live": 24
   },
@@ -53,25 +53,13 @@
       "telegram": 80,
       "x": 62
     },
-    "errors": [
-      "memo: Claude API call failed: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-5'}, 'request_id': 'req_011C"
-    ]
+    "errors": []
   },
   "create": {
-    "error": "RuntimeError: Claude API call failed: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-5'}, 'request_id': 'req_011CgexA6Z1Moa29xGFBmnBg'}"
+    "posts_generated": 5,
+    "flagged_for_compliance": 4
   },
   "status": "ok",
-  "finished": "2026-11-02T23:15:10+00:00",
-  "seconds": 221.0,
-  "persist": {
-    "status": "ok",
-    "files": [
-      "data/posts.csv",
-      "output/last_run.json",
-      "output/insights.json",
-      "output/memo.md",
-      "output/run_history.jsonl",
-      "output/sources_cache.json"
-    ]
-  }
+  "finished": "2026-11-02T23:24:37+00:00",
+  "seconds": 356.1
 }
