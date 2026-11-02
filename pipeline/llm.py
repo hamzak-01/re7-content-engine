@@ -49,9 +49,30 @@ def complete(system: str, user: str, max_tokens: int = 4000, temperature: float 
     raise RuntimeError(f"Claude API call failed: {last}")
 
 
+def _parse_json(text: str):
+    text = text.strip().lstrip("\ufeff")
+    text = re.sub(r"^```(?:json)?\s*|\s*```$", "", text).strip()
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        pass
+    # take the outermost array or object found anywhere in the reply
+    for open_c, close_c in (("[", "]"), ("{", "}")):
+        a, b = text.find(open_c), text.rfind(close_c)
+        if a >= 0 and b > a:
+            try:
+                return json.loads(text[a:b + 1])
+            except json.JSONDecodeError:
+                continue
+    raise ValueError(f"model did not return JSON; reply began: {text[:160]!r}")
+
+
 def complete_json(system: str, user: str, max_tokens: int = 4000):
-    text = complete(system + "\nRespond with valid JSON only, no prose, no code fences.", user, max_tokens)
-    text = text.strip()
-    text = re.sub(r"^```(?:json)?\s*|\s*```$", "", text)
-    start = min([i for i in (text.find("{"), text.find("[")) if i >= 0] or [0])
-    return json.loads(text[start:])
+    instr = "\nRespond with valid JSON only: start your reply with [ or { and end with the matching bracket. No prose, no code fences."
+    text = complete(system + instr, user, max_tokens)
+    try:
+        return _parse_json(text)
+    except ValueError:
+        # one retry with the previous reply shown, asking for JSON only
+        text2 = complete(system + instr, user + "\n\nYour previous reply was not valid JSON. Return only the JSON.", max_tokens)
+        return _parse_json(text2)

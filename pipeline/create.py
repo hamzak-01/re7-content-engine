@@ -37,7 +37,7 @@ def fetch_sources(max_items: int = 3) -> list[dict]:
             ps = BeautifulSoup(page, "html.parser")
             title = (ps.find("h1") or ps.find("title")).get_text(" ", strip=True)
             body = " ".join(p.get_text(" ", strip=True) for p in ps.find_all("p"))
-            items.append({"title": title, "url": href, "text": body[:6000]})
+            items.append({"title": title, "url": href, "text": body[:3500]})
         if items:
             os.makedirs(OUTPUT, exist_ok=True)
             json.dump(items, open(cache, "w"), ensure_ascii=False, indent=1)
@@ -82,7 +82,9 @@ def run(df: pd.DataFrame, insights: dict, live: bool = True) -> pd.DataFrame:
     if not live:
         return pd.DataFrame()
     user = json.dumps({"week_number": week, "insights": insights, "voice_references": refs, "sources": sources}, ensure_ascii=False)
-    items = llm.complete_json(CREATE_SYSTEM, user, max_tokens=4000)
+    items = llm.complete_json(CREATE_SYSTEM, user, max_tokens=6000)
+    if isinstance(items, dict):  # model wrapped the list in an object
+        items = next((v for v in items.values() if isinstance(v, list)), [])
     rows = []
     for it in items:
         text = it.get("text", "")
