@@ -1,5 +1,5 @@
 {
-  "started": "2026-11-02T23:18:41+00:00",
+  "started": "2026-11-02T23:39:06+00:00",
   "mode": "live",
   "pull": {
     "status": "skipped",
@@ -22,25 +22,25 @@
       "status": "ok",
       "fetched": 80,
       "new": 80,
-      "seconds": 3.0
+      "seconds": 3.1
     },
     "x:Re7Capital": {
       "status": "ok",
       "fetched": 60,
       "new": 60,
-      "seconds": 3.4
+      "seconds": 4.1
     },
     "x:Re7Labs": {
       "status": "ok",
       "fetched": 60,
       "new": 60,
-      "seconds": 5.2
+      "seconds": 5.7
     },
     "linkedin:apify": {
       "status": "ok",
       "fetched": 100,
       "new": 100,
-      "seconds": 5.5
+      "seconds": 7.5
     },
     "seed_rows_superseded_by_live": 24
   },
@@ -56,21 +56,10 @@
     "errors": []
   },
   "create": {
-    "posts_generated": 5,
-    "flagged_for_compliance": 4
+    "posts_generated": 6,
+    "flagged_for_compliance": 5
   },
   "status": "ok",
-  "finished": "2026-11-02T23:24:37+00:00",
-  "seconds": 356.1,
-  "persist": {
-    "status": "ok",
-    "files": [
-      "data/posts.csv",
-      "output/last_run.json",
-      "output/insights.json",
-      "output/memo.md",
-      "output/content_queue.csv",
-      "output/run_history.jsonl"
-    ]
-  }
+  "finished": "2026-11-02T23:43:53+00:00",
+  "seconds": 286.8
 }
