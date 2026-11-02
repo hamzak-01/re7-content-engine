@@ -64,10 +64,16 @@ X_ACTORS = [a for a in os.environ.get("APIFY_X_ACTORS", "").split(",") if a] or 
 
 def _x_payloads(handle: str, max_items: int) -> list[dict]:
     h = handle.lstrip("@")
+    profile = f"https://x.com/{h}"
     return [
         {"twitterHandles": [h], "maxItems": max_items, "sort": "Latest", "includeSearchTerms": False},
+        {"startUrls": [profile], "maxItems": max_items, "sort": "Latest"},
+        {"startUrls": [{"url": profile}], "maxItems": max_items},
+        {"handles": [h], "maxItems": max_items},
+        {"usernames": [h], "maxItems": max_items},
+        {"urls": [profile], "maxItems": max_items},
         {"searchTerms": [f"from:{h}"], "maxItems": max_items, "sort": "Latest"},
-        {"startUrls": [f"https://x.com/{h}"], "maxItems": max_items, "sort": "Latest"},
+        {"queries": [f"from:{h}"], "maxItems": max_items},
     ]
 
 
@@ -76,8 +82,8 @@ def _parse_x_items(items: list, account: str) -> list[Post]:
     for it in items:
         if not isinstance(it, dict) or it.get("noResults"):
             continue
-        text = _first(it, "text", "full_text", "fullText", default="")
-        url = _first(it, "url", "twitterUrl", default="")
+        text = _first(it, "text", "full_text", "fullText", "content", "tweetText", default="")
+        url = _first(it, "url", "twitterUrl", "tweetUrl", "link", "permalink", default="")
         is_reply = bool(_first(it, "isReply", "in_reply_to_status_id", default=False))
         is_rt = bool(_first(it, "isRetweet", "retweeted_status", default=False)) or text.startswith("RT @")
         is_quote = bool(_first(it, "isQuote", "quoted_status", default=False))
@@ -85,14 +91,14 @@ def _parse_x_items(items: list, account: str) -> list[Post]:
         fmt = "repost" if is_rt else "quote" if is_quote else \
               "video" if any("video" in str(m.get("type", "")) for m in media if isinstance(m, dict)) else \
               "image" if media else "link" if "http" in text else "text"
-        d = _date(_first(it, "createdAt", "created_at"))
-        if not d:
+        d = _date(_first(it, "createdAt", "created_at", "date", "timestamp", "publishedAt", "time"))
+        if not d or not text:
             continue
         posts.append(Post(channel="x", account=account, date=d, url=url, text=text, format=fmt,
-                          likes=_first(it, "likeCount", "favorite_count", default=0),
-                          reposts=_first(it, "retweetCount", "retweet_count", default=0),
-                          comments=_first(it, "replyCount", "reply_count", default=0),
-                          views=_first(it, "viewCount", "views_count", default=None),
+                          likes=_first(it, "likeCount", "favorite_count", "likes", "favoriteCount", "metrics.likes", default=0),
+                          reposts=_first(it, "retweetCount", "retweet_count", "retweets", "reposts", "metrics.retweets", default=0),
+                          comments=_first(it, "replyCount", "reply_count", "replies", "metrics.replies", default=0),
+                          views=_first(it, "viewCount", "views_count", "views", "impressions", "metrics.views", default=None),
                           is_reply=is_reply or is_rt, collected_via="apify_x"))
     return posts
 
