@@ -1,31 +1,26 @@
 day,time_uk,account,channel,format,text,source_title,source_url,hypothesis,experiment_tag,compliance_flag,status
-Monday,08:30,Re7 Capital,x,image,"The $6.3bn Binance exploit was the largest crypto hack on record. Circle, Tether and other issuers froze approximately $2.8bn. Sunday's $3.6bn in net withdrawals was 2.1% of customer assets, which does not read as a run.
+Monday,09:00,Re7 Capital,x,image,"The $6.3bn Binance exploit was the largest crypto hack on record. Its market impact has been far more contained than the headlines suggest.
 
-The Weekly, 2 Nov.",The Weekly: The Binance Hack and What Comes Next,https://re7.capital/blog/9c4a3d8e-83d6-4b4e-af89-5e33ed3215ed,"names_partner (Circle, Tether) + chart_data image on x; tests whether named partners lift a bottom-ranked market_commentary theme",wk45-x-mktcomm-partner,quotes yields/performance,draft - needs review
-Tuesday,08:00,Re7 Capital,linkedin,video,"Corporate treasury is where tokenised real-world assets stop being a concept.
+Approximately $2.8bn was rapidly frozen by Circle, Tether and other issuers.
 
-On Crypto Minutes, Bloomberg TV, Re7's Founder and CIO Evgeny Gokhberg hosts Yuval Rooz, Co-Founder and CEO of Digital Asset, the company behind Canton Network, on the next phase of finance moving on-chain.
+The Weekly:",The Weekly: The Binance Hack and What Comes Next,https://re7.capital/blog/9c4a3d8e-83d6-4b4e-af89-5e33ed3215ed,"Reshapes the Weekly (market_commentary, return_on_effort 0.3 on x) as a single finding with names_partner (2.01 with vs 0.85 without on x is linkedin; on x 1.98 vs 1.03) in image format (mean_index 1.8 on x).",wk45-x-weekly-partner-image,,draft - needs review
+Tuesday,08:30,Re7 Capital,linkedin,link,"Institutional DeFi needs a common language for risk. Our new report with Clear Street sets one out.
 
-For Rooz, RWAs have always been the most compelling use case on-chain, and corporate treasury is where that becomes real:
+A Framework for Decomposing DeFi Risk in the Age of AI is led by Re7 Founder and CIO Evgeny Gokhberg and built on our own methodology. It breaks exposure into chain, protocol and asset layers.
 
-""You're going to start seeing corporates on Canton very soon using yield products that can be liquidated in real time into tokenized deposits or stablecoins. They'll start doing treasury management using on-chain finance.""
+The reason for the split is practical. A single aggregate view of a DeFi position tends to blur where the exposure actually sits. Two allocations can look alike at portfolio level while depending on different chains, different protocols and different assets. Decomposing them makes those dependencies visible and comparable.
 
-The detail worth watching is the liquidation path. Real-time conversion into tokenized deposits or stablecoins is what would let a treasury team treat an on-chain product as working capital rather than a position held apart.
+The report also explores how AI is reshaping risk monitoring, and what that changes for teams overseeing on-chain exposure.
 
-Full episode linked in the comments.",The Weekly: The Binance Hack and What Comes Next,https://re7.capital/blog/9c4a3d8e-83d6-4b4e-af89-5e33ed3215ed,media_appearance + names_person + names_partner + video on linkedin,wk45-li-media-person-video,quotes yields/performance; names a third party,draft - needs review
-Wednesday,12:30,Re7 Capital,x,image,"New report with Clear Street: A Framework for Decomposing DeFi Risk in the Age of AI.
+We are grateful to Clear Street for the collaboration, and see shared frameworks like this as part of the infrastructure institutional DeFi still needs.
 
-Led by Evgeny Gokhberg, it breaks exposure into chain, protocol and asset layers and looks at how AI is reshaping risk monitoring.",The Weekly: The Binance Hack and What Comes Next,https://re7.capital/blog/9c4a3d8e-83d6-4b4e-af89-5e33ed3215ed,research_report + names_partner + names_person on x,wk45-x-report-partner-person,names a third party,draft - needs review
-Thursday,09:30,Re7 Capital,x,video,"Crypto Minutes, Bloomberg TV: Evgeny Gokhberg hosts Yuval Rooz, Co-Founder and CEO of Digital Asset, the company behind Canton Network, on corporate treasury moving on-chain.
+The report is linked in the comments.",The Weekly: The Binance Hack and What Comes Next,https://re7.capital/blog/9c4a3d8e-83d6-4b4e-af89-5e33ed3215ed,"Frames research_report as partner_announcement (return_on_effort 7.54 on linkedin, directional, n=1) with names_partner (2.01 with vs 0.85 without) and names_person (2.01 vs 1.17).",wk45-li-partner-report-clearstreet,names a third party,draft - needs review
+Wednesday,12:00,Re7 Capital,x,video,"Crypto Minutes, @Bloomberg TV: @evgeny_re7 with Yuval Rooz, Co-Founder and CEO of Digital Asset, on bringing corporate treasury on-chain.
 
-""They'll start doing treasury management using on-chain finance.""",The Weekly: The Binance Hack and What Comes Next,https://re7.capital/blog/9c4a3d8e-83d6-4b4e-af89-5e33ed3215ed,media_appearance + names_person + video on x (highest-indexing theme and format on x),wk45-x-media-person-video,names a third party,draft - needs review
-Friday,11:00,Re7 Labs,x,image,"Re7 Labs has launched a Frax USDai Ecosystem Vault on Mainnet with Frax Finance and USD.AI.
+""They'll start doing treasury management using on-chain finance.""",The Weekly: The Binance Hack and What Comes Next,https://re7.capital/blog/9c4a3d8e-83d6-4b4e-af89-5e33ed3215ed,"media_appearance (return_on_effort 1.44, mean_index 3.97 on x) + names_person (2.02 with vs 1.42 without) in video format (mean_index 3.18).",wk45-x-media-video-rooz,names a third party,draft - needs review
+Thursday,10:00,Re7 Labs,x,image,"Re7 Labs has launched a Frax USDai Ecosystem Vault on Mainnet with Frax Finance and USD.AI.
 
-The vault deploys frxUSD across curated opportunities in the USDai ecosystem.",The Weekly: The Binance Hack and What Comes Next,https://re7.capital/blog/9c4a3d8e-83d6-4b4e-af89-5e33ed3215ed,"labs_product + names_partner (Frax Finance, USD.AI) on x",wk45-labs-x-product-partner,names a third party,draft - needs review
-Friday,15:00,Re7 Labs,telegram,link,"This week at Re7
+The vault deploys frxUSD across curated opportunities in the USDai ecosystem.",The Weekly: The Binance Hack and What Comes Next,https://re7.capital/blog/9c4a3d8e-83d6-4b4e-af89-5e33ed3215ed,"labs_product (return_on_effort 2.61 on x) naming Frax and USDai, the top entities by mean_index 6.08.",wk45-x-labs-vault-frax-usdai,names a third party,draft - needs review
+Friday,09:00,Re7 Capital,x,image,"New Institutional Report with Clear Street: A Framework for Decomposing DeFi Risk in the Age of AI.
 
-- The Weekly: the $6.3bn Binance exploit, with approximately $2.8bn frozen by Circle, Tether and other issuers.
-- Bitcoin is likely to trade between its 50-week MA and $80k.
-- New report with Clear Street: A Framework for Decomposing DeFi Risk in the Age of AI.
-- Crypto Minutes, Bloomberg TV: Evgeny Gokhberg hosts Yuval Rooz of Digital Asset.
-- Re7 Labs: Frax USDai Ecosystem Vault live on Mainnet with Frax Finance and USD.AI.",The Weekly: The Binance Hack and What Comes Next,https://re7.capital/blog/9c4a3d8e-83d6-4b4e-af89-5e33ed3215ed,media_appearance + labs_product + names_person in a link-format roundup on telegram,wk45-tg-roundup-media-labs,names a third party,draft - needs review
+Led by Evgeny Gokhberg, it breaks exposure into chain, protocol and asset layers and explores how AI is reshaping risk monitoring.",The Weekly: The Binance Hack and What Comes Next,https://re7.capital/blog/9c4a3d8e-83d6-4b4e-af89-5e33ed3215ed,"research_report (return_on_effort 1.04, mean_index 2.21 on x) + names_partner (1.98 with vs 1.03 without) + names_person (2.02 vs 1.42).",wk45-x-report-clearstreet,names a third party,draft - needs review
