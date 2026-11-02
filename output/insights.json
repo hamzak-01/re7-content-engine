@@ -14,15 +14,15 @@
         },
         {
           "label": "media_appearance",
-          "n": 12,
-          "mean_index": 2.31,
+          "n": 11,
+          "mean_index": 2.42,
           "median_views": null,
           "directional": false
         },
         {
           "label": "research_report",
-          "n": 4,
-          "mean_index": 1.97,
+          "n": 6,
+          "mean_index": 1.82,
           "median_views": null,
           "directional": false
         },
@@ -34,16 +34,16 @@
           "directional": false
         },
         {
-          "label": "hiring_culture",
-          "n": 3,
-          "mean_index": 1.19,
+          "label": "other",
+          "n": 4,
+          "mean_index": 1.36,
           "median_views": null,
           "directional": false
         },
         {
           "label": "market_commentary",
-          "n": 38,
-          "mean_index": 0.79,
+          "n": 36,
+          "mean_index": 0.75,
           "median_views": null,
           "directional": false
         },
@@ -69,9 +69,9 @@
           "directional": true
         },
         {
-          "label": "other",
+          "label": "hiring_culture",
           "n": 2,
-          "mean_index": 1.58,
+          "mean_index": 1.21,
           "median_views": null,
           "directional": true
         }
@@ -106,9 +106,9 @@
           "n_with": 19
         },
         "names_partner": {
-          "with": 1.98,
+          "with": 2.01,
           "without": 0.8,
-          "n_with": 40
+          "n_with": 39
         }
       },
       "top_posts": [
@@ -136,7 +136,7 @@
       ],
       "bottom_themes": [
         "labs_product",
-        "other"
+        "hiring_culture"
       ],
       "by_account": [
         {
@@ -154,9 +154,9 @@
       "by_theme": [
         {
           "label": "labs_product",
-          "n": 31,
-          "mean_index": 1.51,
-          "median_views": 656,
+          "n": 33,
+          "mean_index": 1.52,
+          "median_views": 670,
           "directional": false
         },
         {
@@ -172,13 +172,6 @@
           "mean_index": 0.22,
           "median_views": 469,
           "directional": false
-        },
-        {
-          "label": "partner_announcement",
-          "n": 2,
-          "mean_index": 1.71,
-          "median_views": 714,
-          "directional": true
         },
         {
           "label": "chart_data",
@@ -232,8 +225,8 @@
           "n_with": 1
         },
         "names_partner": {
-          "with": 1.39,
-          "without": 0.84,
+          "with": 1.37,
+          "without": 0.86,
           "n_with": 41
         }
       },
@@ -293,24 +286,17 @@
           "directional": false
         },
         {
-          "label": "chart_data",
-          "n": 10,
-          "mean_index": 1.92,
-          "median_views": 390,
-          "directional": false
-        },
-        {
           "label": "labs_product",
-          "n": 10,
-          "mean_index": 1.4,
-          "median_views": 1937,
+          "n": 14,
+          "mean_index": 1.93,
+          "median_views": 1645,
           "directional": false
         },
         {
           "label": "other",
-          "n": 6,
-          "mean_index": 1.16,
-          "median_views": 552,
+          "n": 4,
+          "mean_index": 1.32,
+          "median_views": 407,
           "directional": false
         },
         {
@@ -321,9 +307,16 @@
           "directional": false
         },
         {
+          "label": "chart_data",
+          "n": 7,
+          "mean_index": 0.94,
+          "median_views": 363,
+          "directional": false
+        },
+        {
           "label": "market_commentary",
-          "n": 11,
-          "mean_index": 0.78,
+          "n": 12,
+          "mean_index": 0.82,
           "median_views": 302,
           "directional": false
         },
@@ -351,10 +344,17 @@
       ],
       "by_format": [
         {
+          "label": "video",
+          "n": 4,
+          "mean_index": 3.18,
+          "median_views": 1668,
+          "directional": false
+        },
+        {
           "label": "image",
-          "n": 33,
-          "mean_index": 1.51,
-          "median_views": 432,
+          "n": 32,
+          "mean_index": 1.8,
+          "median_views": 434,
           "directional": false
         },
         {
@@ -370,20 +370,6 @@
           "mean_index": 0.83,
           "median_views": 498,
           "directional": false
-        },
-        {
-          "label": "quote",
-          "n": 1,
-          "mean_index": 10.15,
-          "median_views": 1520,
-          "directional": true
-        },
-        {
-          "label": "video",
-          "n": 2,
-          "mean_index": 5.18,
-          "median_views": 1668,
-          "directional": true
         }
       ],
       "by_attribute": {
@@ -393,16 +379,16 @@
           "n_with": 15
         },
         "names_partner": {
-          "with": 1.88,
-          "without": 1.07,
+          "with": 1.92,
+          "without": 1.0,
           "n_with": 38
         }
       },
       "top_posts": [
         {
           "date": "2026-10-02",
-          "theme": "chart_data",
-          "format": "quote",
+          "theme": "labs_product",
+          "format": "image",
           "index": 10.15,
           "text": "frxUSD lenders are making 9.31% APY lending to sUSDai. \n\nsUSDai loopers are earning up to 35.3% APY. \n\nLink below \ud83d\udc47 https://t.co/juam29g5hy"
         },
@@ -464,10 +450,10 @@
         },
         {
           "theme": "media_appearance",
-          "n": 12,
-          "share_of_posts": 0.143,
-          "share_of_engagement": 0.242,
-          "return_on_effort": 1.7,
+          "n": 11,
+          "share_of_posts": 0.131,
+          "share_of_engagement": 0.233,
+          "return_on_effort": 1.78,
           "directional": false
         },
         {
@@ -480,10 +466,10 @@
         },
         {
           "theme": "research_report",
-          "n": 4,
-          "share_of_posts": 0.048,
-          "share_of_engagement": 0.069,
-          "return_on_effort": 1.44,
+          "n": 6,
+          "share_of_posts": 0.071,
+          "share_of_engagement": 0.095,
+          "return_on_effort": 1.33,
           "directional": false
         },
         {
@@ -496,26 +482,26 @@
         },
         {
           "theme": "other",
-          "n": 2,
-          "share_of_posts": 0.024,
-          "share_of_engagement": 0.028,
-          "return_on_effort": 1.16,
-          "directional": true
-        },
-        {
-          "theme": "hiring_culture",
-          "n": 3,
-          "share_of_posts": 0.036,
-          "share_of_engagement": 0.031,
-          "return_on_effort": 0.88,
+          "n": 4,
+          "share_of_posts": 0.048,
+          "share_of_engagement": 0.048,
+          "return_on_effort": 1.0,
           "directional": false
         },
         {
+          "theme": "hiring_culture",
+          "n": 2,
+          "share_of_posts": 0.024,
+          "share_of_engagement": 0.021,
+          "return_on_effort": 0.89,
+          "directional": true
+        },
+        {
           "theme": "market_commentary",
-          "n": 38,
-          "share_of_posts": 0.452,
-          "share_of_engagement": 0.262,
-          "return_on_effort": 0.58,
+          "n": 36,
+          "share_of_posts": 0.429,
+          "share_of_engagement": 0.235,
+          "return_on_effort": 0.55,
           "directional": false
         },
         {
@@ -529,19 +515,11 @@
       ],
       "telegram": [
         {
-          "theme": "partner_announcement",
-          "n": 2,
-          "share_of_posts": 0.025,
-          "share_of_engagement": 0.038,
-          "return_on_effort": 1.52,
-          "directional": true
-        },
-        {
           "theme": "labs_product",
-          "n": 31,
-          "share_of_posts": 0.388,
-          "share_of_engagement": 0.521,
-          "return_on_effort": 1.34,
+          "n": 33,
+          "share_of_posts": 0.412,
+          "share_of_engagement": 0.559,
+          "return_on_effort": 1.35,
           "directional": false
         },
         {
@@ -587,19 +565,11 @@
       ],
       "x": [
         {
-          "theme": "chart_data",
-          "n": 10,
-          "share_of_posts": 0.161,
-          "share_of_engagement": 0.288,
-          "return_on_effort": 1.79,
-          "directional": false
-        },
-        {
           "theme": "labs_product",
-          "n": 10,
-          "share_of_posts": 0.161,
-          "share_of_engagement": 0.276,
-          "return_on_effort": 1.71,
+          "n": 14,
+          "share_of_posts": 0.226,
+          "share_of_engagement": 0.553,
+          "return_on_effort": 2.45,
           "directional": false
         },
         {
@@ -644,10 +614,10 @@
         },
         {
           "theme": "other",
-          "n": 6,
-          "share_of_posts": 0.097,
-          "share_of_engagement": 0.066,
-          "return_on_effort": 0.68,
+          "n": 4,
+          "share_of_posts": 0.065,
+          "share_of_engagement": 0.031,
+          "return_on_effort": 0.48,
           "directional": false
         },
         {
@@ -659,11 +629,19 @@
           "directional": false
         },
         {
+          "theme": "chart_data",
+          "n": 7,
+          "share_of_posts": 0.113,
+          "share_of_engagement": 0.038,
+          "return_on_effort": 0.34,
+          "directional": false
+        },
+        {
           "theme": "market_commentary",
-          "n": 11,
-          "share_of_posts": 0.177,
-          "share_of_engagement": 0.05,
-          "return_on_effort": 0.28,
+          "n": 12,
+          "share_of_posts": 0.194,
+          "share_of_engagement": 0.058,
+          "return_on_effort": 0.3,
           "directional": false
         }
       ]
@@ -764,14 +742,14 @@
             "n": 2
           },
           "x": {
-            "mean_index": 1.92,
-            "n": 10
+            "mean_index": 0.94,
+            "n": 7
           }
         },
         "hiring_culture": {
           "linkedin": {
-            "mean_index": 1.19,
-            "n": 3
+            "mean_index": 1.21,
+            "n": 2
           },
           "x": {
             "mean_index": 2.18,
@@ -784,32 +762,32 @@
             "n": 1
           },
           "telegram": {
-            "mean_index": 1.51,
-            "n": 31
+            "mean_index": 1.52,
+            "n": 33
           },
           "x": {
-            "mean_index": 1.4,
-            "n": 10
+            "mean_index": 1.93,
+            "n": 14
           }
         },
         "market_commentary": {
           "linkedin": {
-            "mean_index": 0.79,
-            "n": 38
+            "mean_index": 0.75,
+            "n": 36
           },
           "telegram": {
             "mean_index": 0.94,
             "n": 37
           },
           "x": {
-            "mean_index": 0.78,
-            "n": 11
+            "mean_index": 0.82,
+            "n": 12
           }
         },
         "media_appearance": {
           "linkedin": {
-            "mean_index": 2.31,
-            "n": 12
+            "mean_index": 2.42,
+            "n": 11
           },
           "telegram": {
             "mean_index": 0.84,
@@ -822,26 +800,22 @@
         },
         "other": {
           "linkedin": {
-            "mean_index": 1.58,
-            "n": 2
+            "mean_index": 1.36,
+            "n": 4
           },
           "telegram": {
             "mean_index": 0.22,
             "n": 5
           },
           "x": {
-            "mean_index": 1.16,
-            "n": 6
+            "mean_index": 1.32,
+            "n": 4
           }
         },
         "partner_announcement": {
           "linkedin": {
             "mean_index": 10.28,
             "n": 1
-          },
-          "telegram": {
-            "mean_index": 1.71,
-            "n": 2
           },
           "x": {
             "mean_index": 0.59,
@@ -850,8 +824,8 @@
         },
         "research_report": {
           "linkedin": {
-            "mean_index": 1.96,
-            "n": 4
+            "mean_index": 1.82,
+            "n": 6
           },
           "telegram": {
             "mean_index": 0.59,
@@ -881,7 +855,7 @@
         "mean_index": 6.08
       },
       {
-        "entity": "Frax Finance",
+        "entity": "Frax",
         "mentions": 2,
         "mean_index": 6.08
       },
@@ -897,8 +871,8 @@
       },
       {
         "entity": "Sharplink",
-        "mentions": 6,
-        "mean_index": 4.4
+        "mentions": 7,
+        "mean_index": 3.95
       },
       {
         "entity": "Zodia Custody",
@@ -906,9 +880,9 @@
         "mean_index": 3.91
       },
       {
-        "entity": "Bloomberg",
-        "mentions": 8,
-        "mean_index": 3.62
+        "entity": "Bloomberg TV",
+        "mentions": 7,
+        "mean_index": 3.75
       },
       {
         "entity": "Tim Renew",
@@ -933,9 +907,9 @@
         "likes_per_1000_views": 7.6
       },
       "labs_product": {
-        "n": 10,
-        "median_views": 1937,
-        "likes_per_1000_views": 6.0
+        "n": 14,
+        "median_views": 1645,
+        "likes_per_1000_views": 14.6
       },
       "partner_announcement": {
         "n": 2,
@@ -953,9 +927,9 @@
         "likes_per_1000_views": 9.3
       },
       "other": {
-        "n": 6,
-        "median_views": 552,
-        "likes_per_1000_views": 5.3
+        "n": 4,
+        "median_views": 407,
+        "likes_per_1000_views": 6.1
       },
       "speaking_event": {
         "n": 10,
@@ -963,9 +937,9 @@
         "likes_per_1000_views": 10.7
       },
       "chart_data": {
-        "n": 10,
-        "median_views": 390,
-        "likes_per_1000_views": 18.2
+        "n": 7,
+        "median_views": 363,
+        "likes_per_1000_views": 5.7
       },
       "hiring_culture": {
         "n": 2,
@@ -973,9 +947,9 @@
         "likes_per_1000_views": 11.2
       },
       "market_commentary": {
-        "n": 11,
+        "n": 12,
         "median_views": 302,
-        "likes_per_1000_views": 7.2
+        "likes_per_1000_views": 7.0
       }
     },
     "weekly_trend": {
@@ -1301,20 +1275,20 @@
             "text": "Re7 Alpha pinned a photo"
           },
           {
-            "date": "2026-07-06",
-            "theme": "other",
-            "format": "text",
-            "index": 0.0,
-            "views": null,
-            "text": "Channel name was changed to \u00ab Re7 Alpha \u00bb"
-          },
-          {
             "date": "2025-09-30",
             "theme": "other",
             "format": "text",
             "index": 0.0,
             "views": null,
             "text": "Re7 Alpha pinned a photo"
+          },
+          {
+            "date": "2026-07-06",
+            "theme": "other",
+            "format": "text",
+            "index": 0.0,
+            "views": null,
+            "text": "Channel name was changed to \u00ab Re7 Alpha \u00bb"
           }
         ]
       },
@@ -1322,8 +1296,8 @@
         "top": [
           {
             "date": "2026-10-02",
-            "theme": "chart_data",
-            "format": "quote",
+            "theme": "labs_product",
+            "format": "image",
             "index": 10.15,
             "views": 1520,
             "text": "frxUSD lenders are making 9.31% APY lending to sUSDai. \n\nsUSDai loopers are earning up to 35.3% APY. \n\nLink below \ud83d\udc47 https://t.co/juam29g5hy"
@@ -1347,12 +1321,12 @@
         ],
         "bottom": [
           {
-            "date": "2026-08-31",
-            "theme": "market_commentary",
-            "format": "link",
+            "date": "2026-07-30",
+            "theme": "chart_data",
+            "format": "image",
             "index": 0.18,
-            "views": 230,
-            "text": "Re7's Weekly is out: The Rise of Interface Apps\n\nWe breakdown:\n\n- Why interface apps are capturing a growing share of crypto trading volume\n- Why perpetuals are"
+            "views": 322,
+            "text": "Chart of the week.\n\nThere's always a bull market somewhere.\n\nRight now it's tokenised stocks. \n\nDaily volume: ~$0 in Jan \u2192 ~$33B/day by late July. \n\nOpen intere"
           },
           {
             "date": "2026-09-28",
