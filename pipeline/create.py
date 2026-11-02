@@ -16,37 +16,71 @@ from . import llm
 from .taxonomy import COMPLIANCE_TRIGGERS
 from .store import OUTPUT
 
-BLOG_INDEX = "https://re7.capital/blog"
 UA = {"User-Agent": "Mozilla/5.0 (compatible; re7-content-engine/0.1)"}
 
 
-def fetch_sources(max_items: int = 3) -> list[dict]:
-    """Latest Re7 blog posts (The Weekly, research). Falls back to the cached copy if the site is unreachable."""
-    cache = os.path.join(OUTPUT, "sources_cache.json")
+BLOG_RE = re.compile(r"https?://re7\.capital/blog/[0-9a-f-]{20,}")
+
+
+def _fetch_page(url: str) -> dict | None:
     try:
-        html = requests.get(BLOG_INDEX, headers=UA, timeout=20).text
-        soup = BeautifulSoup(html, "html.parser")
-        links = []
-        for a in soup.select("a[href*='/blog/']"):
-            href = a.get("href", "")
-            if re.search(r"/blog/[0-9a-f-]{20,}", href) and href not in links:
-                links.append(href if href.startswith("http") else "https://re7.capital" + href)
-        items = []
-        for href in links[:max_items]:
-            page = requests.get(href, headers=UA, timeout=20).text
-            ps = BeautifulSoup(page, "html.parser")
-            title = (ps.find("h1") or ps.find("title")).get_text(" ", strip=True)
-            body = " ".join(p.get_text(" ", strip=True) for p in ps.find_all("p"))
-            items.append({"title": title, "url": href, "text": body[:3500]})
-        if items:
-            os.makedirs(OUTPUT, exist_ok=True)
-            json.dump(items, open(cache, "w"), ensure_ascii=False, indent=1)
-            return items
+        page = requests.get(url, headers=UA, timeout=20).text
+        ps = BeautifulSoup(page, "html.parser")
+        h = ps.find("h1") or ps.find("title")
+        title = h.get_text(" ", strip=True) if h else url
+        body = " ".join(p.get_text(" ", strip=True) for p in ps.find_all("p"))
+        if len(body) < 200:
+            return None
+        return {"title": title, "url": url, "text": body[:3500]}
     except Exception:  # noqa: BLE001
-        pass
+        return None
+
+
+def fetch_sources(df: pd.DataFrame | None = None, max_items: int = 3) -> list[dict]:
+    """Source documents to repurpose. Discovered from Re7's own recent posts (which link to
+    The Weekly and research), then fetched from re7.capital. If a page cannot be fetched the
+    post text itself stands in, so there is always something to write from."""
+    cache = os.path.join(OUTPUT, "sources_cache.json")
+    items: list[dict] = []
+    seen: set[str] = set()
+    if df is not None and len(df):
+        recent = df[df["is_reply"].astype(str) != "True"].sort_values("date", ascending=False)
+        for r in recent.itertuples():
+            text = r.text or ""
+            urls = BLOG_RE.findall(text)
+            key = urls[0] if urls else None
+            is_source_post = bool(urls) or re.search(r"weekly is out|new report|new episode|launched|vault", text, re.I)
+            if not is_source_post or (key and key in seen):
+                continue
+            if key:
+                seen.add(key)
+            page = _fetch_page(key) if key else None
+            items.append(page or {"title": text[:90], "url": key or r.url, "text": text[:2000],
+                                  "note": "post text used; page not fetched"})
+            if len(items) >= max_items + 2:
+                break
+    if items:
+        os.makedirs(OUTPUT, exist_ok=True)
+        json.dump(items, open(cache, "w"), ensure_ascii=False, indent=1)
+        return items
     if os.path.exists(cache):
         return json.load(open(cache))
     return []
+
+
+def _flatten_posts(obj) -> list[dict]:
+    """Collect every dict that looks like a post, however the model nested it."""
+    out: list[dict] = []
+    if isinstance(obj, dict):
+        if "text" in obj and ("channel" in obj or "platform" in obj):
+            out.append(obj)
+        else:
+            for v in obj.values():
+                out.extend(_flatten_posts(v))
+    elif isinstance(obj, list):
+        for v in obj:
+            out.extend(_flatten_posts(v))
+    return out
 
 
 CREATE_SYSTEM = """You are the content assistant for Re7 Capital's IR and marketing team. Re7 Capital is a London-based, FCA-regulated institutional DeFi investment firm (market-neutral DeFi yield; founder and CIO Evgeny Gokhberg). Re7 Labs is its vault-curation arm.
@@ -73,7 +107,7 @@ def compliance_flags(text: str, names_partner: bool) -> str:
 
 
 def run(df: pd.DataFrame, insights: dict, live: bool = True) -> pd.DataFrame:
-    sources = fetch_sources()
+    sources = fetch_sources(df)
     main = df[(df["is_reply"].astype(str) != "True") & (df["theme"] != "")].copy()
     main["engagement_index"] = pd.to_numeric(main["engagement_index"], errors="coerce")
     refs = main.sort_values("engagement_index", ascending=False).head(6)
@@ -82,12 +116,14 @@ def run(df: pd.DataFrame, insights: dict, live: bool = True) -> pd.DataFrame:
     if not live:
         return pd.DataFrame()
     user = json.dumps({"week_number": week, "insights": insights, "voice_references": refs, "sources": sources}, ensure_ascii=False)
-    items = llm.complete_json(CREATE_SYSTEM, user, max_tokens=6000)
-    if isinstance(items, dict):  # model wrapped the list in an object
-        items = next((v for v in items.values() if isinstance(v, list)), [])
+    raw = llm.complete_json(CREATE_SYSTEM, user, max_tokens=6000)
+    items = _flatten_posts(raw)
+    if not items:
+        raise RuntimeError(f"model returned no posts (sources={len(sources)}; reply shape={type(raw).__name__})")
     rows = []
     for it in items:
         text = it.get("text", "")
+        it.setdefault("channel", it.get("platform", ""))
         names_partner = bool(re.search(r"\b(Bloomberg|Clear Street|Zodia|Morpho|Euler|Chainlink|S&P|Frax|Optimism|Sharplink|BCB)\b", text))
         rows.append({
             "day": it.get("day"), "time_uk": it.get("time_uk"), "account": it.get("account"),

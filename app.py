@@ -13,21 +13,29 @@ from datetime import datetime, timezone, timedelta
 import pandas as pd
 import streamlit as st
 
-from pipeline import store, run as pipeline_run
+from pipeline import store, persist, run as pipeline_run
 
-COOLDOWN_MIN = int(os.environ.get("RE7_COOLDOWN_MIN", "3"))  # TODO restore to 15 before submission
-DAILY_CAP = int(os.environ.get("RE7_DAILY_CAP", "6"))
 GATE = os.path.join(store.OUTPUT, "gate.json")
 
 st.set_page_config(page_title="Re7 Content Engine", page_icon=None, layout="wide")
 
 # Streamlit Cloud injects secrets here; the pipeline reads the environment.
-for k in ("ANTHROPIC_API_KEY", "APIFY_TOKEN", "RE7_TELEGRAM_HANDLE", "APIFY_X_ACTOR", "APIFY_LINKEDIN_ACTOR"):
+for k in ("ANTHROPIC_API_KEY", "APIFY_TOKEN", "GITHUB_TOKEN", "RE7_TELEGRAM_HANDLE", "APIFY_X_ACTOR", "APIFY_LINKEDIN_ACTOR", "RE7_COOLDOWN_MIN", "RE7_DAILY_CAP"):
     try:
         if k in st.secrets and st.secrets[k]:
             os.environ[k] = str(st.secrets[k])
     except Exception:  # noqa: BLE001 - no secrets file locally
         pass
+
+
+COOLDOWN_MIN = int(os.environ.get("RE7_COOLDOWN_MIN", "3"))  # set RE7_COOLDOWN_MIN=15 in secrets for submission
+DAILY_CAP = int(os.environ.get("RE7_DAILY_CAP", "6"))
+
+# Restore the last committed state (data branch) on a fresh container.
+try:
+    persist.pull()
+except Exception:  # noqa: BLE001
+    pass
 
 
 def _gate() -> dict:
@@ -147,6 +155,13 @@ with st.expander("Where this run's data came from", expanded=False):
         rows.append({"source": name, "status": r.get("status"), "fetched": r.get("fetched", ""), "new": r.get("new", ""),
                      "note": r.get("error", "")})
     st.dataframe(pd.DataFrame(rows), hide_index=True, use_container_width=True)
+    pers = lr.get("persist") or {}
+    if pers.get("status") == "ok":
+        st.caption(f"Saved to GitHub branch 'data' ({len(pers.get('files', []))} files updated), so results survive restarts.")
+    elif pers.get("status") == "skipped":
+        st.caption("Not saved to GitHub (no GITHUB_TOKEN): results are kept only until the app restarts.")
+    elif pers.get("status") == "failed":
+        st.caption(f"Saving to GitHub failed: {pers.get('error')}")
     sup = (lr.get("collect") or {}).get("seed_rows_superseded_by_live")
     if sup:
         st.caption(f"{sup} manual seed rows were replaced by live rows describing the same posts.")

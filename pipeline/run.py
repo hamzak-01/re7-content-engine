@@ -15,7 +15,7 @@ import time
 import traceback
 from datetime import datetime, timezone
 
-from . import store, analyse, create
+from . import store, analyse, create, persist
 from .collect import telegram, apify, csv_import
 
 CONFIG = {
@@ -60,6 +60,7 @@ def collect_all(df, live: bool) -> tuple[object, dict]:
 def main(live: bool = True) -> dict:
     started = datetime.now(timezone.utc)
     summary: dict = {"started": started.isoformat(timespec="seconds"), "mode": "live" if live else "offline"}
+    summary["pull"] = persist.pull()
     df = store.load()
     try:
         df, summary["collect"] = collect_all(df, live)
@@ -95,6 +96,9 @@ def main(live: bool = True) -> dict:
     hist = os.path.join(store.OUTPUT, "run_history.jsonl")
     with open(hist, "a") as f:
         f.write(json.dumps({k: v for k, v in summary.items() if k != "trace"}) + "\n")
+    summary["persist"] = persist.push(f"run {summary['started'][:16]}")
+    with open(os.path.join(store.OUTPUT, "last_run.json"), "w") as f:
+        json.dump(summary, f, indent=2)
     return summary
 
 

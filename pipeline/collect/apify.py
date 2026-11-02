@@ -2,6 +2,7 @@
 so both are configurable and the field mapping is defensive."""
 from __future__ import annotations
 
+import json
 import os
 import re
 from datetime import datetime
@@ -59,8 +60,10 @@ def _date(v) -> str:
 
 
 def collect_x(handle: str, account: str, max_items: int = 60) -> list[Post]:
-    items = _run(X_ACTOR, {"twitterHandles": [handle.lstrip("@")], "maxItems": max_items, "maxTweets": max_items,
+    items = _run(X_ACTOR, {"twitterHandles": [handle.lstrip("@")], "maxItems": max_items,
                            "sort": "Latest", "includeSearchTerms": False})
+    if not isinstance(items, list):
+        raise RuntimeError(f"Apify X actor returned {type(items).__name__}: {str(items)[:160]}")
     posts = []
     for it in items:
         text = _first(it, "text", "full_text", "fullText", default="")
@@ -81,7 +84,8 @@ def collect_x(handle: str, account: str, max_items: int = 60) -> list[Post]:
                           is_reply=is_reply or is_rt, collected_via="apify_x"))
     posts = [p for p in posts if p.date]
     if not posts:
-        raise RuntimeError(f"Apify X actor {X_ACTOR} returned no usable posts for @{handle}")
+        sample = json.dumps(items[0], default=str)[:200] if items else "empty list"
+        raise RuntimeError(f"Apify X actor {X_ACTOR} returned {len(items)} items, none usable for @{handle}; first item: {sample}")
     return posts
 
 
