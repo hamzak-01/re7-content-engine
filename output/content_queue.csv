@@ -1,30 +1,5 @@
-day,time_uk,account,channel,format,text,source_title,source_url,hypothesis,experiment_tag,compliance_flag,status
-Monday,08:30,Re7 Capital,x,image,"The $6.3bn Binance exploit was the largest crypto hack on record. Approximately $2.8bn was rapidly frozen by Circle, Tether and other issuers.
+day,time_uk,account,channel,format,text,source_title,source_url,hypothesis,experiment_tag,distribution_note,repromotion,compliance_flag,status
+Monday,13:00,Re7 Capital,x,image (single-finding card: $6.3bn exploited vs approximately $2.8bn frozen),"The $6.3bn Binance exploit was the largest crypto hack on record. Approximately $2.8bn was frozen by Circle, Tether and other issuers.
 
-Our view in The Weekly: the headline figure materially overstates the damage.",The Weekly: The Binance Hack and What Comes Next,https://re7.capital/blog/9c4a3d8e-83d6-4b4e-af89-5e33ed3215ed,Weekly reshaped from market_commentary (return_on_effort 0.3 on x) into a research-desk image card that names partners (names_partner 1.99 vs 0.97; image format 1.8); suggest tagging Circle and Tether,wk45-x-weekly-image-partner,,draft - needs review
-Tuesday,09:00,Re7 Capital,linkedin,video,"Corporate treasury may be where tokenised real-world assets become real.
-
-On the latest Crypto Minutes on Bloomberg TV, Re7 Founder & CIO Evgeny Gokhberg hosts Yuval Rooz, Co-Founder and CEO of Digital Asset, the company behind Canton Network, on the next phase of finance moving on-chain.
-
-For Yuval, RWAs have always been the most compelling use case on-chain, and corporate treasury is where that becomes real. His expectation is specific:
-
-""You're going to start seeing corporates on Canton very soon using yield products that can be liquidated in real time into tokenized deposits or stablecoins. They'll start doing treasury management using on-chain finance.""
-
-For allocators, the question this raises is operational rather than conceptual: what corporate treasury functions need in order to move on-chain, from real-time liquidity into tokenized deposits or stablecoins to the infrastructure that connects them.
-
-The full episode is linked in the comments.",The Weekly: The Binance Hack and What Comes Next,https://re7.capital/blog/9c4a3d8e-83d6-4b4e-af89-5e33ed3215ed,"media_appearance (return_on_effort 1.7 on linkedin) + names_person (2.01 vs 1.17) in video format (mean_index 2.86); suggest tagging Yuval Rooz, Digital Asset and Canton Network",wk45-li-media-person-video,quotes yields/performance; names a third party,draft - needs review
-Wednesday,12:00,Re7 Labs,x,image,"Frax USDai Ecosystem Vault, now on Mainnet.
-
-Curated by Re7 Labs with Frax Finance and USD.AI, the vault deploys frxUSD across curated opportunities in the USDai ecosystem.",The Weekly: The Binance Hack and What Comes Next,https://re7.capital/blog/9c4a3d8e-83d6-4b4e-af89-5e33ed3215ed,labs_product (return_on_effort 2.61 on x) naming Frax and USDai (who_drives_it mean_index 6.08 each); suggest tagging Frax Finance and USD.AI,wk45-x-labs-vault-partner,names a third party,draft - needs review
-Thursday,16:00,Re7 Capital,x,video,"Bringing corporate treasury on-chain: Evgeny Gokhberg hosts Yuval Rooz, Co-Founder and CEO of Digital Asset, the company behind Canton Network, on Crypto Minutes, Bloomberg TV.
-
-On why corporate treasury is where RWAs become real.",The Weekly: The Binance Hack and What Comes Next,https://re7.capital/blog/9c4a3d8e-83d6-4b4e-af89-5e33ed3215ed,"media_appearance (mean_index 3.85 on x) + names_person (1.92 vs 1.44) in video format (3.18); suggest tagging @evgeny_re7, @Bloomberg, Yuval Rooz, Digital Asset, Canton Network",wk45-x-media-person-video,names a third party,draft - needs review
-Friday,09:00,Re7 Capital,x,image,"A Framework for Decomposing DeFi Risk in the Age of AI.
-
-New institutional report with Clear Street, led by Evgeny Gokhberg: exposure broken into chain, protocol and asset layers, and how AI is reshaping risk monitoring.",The Weekly: The Binance Hack and What Comes Next,https://re7.capital/blog/9c4a3d8e-83d6-4b4e-af89-5e33ed3215ed,research_report (mean_index 2.21 on x) + names_partner (1.99 vs 0.97) as an image card (1.8); suggest tagging Clear Street and @evgeny_re7,wk45-x-report-partner-image,names a third party,draft - needs review
-Friday,12:00,Re7 Labs,telegram,link,"Re7 week in review:
-- Re7 Labs launched a Frax USDai Ecosystem Vault on Mainnet with Frax Finance and USD.AI, deploying frxUSD in the USDai ecosystem.
-- Binance hot wallet incident: Re7 curated vaults have no exposure; vault withdrawals are working as normal.
-- The Weekly: approximately $2.8bn of the $6.3bn Binance exploit frozen by Circle, Tether and other issuers.
-- New report with Clear Street: A Framework for Decomposing DeFi Risk in the Age of AI.
-- Crypto Minutes, Bloomberg TV: Evgeny Gokhberg with Yuval Rooz of Digital Asset.",Binance hot wallet incident: Re7 Labs update,https://x.com/Re7Labs/status/2116174949333311546,labs_product leads (return_on_effort 1.35 on telegram) + names_partner (1.37 vs 0.86) in link format (1.32); Weekly reduced to one partner-named bullet given market_commentary 0.83,wk45-tg-labs-partner-summary,names a third party,draft - needs review
+Our read: the headline figure materially overstates the damage. [link]",The Weekly: The Binance Hack and What Comes Next,https://re7.capital/blog/9c4a3d8e-83d6-4b4e-af89-5e33ed3215ed,"Market commentary is the weakest X theme (return on effort 0.30), so this reshapes it into one finding on an image card and names partners, because posts naming partners score 1.98 against 1.03 and images average 1.80 against 0.83 for text.",wk45-x-weekly-finding,Posted by @Re7Capital. Tag Circle and Tether only if the card shows their names. Ask @evgeny_re7 to quote-post with one line of his own view.,new angle on the 2 Nov Weekly,,draft - needs review
+Tuesday,12:30,Re7 Capital,x,video (short clip from the Crypto Minutes episode),"Tokenized corporate treasury is the RWA debate to watch. Yuval Rooz (Digital Asset, Canton Network) on Crypto Minutes, Bloomberg TV: ""They'll start doing treasury management using on-chain finance."" [link]",The Weekly: The Binance Hack and What Comes Next,https://re7.capital/blog/9c4a3d8e-83d6-4b4e-af89-5e33ed3215ed,"Media appearances are the strongest X theme (mean index 3.85) and video is the strongest X format (3.18), so this cuts a clip that names a guest and partner and ties it to the live RWA conversation.",wk45-x-pov-rwa-treasury-clip,"Posted by @Re7Capital. Tag @YuvalRooz, Digital Asset, Canton Network and @Bloomberg. Ask @evgeny_re7 and the Digital Asset team to reshare.",new angle on the 27 Oct Crypto Minutes episode with Yuval Rooz,names a third party,draft - needs review
