@@ -64,6 +64,7 @@ def push(message: str = "pipeline run") -> dict:
                 body["sha"] = cur.json()["sha"]
             requests.put(url, headers=_headers(), json=body, timeout=30).raise_for_status()
             report["files"].append(rel)
+        _write_marker({"status": "ok", "files": report["files"], "reason": "after push"})
     except Exception as e:  # noqa: BLE001
         report = {"status": "failed", "error": str(e)[:200]}
     return report
@@ -92,13 +93,37 @@ def _fetch(rel: str) -> bytes | None:
     return None
 
 
+def _rows(rel: str = "data/posts.csv") -> int:
+    path = os.path.join(ROOT, rel)
+    if not os.path.exists(path):
+        return 0
+    with open(path, "rb") as f:
+        return max(sum(1 for _ in f) - 1, 0)
+
+
+def _write_marker(report: dict) -> None:
+    marker = os.path.join(ROOT, "output", ".pulled")
+    os.makedirs(os.path.dirname(marker), exist_ok=True)
+    report = {**report, "rows": _rows()}
+    open(marker, "w").write(json.dumps(report))
+
+
 def pull() -> dict:
     """Fetch the latest committed data/outputs from the data branch, once per app session.
-    If nothing could be fetched the marker is not written, so the next rerun tries again."""
+
+    The host resets files tracked in `main` on every redeploy but leaves untracked files
+    (such as the marker) alone, so the marker also records how many posts the single source
+    held; if it has shrunk since, something reset it and we pull again. If nothing could be
+    fetched the marker is not written, so the next rerun tries again."""
     marker = os.path.join(ROOT, "output", ".pulled")
     if os.path.exists(marker):
-        return {"status": "skipped", "reason": "already pulled this session"}
-    report = {"status": "ok", "files": []}
+        try:
+            seen = json.load(open(marker)).get("rows", 0)
+        except Exception:  # noqa: BLE001
+            seen = 0
+        if _rows() >= seen:
+            return {"status": "skipped", "reason": "already pulled this session"}
+    report = {"status": "ok", "files": [], "reason": "single source was reset; reloading" if os.path.exists(marker) else ""}
     try:
         for rel in FILES:
             content = _fetch(rel)
@@ -110,8 +135,7 @@ def pull() -> dict:
                 f.write(content)
             report["files"].append(rel)
         if report["files"]:
-            os.makedirs(os.path.dirname(marker), exist_ok=True)
-            open(marker, "w").write(json.dumps(report))
+            _write_marker(report)
         else:
             report = {"status": "empty", "reason": "no files found on the data branch yet"}
     except Exception as e:  # noqa: BLE001

@@ -30,7 +30,15 @@ def _client():
 
 
 WARNINGS: list[str] = []
-_NO_THINKING_PARAM: dict = {}  # non-fatal problems from the last run, surfaced in the run log
+
+
+def _writing_settings(model: str) -> dict:
+    low = {"output_config": {"effort": "low"}}
+    if "sonnet" in model:
+        return {"thinking": {"type": "between_tools"}, **low}
+    if "haiku" in model:
+        return {"thinking": {"type": "disabled"}, **low}
+    return low  # opus and anything else: cannot disable; keep effort low  # non-fatal problems from the last run, surfaced in the run log
 
 
 def complete(system: str, user: str, max_tokens: int = 4000, temperature: float | None = None) -> str:
@@ -42,20 +50,27 @@ def complete(system: str, user: str, max_tokens: int = 4000, temperature: float 
     for model in MODELS:
         for attempt in range(2):
             try:
-                kwargs = dict(model=model, max_tokens=max_tokens, system=system,
+                kwargs = dict(model=model, max_tokens=max(max_tokens, 12000), system=system,
                               messages=[{"role": "user", "content": user}])
                 if temperature is not None and "temperature" in _CREATE_PARAMS:
                     kwargs["temperature"] = temperature
                 # These are writing calls, not reasoning calls. Current models think by default and
                 # on a long input the thinking can use the whole token budget, returning no text at all.
-                if "thinking" in _CREATE_PARAMS and not _NO_THINKING_PARAM.get(model):
-                    kwargs["thinking"] = {"type": "disabled"}
+                # Each model family has its own way of being told not to (see docs: thinking):
+                #   Sonnet 5.5 rejects "disabled" and takes "between_tools"; Haiku 5.5 takes "disabled";
+                #   Opus 5.5 cannot turn thinking off, so it gets a low effort and a large budget.
+                for k, v in _writing_settings(model).items():
+                    if k in _CREATE_PARAMS:
+                        kwargs[k] = v
                 try:
                     msg = client.messages.create(**kwargs)
                 except Exception as e:  # noqa: BLE001
-                    if "thinking" in kwargs and "thinking" in str(e).lower():
-                        _NO_THINKING_PARAM[model] = True  # this model rejects the flag; go without it
-                        kwargs.pop("thinking")
+                    err = str(e).lower()
+                    if ("thinking" in err or "effort" in err or "output_config" in err) and (
+                            "thinking" in kwargs or "output_config" in kwargs):
+                        kwargs.pop("thinking", None)
+                        kwargs.pop("output_config", None)
+                        kwargs["max_tokens"] = max(max_tokens, 16000)
                         msg = client.messages.create(**kwargs)
                     else:
                         raise
