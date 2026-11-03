@@ -1,5 +1,5 @@
 {
-  "started": "2026-11-03T00:14:04+00:00",
+  "started": "2026-11-03T00:26:00+00:00",
   "mode": "live",
   "pull": {
     "status": "skipped",
@@ -9,7 +9,7 @@
     "seed": {
       "status": "ok",
       "fetched": 60,
-      "new": 53,
+      "new": 0,
       "seconds": 0.0
     },
     "csv_import": {
@@ -21,57 +21,49 @@
     "linkedin:apify": {
       "status": "ok",
       "fetched": 100,
-      "new": 0,
-      "seconds": 6.8
+      "new": 100,
+      "seconds": 6.2
     },
     "telegram": {
       "status": "ok",
       "fetched": 80,
-      "new": 0,
-      "seconds": 2.9
+      "new": 80,
+      "seconds": 2.8
     },
     "x:Re7Capital": {
       "status": "ok",
       "fetched": 60,
-      "new": 0,
-      "seconds": 4.4
+      "new": 60,
+      "seconds": 4.0
     },
     "x:Re7Labs": {
       "status": "ok",
       "fetched": 60,
-      "new": 0,
-      "seconds": 5.2
+      "new": 60,
+      "seconds": 4.8
     },
     "seed_rows_superseded_by_live": 24
   },
   "posts_total": 307,
   "analyse": {
-    "labelled_now": 0,
+    "labelled_now": 307,
     "labelled_total": 307,
     "channels": {
       "linkedin": 84,
-      "telegram": 80,
+      "telegram": 79,
       "x": 62
     },
     "errors": []
   },
   "create": {
-    "posts_generated": 2,
-    "flagged_for_compliance": 1
+    "posts_generated": 3,
+    "flagged_for_compliance": 2,
+    "warnings": [
+      "used a cut-off reply; claude-sonnet-5-5: empty reply (stop_reason=max_tokens, input_chars=27025) | claude-haiku-5-5: empty reply (stop_reason=max_tokens, input_chars=27025) | claude-opus-5-5: reply st",
+      "used a cut-off reply; claude-sonnet-5-5: empty reply (stop_reason=max_tokens, input_chars=26873) | claude-haiku-5-5: empty reply (stop_reason=max_tokens, input_chars=26873) | claude-opus-5-5: reply st"
+    ]
   },
   "status": "ok",
-  "finished": "2026-11-03T00:16:21+00:00",
-  "seconds": 136.7,
-  "persist": {
-    "status": "ok",
-    "files": [
-      "data/posts.csv",
-      "output/last_run.json",
-      "output/insights.json",
-      "output/memo.md",
-      "output/content_queue.csv",
-      "output/run_history.jsonl",
-      "output/sources_cache.json"
-    ]
-  }
+  "finished": "2026-11-03T00:29:34+00:00",
+  "seconds": 213.4
 }
