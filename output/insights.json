@@ -7,22 +7,22 @@
       "by_theme": [
         {
           "label": "award_recognition",
-          "n": 4,
-          "mean_index": 2.69,
+          "n": 3,
+          "mean_index": 2.71,
           "median_views": null,
           "directional": false
         },
         {
           "label": "media_appearance",
-          "n": 11,
-          "mean_index": 2.42,
+          "n": 13,
+          "mean_index": 2.33,
           "median_views": null,
           "directional": false
         },
         {
           "label": "research_report",
-          "n": 4,
-          "mean_index": 1.97,
+          "n": 5,
+          "mean_index": 1.86,
           "median_views": null,
           "directional": false
         },
@@ -34,15 +34,15 @@
           "directional": false
         },
         {
-          "label": "other",
-          "n": 4,
-          "mean_index": 1.36,
+          "label": "hiring_culture",
+          "n": 3,
+          "mean_index": 1.19,
           "median_views": null,
           "directional": false
         },
         {
           "label": "market_commentary",
-          "n": 37,
+          "n": 38,
           "mean_index": 0.79,
           "median_views": null,
           "directional": false
@@ -63,15 +63,15 @@
         },
         {
           "label": "labs_product",
-          "n": 2,
-          "mean_index": 1.38,
+          "n": 1,
+          "mean_index": 2.0,
           "median_views": null,
           "directional": true
         },
         {
-          "label": "hiring_culture",
-          "n": 2,
-          "mean_index": 1.21,
+          "label": "other",
+          "n": 1,
+          "mean_index": 1.72,
           "median_views": null,
           "directional": true
         }
@@ -106,9 +106,9 @@
           "n_with": 19
         },
         "names_partner": {
-          "with": 1.96,
-          "without": 0.84,
-          "n_with": 39
+          "with": 2.01,
+          "without": 0.85,
+          "n_with": 37
         }
       },
       "top_posts": [
@@ -136,7 +136,7 @@
       ],
       "bottom_themes": [
         "labs_product",
-        "hiring_culture"
+        "other"
       ],
       "by_account": [
         {
@@ -149,21 +149,21 @@
       ]
     },
     "telegram": {
-      "posts": 80,
+      "posts": 79,
       "median_engagement_score": 418.0,
       "by_theme": [
         {
           "label": "labs_product",
           "n": 33,
-          "mean_index": 1.52,
+          "mean_index": 1.48,
           "median_views": 670,
           "directional": false
         },
         {
           "label": "market_commentary",
-          "n": 37,
+          "n": 36,
           "mean_index": 0.94,
-          "median_views": 369,
+          "median_views": 379,
           "directional": false
         },
         {
@@ -176,21 +176,21 @@
         {
           "label": "chart_data",
           "n": 2,
-          "mean_index": 0.91,
+          "mean_index": 0.89,
           "median_views": 378,
           "directional": true
         },
         {
           "label": "media_appearance",
           "n": 1,
-          "mean_index": 0.84,
+          "mean_index": 0.82,
           "median_views": 352,
           "directional": true
         },
         {
           "label": "research_report",
           "n": 2,
-          "mean_index": 0.59,
+          "mean_index": 0.57,
           "median_views": 246,
           "directional": true
         }
@@ -199,15 +199,15 @@
         {
           "label": "link",
           "n": 6,
-          "mean_index": 1.32,
+          "mean_index": 1.28,
           "median_views": 497,
           "directional": false
         },
         {
           "label": "image",
-          "n": 70,
-          "mean_index": 1.17,
-          "median_views": 431,
+          "n": 69,
+          "mean_index": 1.16,
+          "median_views": 434,
           "directional": false
         },
         {
@@ -220,14 +220,14 @@
       ],
       "by_attribute": {
         "names_person": {
-          "with": 0.84,
-          "without": 1.13,
+          "with": 0.82,
+          "without": 1.11,
           "n_with": 1
         },
         "names_partner": {
-          "with": 1.4,
+          "with": 1.35,
           "without": 0.84,
-          "n_with": 40
+          "n_with": 41
         }
       },
       "top_posts": [
@@ -235,21 +235,21 @@
           "date": "2025-10-31",
           "theme": "labs_product",
           "format": "image",
-          "index": 4.0,
+          "index": 3.89,
           "text": "Re7 Labs Alpha: Unlock Exclusive Yields Re7 provides access to some of the best yields across DeFi. Explore and optimize your strategies wit"
         },
         {
           "date": "2025-11-04",
           "theme": "market_commentary",
           "format": "image",
-          "index": 3.3,
+          "index": 3.22,
           "text": "Tipping Points In this edition of The Weekly, we cover: \ud83d\udd39 Crypto valuations are at \u2018tipping point levels\u2019 \ud83d\udd39 Near-term drivers have been shor"
         },
         {
           "date": "2025-10-24",
           "theme": "labs_product",
           "format": "image",
-          "index": 3.04,
+          "index": 2.96,
           "text": "Re7 Labs Alpha: Unlock Exclusive Yields Re7 provides access to some of the best yields across DeFi. Explore and optimize your strategies wit"
         }
       ],
@@ -260,10 +260,10 @@
       "by_account": [
         {
           "account": "Re7 Labs",
-          "n": 80,
-          "mean_index": 1.12,
-          "median_score": 418.0,
-          "median_views": 437
+          "n": 79,
+          "mean_index": 1.11,
+          "median_score": 429.0,
+          "median_views": 440
         }
       ]
     },
@@ -288,7 +288,7 @@
         {
           "label": "labs_product",
           "n": 13,
-          "mean_index": 2.02,
+          "mean_index": 1.97,
           "median_views": 1521,
           "directional": false
         },
@@ -328,17 +328,17 @@
           "directional": true
         },
         {
+          "label": "partner_announcement",
+          "n": 2,
+          "mean_index": 0.59,
+          "median_views": 1453,
+          "directional": true
+        },
+        {
           "label": "award_recognition",
           "n": 1,
           "mean_index": 0.3,
           "median_views": 1216,
-          "directional": true
-        },
-        {
-          "label": "partner_announcement",
-          "n": 2,
-          "mean_index": 0.24,
-          "median_views": 1112,
           "directional": true
         }
       ],
@@ -374,14 +374,14 @@
       ],
       "by_attribute": {
         "names_person": {
-          "with": 2.02,
-          "without": 1.42,
-          "n_with": 15
+          "with": 1.92,
+          "without": 1.44,
+          "n_with": 16
         },
         "names_partner": {
-          "with": 1.98,
-          "without": 1.03,
-          "n_with": 35
+          "with": 1.99,
+          "without": 0.97,
+          "n_with": 36
         }
       },
       "top_posts": [
@@ -408,8 +408,8 @@
         }
       ],
       "bottom_themes": [
-        "award_recognition",
-        "partner_announcement"
+        "partner_announcement",
+        "award_recognition"
       ],
       "by_account": [
         {
@@ -429,6 +429,7 @@
       ]
     }
   },
+  "too_new_to_score": 1,
   "second_order": {
     "effort_vs_return": {
       "linkedin": [
@@ -443,30 +444,48 @@
         },
         {
           "theme": "award_recognition",
-          "n": 4,
-          "share_of_posts": 0.048,
-          "share_of_engagement": 0.094,
-          "return_on_effort": 1.97,
+          "n": 3,
+          "share_of_posts": 0.036,
+          "share_of_engagement": 0.071,
+          "return_on_effort": 1.99,
           "verdict": "outperforms",
           "directional": false
         },
         {
           "theme": "media_appearance",
-          "n": 11,
-          "share_of_posts": 0.131,
-          "share_of_engagement": 0.233,
-          "return_on_effort": 1.78,
+          "n": 13,
+          "share_of_posts": 0.155,
+          "share_of_engagement": 0.265,
+          "return_on_effort": 1.71,
           "verdict": "outperforms",
           "directional": false
         },
         {
+          "theme": "labs_product",
+          "n": 1,
+          "share_of_posts": 0.012,
+          "share_of_engagement": 0.017,
+          "return_on_effort": 1.47,
+          "verdict": "outperforms",
+          "directional": true
+        },
+        {
           "theme": "research_report",
-          "n": 4,
-          "share_of_posts": 0.048,
-          "share_of_engagement": 0.069,
-          "return_on_effort": 1.44,
+          "n": 5,
+          "share_of_posts": 0.06,
+          "share_of_engagement": 0.081,
+          "return_on_effort": 1.37,
           "verdict": "outperforms",
           "directional": false
+        },
+        {
+          "theme": "other",
+          "n": 1,
+          "share_of_posts": 0.012,
+          "share_of_engagement": 0.015,
+          "return_on_effort": 1.27,
+          "verdict": "pulls its weight",
+          "directional": true
         },
         {
           "theme": "speaking_event",
@@ -478,37 +497,19 @@
           "directional": false
         },
         {
-          "theme": "labs_product",
-          "n": 2,
-          "share_of_posts": 0.024,
-          "share_of_engagement": 0.024,
-          "return_on_effort": 1.01,
-          "verdict": "pulls its weight",
-          "directional": true
-        },
-        {
-          "theme": "other",
-          "n": 4,
-          "share_of_posts": 0.048,
-          "share_of_engagement": 0.048,
-          "return_on_effort": 1.0,
+          "theme": "hiring_culture",
+          "n": 3,
+          "share_of_posts": 0.036,
+          "share_of_engagement": 0.031,
+          "return_on_effort": 0.88,
           "verdict": "pulls its weight",
           "directional": false
         },
         {
-          "theme": "hiring_culture",
-          "n": 2,
-          "share_of_posts": 0.024,
-          "share_of_engagement": 0.021,
-          "return_on_effort": 0.89,
-          "verdict": "pulls its weight",
-          "directional": true
-        },
-        {
           "theme": "market_commentary",
-          "n": 37,
-          "share_of_posts": 0.44,
-          "share_of_engagement": 0.255,
+          "n": 38,
+          "share_of_posts": 0.452,
+          "share_of_engagement": 0.262,
           "return_on_effort": 0.58,
           "verdict": "under-delivers",
           "directional": false
@@ -527,18 +528,18 @@
         {
           "theme": "labs_product",
           "n": 33,
-          "share_of_posts": 0.412,
+          "share_of_posts": 0.418,
           "share_of_engagement": 0.559,
-          "return_on_effort": 1.35,
+          "return_on_effort": 1.34,
           "verdict": "outperforms",
           "directional": false
         },
         {
           "theme": "market_commentary",
-          "n": 37,
-          "share_of_posts": 0.463,
-          "share_of_engagement": 0.386,
-          "return_on_effort": 0.83,
+          "n": 36,
+          "share_of_posts": 0.456,
+          "share_of_engagement": 0.385,
+          "return_on_effort": 0.85,
           "verdict": "pulls its weight",
           "directional": false
         },
@@ -547,8 +548,8 @@
           "n": 2,
           "share_of_posts": 0.025,
           "share_of_engagement": 0.02,
-          "return_on_effort": 0.81,
-          "verdict": "pulls its weight",
+          "return_on_effort": 0.8,
+          "verdict": "under-delivers",
           "directional": true
         },
         {
@@ -556,7 +557,7 @@
           "n": 1,
           "share_of_posts": 0.013,
           "share_of_engagement": 0.009,
-          "return_on_effort": 0.75,
+          "return_on_effort": 0.74,
           "verdict": "under-delivers",
           "directional": true
         },
@@ -572,7 +573,7 @@
         {
           "theme": "other",
           "n": 5,
-          "share_of_posts": 0.062,
+          "share_of_posts": 0.063,
           "share_of_engagement": 0.012,
           "return_on_effort": 0.2,
           "verdict": "under-delivers",
@@ -584,8 +585,8 @@
           "theme": "labs_product",
           "n": 13,
           "share_of_posts": 0.21,
-          "share_of_engagement": 0.54,
-          "return_on_effort": 2.57,
+          "share_of_engagement": 0.525,
+          "return_on_effort": 2.5,
           "verdict": "outperforms",
           "directional": false
         },
@@ -626,6 +627,15 @@
           "directional": false
         },
         {
+          "theme": "partner_announcement",
+          "n": 2,
+          "share_of_posts": 0.032,
+          "share_of_engagement": 0.022,
+          "return_on_effort": 0.7,
+          "verdict": "under-delivers",
+          "directional": true
+        },
+        {
           "theme": "award_recognition",
           "n": 1,
           "share_of_posts": 0.016,
@@ -660,15 +670,6 @@
           "return_on_effort": 0.3,
           "verdict": "under-delivers",
           "directional": false
-        },
-        {
-          "theme": "partner_announcement",
-          "n": 2,
-          "share_of_posts": 0.032,
-          "share_of_engagement": 0.007,
-          "return_on_effort": 0.23,
-          "verdict": "under-delivers",
-          "directional": true
         }
       ]
     },
@@ -679,7 +680,6 @@
           "date": "2026-11-02",
           "by_channel": {
             "linkedin": 0.62,
-            "telegram": 0.12,
             "x": 2.36
           }
         },
@@ -697,7 +697,7 @@
           "date": "2026-10-19",
           "by_channel": {
             "linkedin": 0.76,
-            "telegram": 0.49,
+            "telegram": 0.48,
             "x": 0.73
           }
         },
@@ -706,7 +706,7 @@
           "date": "2026-10-13",
           "by_channel": {
             "linkedin": 2.97,
-            "telegram": 0.59,
+            "telegram": 0.57,
             "x": 3.09
           }
         },
@@ -715,7 +715,7 @@
           "date": "2026-10-12",
           "by_channel": {
             "linkedin": 0.14,
-            "telegram": 0.43,
+            "telegram": 0.42,
             "x": 0.0
           }
         },
@@ -724,7 +724,7 @@
           "date": "2026-10-05",
           "by_channel": {
             "linkedin": 0.34,
-            "telegram": 0.51,
+            "telegram": 0.5,
             "x": 0.36
           }
         },
@@ -733,7 +733,7 @@
           "date": "2026-09-28",
           "by_channel": {
             "linkedin": 0.21,
-            "telegram": 0.45,
+            "telegram": 0.44,
             "x": 0.0
           }
         },
@@ -742,7 +742,7 @@
           "date": "2026-09-21",
           "by_channel": {
             "linkedin": 0.55,
-            "telegram": 0.47,
+            "telegram": 0.46,
             "x": 1.64
           }
         }
@@ -750,8 +750,8 @@
       "theme_by_channel": {
         "award_recognition": {
           "linkedin": {
-            "mean_index": 2.69,
-            "n": 4
+            "mean_index": 2.71,
+            "n": 3
           },
           "x": {
             "mean_index": 0.3,
@@ -764,7 +764,7 @@
             "n": 12
           },
           "telegram": {
-            "mean_index": 0.91,
+            "mean_index": 0.89,
             "n": 2
           },
           "x": {
@@ -774,8 +774,8 @@
         },
         "hiring_culture": {
           "linkedin": {
-            "mean_index": 1.21,
-            "n": 2
+            "mean_index": 1.19,
+            "n": 3
           },
           "x": {
             "mean_index": 2.18,
@@ -784,26 +784,26 @@
         },
         "labs_product": {
           "linkedin": {
-            "mean_index": 1.38,
-            "n": 2
+            "mean_index": 2.0,
+            "n": 1
           },
           "telegram": {
-            "mean_index": 1.52,
+            "mean_index": 1.48,
             "n": 33
           },
           "x": {
-            "mean_index": 2.02,
+            "mean_index": 1.97,
             "n": 13
           }
         },
         "market_commentary": {
           "linkedin": {
             "mean_index": 0.79,
-            "n": 37
+            "n": 38
           },
           "telegram": {
             "mean_index": 0.94,
-            "n": 37
+            "n": 36
           },
           "x": {
             "mean_index": 0.82,
@@ -812,11 +812,11 @@
         },
         "media_appearance": {
           "linkedin": {
-            "mean_index": 2.42,
-            "n": 11
+            "mean_index": 2.33,
+            "n": 13
           },
           "telegram": {
-            "mean_index": 0.84,
+            "mean_index": 0.82,
             "n": 1
           },
           "x": {
@@ -826,8 +826,8 @@
         },
         "other": {
           "linkedin": {
-            "mean_index": 1.36,
-            "n": 4
+            "mean_index": 1.72,
+            "n": 1
           },
           "telegram": {
             "mean_index": 0.22,
@@ -844,17 +844,17 @@
             "n": 1
           },
           "x": {
-            "mean_index": 0.24,
+            "mean_index": 0.59,
             "n": 2
           }
         },
         "research_report": {
           "linkedin": {
-            "mean_index": 1.96,
-            "n": 4
+            "mean_index": 1.86,
+            "n": 5
           },
           "telegram": {
-            "mean_index": 0.59,
+            "mean_index": 0.57,
             "n": 2
           },
           "x": {
@@ -876,12 +876,12 @@
     },
     "who_drives_it": [
       {
-        "entity": "USDai",
+        "entity": "Frax",
         "mentions": 2,
         "mean_index": 6.08
       },
       {
-        "entity": "Frax",
+        "entity": "USDai",
         "mentions": 2,
         "mean_index": 6.08
       },
@@ -906,9 +906,9 @@
         "mean_index": 3.91
       },
       {
-        "entity": "Bloomberg TV",
-        "mentions": 7,
-        "mean_index": 3.75
+        "entity": "BCB Group",
+        "mentions": 6,
+        "mean_index": 3.47
       },
       {
         "entity": "Tim Renew",
@@ -916,12 +916,12 @@
         "mean_index": 3.47
       },
       {
-        "entity": "BCB Group",
-        "mentions": 6,
-        "mean_index": 3.47
+        "entity": "Bloomberg TV",
+        "mentions": 8,
+        "mean_index": 3.44
       },
       {
-        "entity": "Blockchain.com",
+        "entity": "David Schamis",
         "mentions": 2,
         "mean_index": 3.24
       }
@@ -935,17 +935,17 @@
       "labs_product": {
         "n": 13,
         "median_views": 1521,
-        "likes_per_1000_views": 15.4
+        "likes_per_1000_views": 15.3
+      },
+      "partner_announcement": {
+        "n": 2,
+        "median_views": 1453,
+        "likes_per_1000_views": 2.7
       },
       "award_recognition": {
         "n": 1,
         "median_views": 1216,
         "likes_per_1000_views": 3.3
-      },
-      "partner_announcement": {
-        "n": 2,
-        "median_views": 1112,
-        "likes_per_1000_views": 2.0
       },
       "research_report": {
         "n": 4,
@@ -1025,42 +1025,37 @@
         {
           "week_starting": "2026-09-14",
           "posts": 3,
-          "mean_index": 0.52
+          "mean_index": 0.51
         },
         {
           "week_starting": "2026-09-21",
           "posts": 2,
-          "mean_index": 0.52
+          "mean_index": 0.51
         },
         {
           "week_starting": "2026-09-28",
           "posts": 2,
-          "mean_index": 0.52
+          "mean_index": 0.51
         },
         {
           "week_starting": "2026-10-05",
           "posts": 1,
-          "mean_index": 0.51
+          "mean_index": 0.5
         },
         {
           "week_starting": "2026-10-12",
           "posts": 2,
-          "mean_index": 0.51
+          "mean_index": 0.49
         },
         {
           "week_starting": "2026-10-19",
           "posts": 1,
-          "mean_index": 0.49
+          "mean_index": 0.48
         },
         {
           "week_starting": "2026-10-26",
           "posts": 1,
           "mean_index": 0.33
-        },
-        {
-          "week_starting": "2026-11-02",
-          "posts": 1,
-          "mean_index": 0.12
         }
       ],
       "x": [
@@ -1137,33 +1132,33 @@
       "telegram": [
         {
           "day": "Monday",
-          "n": 29,
+          "n": 28,
           "mean_index": 0.82
         },
         {
           "day": "Tuesday",
           "n": 19,
-          "mean_index": 1.06
+          "mean_index": 1.03
         },
         {
           "day": "Wednesday",
           "n": 7,
-          "mean_index": 0.98
+          "mean_index": 0.96
         },
         {
           "day": "Thursday",
           "n": 12,
-          "mean_index": 1.36
+          "mean_index": 1.33
         },
         {
           "day": "Friday",
           "n": 11,
-          "mean_index": 1.81
+          "mean_index": 1.76
         },
         {
           "day": "Saturday",
           "n": 2,
-          "mean_index": 1.42
+          "mean_index": 1.38
         }
       ],
       "x": [
@@ -1255,7 +1250,7 @@
             "date": "2025-10-31",
             "theme": "labs_product",
             "format": "image",
-            "index": 4.0,
+            "index": 3.89,
             "views": 1670,
             "text": "Re7 Labs Alpha: Unlock Exclusive Yields Re7 provides access to some of the best yields across DeFi. Explore and optimize your strategies with top-tier APYs acro"
           },
@@ -1263,7 +1258,7 @@
             "date": "2025-11-04",
             "theme": "market_commentary",
             "format": "image",
-            "index": 3.3,
+            "index": 3.22,
             "views": 1380,
             "text": "Tipping Points In this edition of The Weekly, we cover: \ud83d\udd39 Crypto valuations are at \u2018tipping point levels\u2019 \ud83d\udd39 Near-term drivers have been shortages of dollars and"
           },
@@ -1271,7 +1266,7 @@
             "date": "2025-10-24",
             "theme": "labs_product",
             "format": "image",
-            "index": 3.04,
+            "index": 2.96,
             "views": 1270,
             "text": "Re7 Labs Alpha: Unlock Exclusive Yields Re7 provides access to some of the best yields across DeFi. Explore and optimize your strategies with top-tier APYs acro"
           }
@@ -1286,20 +1281,20 @@
             "text": "Re7 Alpha pinned a photo"
           },
           {
-            "date": "2026-07-06",
-            "theme": "other",
-            "format": "text",
-            "index": 0.0,
-            "views": null,
-            "text": "Channel name was changed to \u00ab Re7 Alpha \u00bb"
-          },
-          {
             "date": "2025-09-30",
             "theme": "other",
             "format": "text",
             "index": 0.0,
             "views": null,
             "text": "Re7 Alpha pinned a photo"
+          },
+          {
+            "date": "2026-07-06",
+            "theme": "other",
+            "format": "text",
+            "index": 0.0,
+            "views": null,
+            "text": "Channel name was changed to \u00ab Re7 Alpha \u00bb"
           }
         ]
       },
@@ -1332,12 +1327,12 @@
         ],
         "bottom": [
           {
-            "date": "2026-07-29",
-            "theme": "partner_announcement",
+            "date": "2026-07-30",
+            "theme": "chart_data",
             "format": "image",
             "index": 0.18,
-            "views": 453,
-            "text": "Proud to be named an ecosystem supporter of\n@ethereuminsti.\n\nRe7 remains fully committed to DeFi and to strengthening Ethereum's ecosystem \u2014 from building insti"
+            "views": 322,
+            "text": "Chart of the week.\n\nThere's always a bull market somewhere.\n\nRight now it's tokenised stocks. \n\nDaily volume: ~$0 in Jan \u2192 ~$33B/day by late July. \n\nOpen intere"
           },
           {
             "date": "2026-09-28",
