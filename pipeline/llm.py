@@ -29,10 +29,15 @@ def _client():
     return anthropic.Anthropic(api_key=key)
 
 
+WARNINGS: list[str] = []  # non-fatal problems from the last run, surfaced in the run log
+
+
 def complete(system: str, user: str, max_tokens: int = 4000, temperature: float | None = None) -> str:
+    """Return a complete reply. A reply that stops early (max_tokens, or a safety stop) is kept
+    as a fallback but the next model is tried first, so a cut-off memo or draft list is rare."""
     client = _client()
-    last = None
     attempts: list[str] = []
+    partial = ""
     for model in MODELS:
         for attempt in range(2):
             try:
@@ -42,18 +47,24 @@ def complete(system: str, user: str, max_tokens: int = 4000, temperature: float 
                     kwargs["temperature"] = temperature
                 msg = client.messages.create(**kwargs)
                 text = "".join(b.text for b in msg.content if getattr(b, "type", "") == "text")
-                if text.strip():
+                stop = getattr(msg, "stop_reason", "?")
+                if text.strip() and stop in ("end_turn", "stop_sequence"):
                     return text
-                last = RuntimeError(f"empty reply (stop_reason={getattr(msg, 'stop_reason', '?')}, "
-                                    f"blocks={[getattr(b, 'type', '?') for b in msg.content]}, input_chars={len(system) + len(user)})")
-                attempts.append(f"{model}: {last}")
-                break  # an empty reply will not improve on retry; try the next model
+                if text.strip():
+                    attempts.append(f"{model}: reply stopped early (stop_reason={stop}, {len(text)} chars)")
+                    if len(text) > len(partial):
+                        partial = text
+                else:
+                    attempts.append(f"{model}: empty reply (stop_reason={stop}, input_chars={len(system) + len(user)})")
+                break  # same input will stop the same way; try the next model
             except Exception as e:  # noqa: BLE001
-                last = e
                 attempts.append(f"{model}: {str(e)[:120]}")
                 if "not_found" in str(e).lower() or "404" in str(e):
                     break  # try the next model name
                 time.sleep(2 * (attempt + 1))
+    if partial:
+        WARNINGS.append("used a cut-off reply; " + " | ".join(attempts))
+        return partial
     raise RuntimeError("Claude API call failed; attempts: " + " | ".join(attempts))
 
 

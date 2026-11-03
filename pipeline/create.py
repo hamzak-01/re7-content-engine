@@ -62,6 +62,7 @@ def fetch_sources(df: pd.DataFrame | None = None, max_items: int = 3) -> list[di
                                   "note": "post text used; page not fetched"})
             if len(items) >= max_items + 2:
                 break
+    items = _dedupe_sources(items)
     if items:
         os.makedirs(OUTPUT, exist_ok=True)
         json.dump(items, open(cache, "w"), ensure_ascii=False, indent=1)
@@ -69,6 +70,22 @@ def fetch_sources(df: pd.DataFrame | None = None, max_items: int = 3) -> list[di
     if os.path.exists(cache):
         return json.load(open(cache))
     return []
+
+
+def _piece_key(title: str) -> str:
+    t = re.sub(r"^(re7'?s? weekly is out:?|the weekly:?)\s*", "", title.strip().lower())
+    return re.sub(r"[^a-z0-9]", "", t)[:40]
+
+
+def _dedupe_sources(items: list[dict]) -> list[dict]:
+    """A fetched page beats a post that merely announced it; keep one entry per piece."""
+    fetched = [x for x in items if not x.get("note")]
+    keys = {_piece_key(x["title"]) for x in fetched}
+    out = list(fetched)
+    for x in items:
+        if x.get("note") and not any(k and k in _piece_key(x["title"].split("\n")[0]) for k in keys):
+            out.append(x)
+    return out
 
 
 def _flatten_posts(obj) -> list[dict]:
@@ -86,28 +103,31 @@ def _flatten_posts(obj) -> list[dict]:
     return out
 
 
-CREATE_SYSTEM = """This is a drafting task for an internal review queue: research-desk commentary and announcements about a firm's own published research and media appearances. Nothing here is investment advice or a promotion of returns; yields and performance figures are excluded by design.
+CREATE_PREAMBLE = """This is a drafting task for an internal review queue: research-desk commentary and announcements about a firm's own published research and media appearances. Nothing here is investment advice or a promotion of returns; yields and performance figures are excluded by design.
 
 You are the content assistant for Re7 Capital's IR and marketing team. Re7 Capital is a London-based, FCA-regulated institutional DeFi investment firm (market-neutral DeFi yield; founder and CIO Evgeny Gokhberg). Re7 Labs is its vault-curation arm.
 
 You are given: (a) this week's engagement insights per channel, (b) the best-performing recent posts as voice references, (c) numbered source documents to repurpose, and (d) what has already been posted on each channel in the last three weeks.
 
-Produce exactly seven posts for Monday to Friday:
-1. Re7 Capital, X: this week's Weekly reframed as one sharp finding (never "Weekly is out")
-2. Re7 Capital, X: a point of view connecting a source to a live industry conversation
-3. Re7 Capital, X: a quote card, chart or single finding lifted from a research report
-4. Re7 Capital, LinkedIn, posted from Evgeny Gokhberg's own profile (company page reshares): 120-180 words for allocators, plain English, first line is the hook
-5. Re7 Labs, X: Labs activity or a curator's view (no yield figures)
-6. Telegram: five short bullets on the week, under 100 words
-7. One experiment: a format or angle the data has not tried on the channel where it is most likely to work, labelled as an experiment
-
 Rules:
 - Do not re-announce anything in the already_posted list on the same channel. You may revisit it only as a clearly new angle (a quote, one finding, a thread, a question to the audience) and then set repromotion to a short note such as "new angle on the 13 Oct Clear Street report".
 - Apply the insights: prefer themes, formats and attributes that outperform on each channel; reshape under-delivering themes rather than dropping them; name people and partners where relevant and say who to tag.
-- Every number must come from a source document, quoted the way the source states it. Yields are never quoted. Never say earn, guaranteed, safe, or address the reader as an investor; no calls to invest.
+- Every number in a post must come from a source document, quoted the way the source states it. Yields are never quoted. Never say earn, guaranteed, safe, or address the reader as an investor; no calls to invest.
 - Tone: a research desk, dry and specific; no emojis, no exclamation marks, at most one hashtag per X post. X posts under 260 characters. Write [link] where a link goes; never leave a trailing colon or an unfinished sentence.
-- For each post give: day, time_uk, account, channel, format, text, source_id (the number of the source used, or 0 if none), hypothesis (one line citing the specific insight it acts on, in plain words), experiment_tag (short slug like wk45-x-weekly-finding), distribution_note (who posts it, who to tag, who to ask to reshare), repromotion ("" or the note above).
-Output a JSON list of seven objects. Inside string values use \\n for line breaks, never raw newlines."""
+- For each post give: day, time_uk, account, channel, format, text, source_id (the number of the source actually used, or 0 if none), hypothesis (one line, in plain words, citing the insight it acts on: say "about twice a typical post" or "a quarter of posts for a tenth of engagement", never a bare decimal), experiment_tag (short slug like wk45-x-weekly-finding), distribution_note (who posts it, who to tag, who to ask to reshare), repromotion ("" or the note above).
+Output a JSON list of objects. Inside string values use \\n for line breaks, never raw newlines."""
+
+CREATE_BRIEFS = [
+    """Produce exactly four posts:
+1. Re7 Capital, X, Monday: this week's Weekly reframed as one sharp finding (never "Weekly is out")
+2. Re7 Capital, X, Tuesday: a point of view connecting a source to a live industry conversation
+3. Re7 Capital, X, Thursday: a quote card, chart or single finding lifted from a research report or media appearance
+4. Re7 Capital, LinkedIn, Wednesday, posted from Evgeny Gokhberg's own profile (company page reshares): 120-180 words for allocators, plain English, first line is the hook""",
+    """Produce exactly three posts:
+1. Re7 Labs, X, Wednesday: Labs activity or a curator's view (no yield figures)
+2. Re7 Labs, Telegram, Friday: five short bullets on the week, under 100 words
+3. One experiment, any account, Friday: a format or angle the data has not tried on the channel where it is most likely to work, labelled as an experiment in the hypothesis""",
+]
 
 
 def recently_posted(df: pd.DataFrame, days: int = 21) -> list[dict]:
@@ -147,10 +167,18 @@ def run(df: pd.DataFrame, insights: dict, live: bool = True) -> pd.DataFrame:
     numbered = [{"source_id": i + 1, **x} for i, x in enumerate(sources[:4])]
     user = json.dumps({"week_number": week, "insights": digest, "voice_references": refs, "sources": numbered,
                        "already_posted_last_3_weeks": recently_posted(df)}, ensure_ascii=False)
-    raw = llm.complete_json(CREATE_SYSTEM, user, max_tokens=6000)
-    items = _flatten_posts(raw)
+    items: list[dict] = []
+    problems: list[str] = []
+    for brief in CREATE_BRIEFS:
+        try:
+            raw = llm.complete_json(CREATE_PREAMBLE + "\n\n" + brief, user, max_tokens=4000)
+            items += _flatten_posts(raw)
+        except Exception as e:  # noqa: BLE001 - one half failing should not lose the other
+            problems.append(str(e)[:160])
     if not items:
-        raise RuntimeError(f"model returned no posts (sources={len(sources)}; reply shape={type(raw).__name__})")
+        raise RuntimeError(f"model returned no posts (sources={len(sources)}; {' | '.join(problems)})")
+    if problems:
+        llm.WARNINGS.append("content: " + " | ".join(problems))
     rows = []
     for it in items:
         text = it.get("text", "")

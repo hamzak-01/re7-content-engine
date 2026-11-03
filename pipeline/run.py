@@ -127,6 +127,10 @@ def main(live: bool = True, progress=_noop) -> dict:
                 queue = f_create.result()
                 summary["create"] = {"posts_generated": int(len(queue)),
                                      "flagged_for_compliance": int((queue["compliance_flag"] != "").sum()) if len(queue) else 0}
+                from . import llm
+                if llm.WARNINGS:
+                    summary["create"]["warnings"] = [w[:200] for w in llm.WARNINGS]
+                    llm.WARNINGS.clear()
                 progress("create", f"{len(queue)} draft posts ready")
             except Exception as e:  # noqa: BLE001
                 summary["create"] = {"error": f"{type(e).__name__}: {str(e)[:200]}"}

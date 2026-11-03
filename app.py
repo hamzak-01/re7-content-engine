@@ -219,7 +219,8 @@ with tab_stats:
         names = {"x": "X", "linkedin": "LinkedIn", "telegram": "Telegram"}
         st.info(f"How to read these tables: every post is compared with a typical post on the same channel and account, so "
                 f"\"3.0×\" means three times the engagement of a typical post there and \"0.5×\" means half. "
-                f"Groups with fewer than {so.get('min_n_for_confidence', 3)} posts are marked as small samples.")
+                f"Groups with fewer than {so.get('min_n_for_confidence', 3)} posts are marked as small samples."
+                + (f" {ins.get('too_new_to_score', 0)} Telegram posts from the last few days are left unscored because Telegram views keep climbing for days after posting." if ins.get("too_new_to_score") else ""))
 
         st.subheader("Where the effort goes, and what it earns")
         st.caption("For each theme: what share of posts it takes up, what share of engagement it brings back, and whether that is a fair return.")
@@ -245,7 +246,7 @@ with tab_stats:
             if cc.get("editions"):
                 st.caption("Recent pieces posted on more than one channel, index per channel:")
                 st.dataframe(pd.DataFrame([{"piece": e["content"], "date": e["date"],
-                                            **{names.get(k, k): f"{v:.1f}×" for k, v in e["by_channel"].items()}} for e in cc["editions"]]),
+                                            **{names.get(k, k): ("too new" if v is None or pd.isna(v) else f"{v:.1f}×") for k, v in e["by_channel"].items()}} for e in cc["editions"]]),
                              hide_index=True, use_container_width=True)
 
         if so.get("who_drives_it"):
@@ -271,7 +272,7 @@ with tab_stats:
                 t = pd.DataFrame(frames).pivot(index="week", columns="channel", values="mean_index")
                 st.line_chart(t)
 
-        if so.get("day_of_week"):
+        if False and so.get("day_of_week"):  # confounded with theme (the Weekly goes out on Mondays); kept in insights.json only
             st.subheader("Day of week")
             cols = st.columns(len(so["day_of_week"]) or 1)
             for col, (ch, rows) in zip(cols, so["day_of_week"].items()):

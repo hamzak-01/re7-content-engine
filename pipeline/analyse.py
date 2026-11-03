@@ -6,7 +6,7 @@ from __future__ import annotations
 import json
 import os
 import re
-from datetime import date
+from datetime import date, timedelta
 
 import pandas as pd
 
@@ -77,6 +77,9 @@ def _num(s: pd.Series) -> pd.Series:
     return pd.to_numeric(s, errors="coerce")
 
 
+TOO_NEW_DAYS = 4
+
+
 def compute_index(df: pd.DataFrame) -> pd.DataFrame:
     """engagement_index = engagement_score / median score of main posts on that channel.
     1.0 = a typical post for that channel; 5.0 = five times a typical post."""
@@ -86,19 +89,27 @@ def compute_index(df: pd.DataFrame) -> pd.DataFrame:
     tg = df["channel"] == "telegram"
     score[tg] = _num(df.loc[tg, "views"]).fillna(0)
     df["engagement_score"] = score
-    main = df[df["is_reply"].astype(str) != "True"]
+    # Telegram views keep accumulating for days, so the newest posts always look like the worst.
+    # Posts younger than TOO_NEW_DAYS are left unscored (shown as "too new") and kept out of the baseline.
+    cutoff = (date.today() - timedelta(days=TOO_NEW_DAYS)).isoformat()
+    too_new = tg & (df["date"].astype(str) >= cutoff)
+    main = df[(df["is_reply"].astype(str) != "True") & ~too_new]
     # Median per channel AND account: Re7 Labs and Re7 Capital have different baselines on X.
     med = main.groupby(["channel", "account"])["engagement_score"].median().replace(0, 1)
     df["engagement_index"] = df.apply(
         lambda r: round(r["engagement_score"] / med.get((r["channel"], r["account"]), 1), 2) if r["is_reply"] != "True" else "", axis=1)
+    df["engagement_index"] = df["engagement_index"].astype(object)
+    df.loc[too_new, "engagement_index"] = ""
     return df
 
 
 def stats(df: pd.DataFrame) -> dict:
     main = df[(df["is_reply"].astype(str) != "True") & (df["theme"] != "")].copy()
     main["engagement_index"] = _num(main["engagement_index"])
+    main = main[main["engagement_index"].notna()]  # drops Telegram posts too new to score
     main["views"] = _num(main["views"])
-    out: dict = {"as_of": date.today().isoformat(), "channels": {}}
+    out: dict = {"as_of": date.today().isoformat(), "channels": {},
+                 "too_new_to_score": int(((df["channel"] == "telegram") & (df["is_reply"].astype(str) != "True") & (df["engagement_index"].astype(str) == "")).sum())}
     for ch, g in main.groupby("channel"):
         c: dict = {
             "posts": int(len(g)),
@@ -211,7 +222,10 @@ def finish_memo(st: dict, live: bool, errors: list) -> str:
     """Write the memo (or keep the previous one on failure) and save it. Safe to run in a thread."""
     if live:
         try:
+            n_warn = len(llm.WARNINGS)
             memo = write_memo(st)
+            if len(llm.WARNINGS) > n_warn:
+                errors.append("memo: " + llm.WARNINGS[-1][:160])
         except Exception as e:  # noqa: BLE001
             errors.append(f"memo: {str(e)[:160]}")
             memo = open(os.path.join(OUTPUT, "memo.md")).read() if os.path.exists(os.path.join(OUTPUT, "memo.md")) else ""
