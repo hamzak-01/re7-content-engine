@@ -19,6 +19,34 @@ from datetime import datetime, timezone
 from . import store, analyse, create, persist
 from .collect import telegram, apify, csv_import, x_public
 
+REUSE_HOURS = float(os.environ.get("RE7_REUSE_HOURS", "12"))  # paid scrapes younger than this are reused
+STATE_PATH = os.path.join(store.OUTPUT, "collect_state.json")
+
+
+def _state() -> dict:
+    try:
+        return json.load(open(STATE_PATH))
+    except Exception:  # noqa: BLE001
+        return {}
+
+
+def _mark(name: str) -> None:
+    st = _state()
+    st[name] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    os.makedirs(store.OUTPUT, exist_ok=True)
+    json.dump(st, open(STATE_PATH, "w"))
+
+
+def _age_hours(name: str) -> float | None:
+    t = _state().get(name)
+    if not t:
+        return None
+    try:
+        return (datetime.now(timezone.utc) - datetime.fromisoformat(t)).total_seconds() / 3600
+    except ValueError:
+        return None
+
+
 CONFIG = {
     "x_handles": {"Re7Capital": "Re7 Capital", "Re7Labs": "Re7 Labs"},
     "linkedin_pages": {"https://www.linkedin.com/company/re7capital/": "Re7 Capital"},
@@ -49,7 +77,22 @@ def collect_all(df, live: bool, progress=_noop) -> tuple[object, dict]:
             return
         df, new = store.merge(df, posts)
         report[name] = {"status": "ok", "fetched": len(posts), "new": new, "seconds": secs}
+        if posts and name.split(":")[0] in ("x", "linkedin"):
+            _mark(name)
         progress("collect", f"{name}: {len(posts)} posts, {new} new")
+
+    def fresh(name, channel, account) -> bool:
+        """True when a paid scrape for this source is recent enough to reuse the saved posts."""
+        age = _age_hours(name)
+        if age is None or age > REUSE_HOURS:
+            return False
+        have = int(((df["channel"] == channel) & (df["account"] == account) & (df["collected_via"] != "seed")).sum()) if len(df) else 0
+        if have == 0:
+            return False
+        report[name] = {"status": "reused", "fetched": have, "new": 0, "seconds": 0.0,
+                        "error": f"fetched {age:.1f}h ago; reused to save scraper credit (refreshes after {REUSE_HOURS:g}h)"}
+        progress("collect", f"{name}: {have} posts, fetched {age:.1f}h ago, reused")
+        return True
 
     # Seed (manual captures from 1 Nov 2026) is always merged first: it is the floor.
     absorb(*fetch("seed", store.load_seed))
@@ -78,10 +121,10 @@ def collect_all(df, live: bool, progress=_noop) -> tuple[object, dict]:
 
     with ThreadPoolExecutor(max_workers=5) as ex:
         futs = [ex.submit(fetch, n, f) for n, f in jobs]
-        xfuts = [ex.submit(x_job, h, a) for h, a in CONFIG["x_handles"].items()]
+        xfuts = [ex.submit(x_job, h, a) for h, a in CONFIG["x_handles"].items() if not fresh(f"x:{h}", "x", a)]
         if have_apify:
             futs += [ex.submit(fetch, "linkedin:apify", lambda u=u, a=a: apify.collect_linkedin(u, a))
-                     for u, a in CONFIG["linkedin_pages"].items()]
+                     for u, a in CONFIG["linkedin_pages"].items() if not fresh("linkedin:apify", "linkedin", a)]
         else:
             report["apify"] = {"status": "skipped", "error": "APIFY_TOKEN not set; using seed/imports"}
         results = [f.result() for f in futs]

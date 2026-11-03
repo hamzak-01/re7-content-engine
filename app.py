@@ -215,6 +215,9 @@ with st.expander("Where this run's data came from", expanded=False):
     sup = (lr.get("collect") or {}).get("seed_rows_superseded_by_live")
     if sup:
         st.caption(f"{sup} manual seed rows were replaced by live rows describing the same posts.")
+    if any(isinstance(r, dict) and r.get("status") == "reused" for r in (lr.get("collect") or {}).values()):
+        st.caption("'reused' = the X and LinkedIn collectors fetched these posts within the last 12 hours, so this run used the saved copy "
+                   "rather than paying to download the same posts again; they refresh automatically after that.")
     st.caption("'seed' = manual captures from 1 Nov 2026, always merged first so the dashboard never depends on a live scraper. "
                "LinkedIn in production uses the Page admin analytics export (csv_import); a third-party collector is used here for the exercise.")
 

@@ -19,7 +19,8 @@ from .store import ROOT
 REPO = os.environ.get("RE7_GITHUB_REPO", "hamzak-01/re7-content-engine")
 BRANCH = os.environ.get("RE7_DATA_BRANCH", "data")
 FILES = ["data/posts.csv", "output/last_run.json", "output/insights.json", "output/memo.md",
-         "output/content_queue.csv", "output/run_history.jsonl", "output/sources_cache.json"]
+         "output/content_queue.csv", "output/run_history.jsonl", "output/sources_cache.json",
+         "output/collect_state.json"]
 API = "https://api.github.com"
 
 
