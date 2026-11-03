@@ -39,6 +39,16 @@ except Exception:  # noqa: BLE001
     pass
 
 
+def plain(text) -> str:
+    """Text for st.markdown/st.write: stop $ amounts being read as maths and keep line breaks."""
+    t = "" if text is None or (isinstance(text, float) and pd.isna(text)) else str(text)
+    return t.replace("$", "\\$").replace("\n", "  \n")
+
+
+def short_title(t: str, n: int = 60) -> str:
+    return str(t or "").split("\n")[0].strip()[:n]
+
+
 def friendly(df: pd.DataFrame) -> pd.DataFrame:
     """Rename analyst columns to plain English and format indices as multiples of a typical post."""
     d = df.copy()
@@ -211,7 +221,7 @@ with st.expander("Where this run's data came from", expanded=False):
 tab_memo, tab_stats, tab_queue, tab_data = st.tabs(["Insights memo", "What performs, by channel", "Next week's content", "Single source (all posts)"])
 
 with tab_memo:
-    st.markdown(memo or "_Memo is written on the first live run._")
+    st.markdown(plain(memo) if memo else "_Memo is written on the first live run._")
 
 with tab_stats:
     if ins:
@@ -317,7 +327,7 @@ with tab_queue:
     if os.path.exists(src_p):
         try:
             srcs = json.load(open(src_p))
-            st.caption("Repurposed from: " + " · ".join(f"[{x.get('title','')[:60]}]({x.get('url','')})" for x in srcs[:5]))
+            st.caption("Repurposed from: " + " · ".join(f"[{short_title(x.get('title',''))}]({x.get('url','')})" for x in srcs[:5]))
         except Exception:  # noqa: BLE001
             pass
     if len(queue):
@@ -327,9 +337,9 @@ with tab_queue:
         for _, r in queue.iterrows():
             with st.container(border=True):
                 st.markdown(f"**{r.get('day', '')} {r.get('time_uk', '')} · {r.get('account', '')} · {str(r.get('channel', '')).upper()} · {r.get('format', '')}**")
-                st.write(r.get("text", ""))
-                src = f"[{r.get('source_title', '')}]({r.get('source_url', '')})" if isinstance(r.get("source_url"), str) and r.get("source_url") else "none"
-                st.caption(f"Why this post: {r.get('hypothesis', '')}")
+                st.markdown(plain(r.get("text", "")))
+                src = f"[{short_title(r.get('source_title', ''), 80)}]({r.get('source_url', '')})" if isinstance(r.get("source_url"), str) and r.get("source_url") else "none"
+                st.caption(plain(f"Why this post: {r.get('hypothesis', '')}"))
                 st.caption(f"Source: {src} · Tag: `{r.get('experiment_tag', '')}`")
                 if isinstance(r.get("distribution_note"), str) and r["distribution_note"]:
                     st.caption(f"Distribution: {r['distribution_note']}")
