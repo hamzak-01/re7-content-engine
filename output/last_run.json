@@ -1,5 +1,5 @@
 {
-  "started": "2026-11-03T20:47:50+00:00",
+  "started": "2026-11-03T20:54:30+00:00",
   "mode": "live",
   "pull": {
     "status": "skipped",
@@ -22,25 +22,25 @@
       "status": "ok",
       "fetched": 100,
       "new": 0,
-      "seconds": 6.0
+      "seconds": 7.0
     },
     "telegram": {
       "status": "ok",
       "fetched": 80,
       "new": 0,
-      "seconds": 2.9
+      "seconds": 3.1
     },
     "x:Re7Capital": {
       "status": "ok",
       "fetched": 60,
       "new": 0,
-      "seconds": 5.3
+      "seconds": 3.5
     },
     "x:Re7Labs": {
       "status": "ok",
       "fetched": 60,
       "new": 0,
-      "seconds": 5.8
+      "seconds": 6.7
     },
     "seed_rows_superseded_by_live": 25
   },
@@ -57,19 +57,9 @@
   },
   "create": {
     "posts_generated": 7,
-    "flagged_for_compliance": 6
+    "flagged_for_compliance": 5
   },
   "status": "ok",
-  "finished": "2026-11-03T20:48:18+00:00",
-  "seconds": 28.2,
-  "persist": {
-    "status": "ok",
-    "files": [
-      "data/posts.csv",
-      "output/last_run.json",
-      "output/memo.md",
-      "output/content_queue.csv",
-      "output/run_history.jsonl"
-    ]
-  }
+  "finished": "2026-11-03T20:55:13+00:00",
+  "seconds": 42.4
 }
