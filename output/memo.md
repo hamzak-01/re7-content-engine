@@ -1,56 +1,33 @@
 ## The one thing
-
-Market commentary, mostly the Weekly, takes the most posting effort and under-delivers on every channel. On LinkedIn it is 44% of posts but 25% of engagement. On X it is 19% of posts but 6% of engagement. On Telegram it is 46% of posts and 39% of engagement. The two weakest LinkedIn posts of the period were both Weekly link posts, at roughly a seventh of a typical post. The Weekly needs repackaging, not more repetition.
+Market commentary is where most of our effort goes and where the return is weakest. On LinkedIn it is 44% of posts but 26% of engagement: under-delivers. On X it is 18% of posts but 5% of engagement: under-delivers. Posts on X earn roughly a third of a typical post, and the Weekly links on LinkedIn have twice scored about one-seventh of typical. Media appearances, named partners and named people consistently do better. Hold this loosely: the data shows what attracts engagement, not what attracts investors.
 
 ## Do more of
+Media appearances on LinkedIn and X: 14% of LinkedIn posts but 26% of engagement, and 8% of X posts but 12%. Both outperform, at about 2.4× and 4.0× a typical post. Put the Bloomberg clip on both channels every time.
 
-**Media appearances.** On X they are 8% of posts and 12% of engagement, which outperforms, at about 4× a typical post. On LinkedIn they are 14% of posts and 24% of engagement, also outperforming. Video on X runs at about 3.2× typical.
+Labs product posts on X: 19% of posts but 54% of engagement, at about 2.1× typical. They are also the best resonance on X, at 16.6 likes per 1,000 views.
 
-**Labs product posts.** On X they are 21% of posts and 53% of engagement. On Telegram they are 42% of posts and 56% of engagement. Both outperform.
-
-**Naming the partner.** On LinkedIn, posts that name a partner reach about 2× typical, against roughly 0.8× for posts that don't. X shows the same split, about 2× against 1×.
+Video on X: about 3.2× a typical post across four posts, against 0.8× for plain text.
 
 ## Do less of (or do differently)
+On LinkedIn, market commentary (37 posts, about 0.8× typical) and chart posts (12 posts, 14% of posts but 7% of engagement) absorb 58% of effort for about a third of the return. Fold chart posts into a media or partner post rather than running them alone.
 
-**Chart data** under-delivers. On LinkedIn it is 14% of posts but 7% of engagement; on X, 11% of posts but 4%. Fold the chart into the Weekly rather than posting it on its own.
-
-**Speaking events on X** are 16% of posts but 6% of engagement, so they under-deliver. On LinkedIn the same theme runs at about 1.6× typical, so shift that effort there.
-
-**Telegram "pinned a photo" notices** are 6% of posts but 1% of engagement. Switch off pin notifications.
+On X, speaking-event posts (16% of posts, 6% of engagement) and chart posts (11% of posts, 4%) under-deliver, and partner announcements (5% of posts, 3%) do too. The partner posts may simply not be tagging the partner.
 
 ## Where the same content travels best
-
-X is the stronger home for the Weekly and research. "The Binance hack" scored about 2.4× typical on X but roughly 0.6× on LinkedIn. The DeFi risk framework report reached about 3× on both X and LinkedIn but about 0.6× on Telegram. On Telegram the Weekly consistently lands at a third to half of a typical post.
-
-This suggests three different treatments. Lead on X with an image or thread. On LinkedIn, post from a named person: posts naming a person run at about 2× typical, against 1.2× without. On Telegram, keep it to a short teaser.
+The Weekly and research reports do best on X and LinkedIn, and poorly on Telegram, where five of five Weekly editions scored about half a typical post or less. The 13 October risk-framework piece reached about 3× on both X and LinkedIn but under 0.6× on Telegram. Adapt for X and LinkedIn first; on Telegram, lead with the Labs product angle instead.
 
 ## Who moves the needle
+Bloomberg (nine posts, about 3.6× typical), Joseph Chalom and Sharplink (about 4.4× and 4.0×), Zodia Custody (about 3.9×), BCB Group and USDai (about 6.1×, two posts). Posts naming a partner average about 2× typical on LinkedIn against 0.9× without. Naming a person lifts X from 1.4× to 2.0× typical.
 
-The best posts are associated with these names:
-
-- Joseph Chalom: 6 mentions, about 4.4× typical
-- Peter Smith: about 4.4× typical
-- Sharplink: about 4× typical
-- Zodia Custody: about 3.9× typical
-- Tim Renew and BCB Group: about 3.5× typical
-- Frax and USDai: about 6× typical, but only two mentions each, so directional
-
-The tactic is to prioritise these guests for media slots and to ask Sharplink, Zodia and BCB to repost anything that names them.
+The tactic: pick guests and clients who will repost, and tag them every time.
 
 ## Three changes for next week
-
-1. **Change the Weekly on LinkedIn.** Post it from a named author's profile and lead with the partner or person it features, not a link card. Market commentary currently gets 25% of engagement from 44% of posts.
-2. **Retire standalone chart posts on LinkedIn and X.** They get 7% and 4% of engagement for 14% and 11% of posts.
-3. **Move LinkedIn posting off Monday.** Monday carries 42 posts at roughly 0.9× typical, while Tuesday runs at about 2× (8 posts). On X, avoid Wednesday, which runs at about half a typical post.
+1. Cut LinkedIn market commentary from three or four posts to one, and replace the rest with a media or partner post naming a person (LinkedIn).
+2. Post the Weekly on X with a named partner or a short video, not a bare link (X).
+3. Move chart posts into Labs product posts on X and Telegram, where product earns about 2.1× and 1.5× typical.
 
 ## Something I did not expect
-
-Speaking events under-deliver on X, but people who do see them like them more readily: about 11 likes per 1,000 views, against about 8 for media appearances. The weakness is reach (median 398 views), not appeal. Tagging the organiser or the co-speakers may fix it.
+Monday is where we post most on LinkedIn (42 of 84 posts) and it scores below typical, at about 0.9×. Friday, with three posts, scores about 4.7×. On Telegram Friday also leads at about 1.8×. Day of week may just be tracking which content goes out.
 
 ## Caveats
-
-- **Small and directional groups.** Several groups are small. Partner announcements on LinkedIn are a single post (about 10× typical), Friday on LinkedIn has three posts, and Frax and USDai are below the confidence threshold.
-- **Missing reach data.** LinkedIn provides no impressions, so reach cannot be judged there. Telegram scores are views only.
-- **Association, not cause.** Named-entity effects show which posts did well, not why.
-- **Recent dip.** Recent weekly post counts are low and both LinkedIn and Telegram are dipping, so treat the trend cautiously.
-- **No experiments scored.** No system-generated experiments have been scored yet.
+Directional groups (below three posts) include the LinkedIn partner announcement, one post at about 10× typical, which is one post and not a pattern. LinkedIn impressions are unavailable, so the index there rests on likes and comments only. Telegram uses views and has no reactions. Day-of-week gaps may reflect theme rather than timing. No system-generated experiments have been scored yet.
