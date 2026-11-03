@@ -61,5 +61,15 @@
   },
   "status": "ok",
   "finished": "2026-11-03T20:55:13+00:00",
-  "seconds": 42.4
+  "seconds": 42.4,
+  "persist": {
+    "status": "ok",
+    "files": [
+      "data/posts.csv",
+      "output/last_run.json",
+      "output/memo.md",
+      "output/content_queue.csv",
+      "output/run_history.jsonl"
+    ]
+  }
 }
