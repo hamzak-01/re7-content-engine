@@ -29,7 +29,8 @@ def _client():
     return anthropic.Anthropic(api_key=key)
 
 
-WARNINGS: list[str] = []  # non-fatal problems from the last run, surfaced in the run log
+WARNINGS: list[str] = []
+_NO_THINKING_PARAM: dict = {}  # non-fatal problems from the last run, surfaced in the run log
 
 
 def complete(system: str, user: str, max_tokens: int = 4000, temperature: float | None = None) -> str:
@@ -45,7 +46,19 @@ def complete(system: str, user: str, max_tokens: int = 4000, temperature: float 
                               messages=[{"role": "user", "content": user}])
                 if temperature is not None and "temperature" in _CREATE_PARAMS:
                     kwargs["temperature"] = temperature
-                msg = client.messages.create(**kwargs)
+                # These are writing calls, not reasoning calls. Current models think by default and
+                # on a long input the thinking can use the whole token budget, returning no text at all.
+                if "thinking" in _CREATE_PARAMS and not _NO_THINKING_PARAM.get(model):
+                    kwargs["thinking"] = {"type": "disabled"}
+                try:
+                    msg = client.messages.create(**kwargs)
+                except Exception as e:  # noqa: BLE001
+                    if "thinking" in kwargs and "thinking" in str(e).lower():
+                        _NO_THINKING_PARAM[model] = True  # this model rejects the flag; go without it
+                        kwargs.pop("thinking")
+                        msg = client.messages.create(**kwargs)
+                    else:
+                        raise
                 text = "".join(b.text for b in msg.content if getattr(b, "type", "") == "text")
                 stop = getattr(msg, "stop_reason", "?")
                 if text.strip() and stop in ("end_turn", "stop_sequence"):

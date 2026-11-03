@@ -215,7 +215,7 @@ def memo_digest(st: dict) -> dict:
 
 
 def write_memo(st: dict) -> str:
-    return llm.complete(MEMO_SYSTEM, json.dumps(memo_digest(st), ensure_ascii=False), max_tokens=2800)
+    return llm.complete(MEMO_SYSTEM, json.dumps(memo_digest(st), ensure_ascii=False), max_tokens=6000)
 
 
 def finish_memo(st: dict, live: bool, errors: list) -> str:

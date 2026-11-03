@@ -171,7 +171,7 @@ def run(df: pd.DataFrame, insights: dict, live: bool = True) -> pd.DataFrame:
     problems: list[str] = []
     for brief in CREATE_BRIEFS:
         try:
-            raw = llm.complete_json(CREATE_PREAMBLE + "\n\n" + brief, user, max_tokens=4000)
+            raw = llm.complete_json(CREATE_PREAMBLE + "\n\n" + brief, user, max_tokens=8000)
             items += _flatten_posts(raw)
         except Exception as e:  # noqa: BLE001 - one half failing should not lose the other
             problems.append(str(e)[:160])
