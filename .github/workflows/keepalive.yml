@@ -1,0 +1,26 @@
+name: Keep the app awake
+
+on:
+  schedule:
+    - cron: "17 */4 * * *"   # every four hours
+  workflow_dispatch:          # and on demand from the Actions tab
+
+jobs:
+  wake:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: |
+          pip install playwright
+          playwright install --with-deps chromium
+      - run: python keepalive.py
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: keepalive-timeout
+          path: keepalive_timeout.png
+          if-no-files-found: ignore
