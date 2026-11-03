@@ -1,5 +1,5 @@
 {
-  "started": "2026-11-03T00:49:06+00:00",
+  "started": "2026-11-03T20:35:50+00:00",
   "mode": "live",
   "pull": {
     "status": "skipped",
@@ -9,7 +9,7 @@
     "seed": {
       "status": "ok",
       "fetched": 60,
-      "new": 60,
+      "new": 53,
       "seconds": 0.0
     },
     "csv_import": {
@@ -21,56 +21,45 @@
     "linkedin:apify": {
       "status": "ok",
       "fetched": 100,
-      "new": 100,
-      "seconds": 9.2
+      "new": 1,
+      "seconds": 6.9
     },
     "telegram": {
       "status": "ok",
       "fetched": 80,
-      "new": 80,
-      "seconds": 3.0
+      "new": 0,
+      "seconds": 2.8
     },
     "x:Re7Capital": {
       "status": "ok",
       "fetched": 60,
-      "new": 60,
-      "seconds": 3.8
+      "new": 1,
+      "seconds": 5.5
     },
     "x:Re7Labs": {
       "status": "ok",
       "fetched": 60,
-      "new": 60,
-      "seconds": 4.9
+      "new": 0,
+      "seconds": 5.1
     },
-    "seed_rows_superseded_by_live": 24
+    "seed_rows_superseded_by_live": 25
   },
-  "posts_total": 307,
+  "posts_total": 309,
   "analyse": {
-    "labelled_now": 307,
-    "labelled_total": 307,
+    "labelled_now": 2,
+    "labelled_total": 309,
     "channels": {
-      "linkedin": 84,
+      "linkedin": 85,
       "telegram": 79,
-      "x": 62
+      "x": 63
     },
     "errors": []
   },
   "create": {
     "posts_generated": 7,
-    "flagged_for_compliance": 6
+    "flagged_for_compliance": 5
   },
   "status": "ok",
-  "finished": "2026-11-03T00:50:05+00:00",
-  "seconds": 59.1,
-  "persist": {
-    "status": "ok",
-    "files": [
-      "data/posts.csv",
-      "output/last_run.json",
-      "output/insights.json",
-      "output/memo.md",
-      "output/content_queue.csv",
-      "output/run_history.jsonl"
-    ]
-  }
+  "finished": "2026-11-03T20:36:23+00:00",
+  "seconds": 32.8
 }
