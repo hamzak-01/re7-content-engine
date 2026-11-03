@@ -1,5 +1,5 @@
 {
-  "started": "2026-11-03T00:35:35+00:00",
+  "started": "2026-11-03T00:49:06+00:00",
   "mode": "live",
   "pull": {
     "status": "skipped",
@@ -9,7 +9,7 @@
     "seed": {
       "status": "ok",
       "fetched": 60,
-      "new": 0,
+      "new": 60,
       "seconds": 0.0
     },
     "csv_import": {
@@ -22,25 +22,25 @@
       "status": "ok",
       "fetched": 100,
       "new": 100,
-      "seconds": 7.0
+      "seconds": 9.2
     },
     "telegram": {
       "status": "ok",
       "fetched": 80,
       "new": 80,
-      "seconds": 2.8
+      "seconds": 3.0
     },
     "x:Re7Capital": {
       "status": "ok",
       "fetched": 60,
       "new": 60,
-      "seconds": 4.0
+      "seconds": 3.8
     },
     "x:Re7Labs": {
       "status": "ok",
       "fetched": 60,
       "new": 60,
-      "seconds": 5.5
+      "seconds": 4.9
     },
     "seed_rows_superseded_by_live": 24
   },
@@ -56,24 +56,10 @@
     "errors": []
   },
   "create": {
-    "posts_generated": 3,
-    "flagged_for_compliance": 3,
-    "warnings": [
-      "content: Claude API call failed; attempts: claude-sonnet-5-5: empty reply (stop_reason=max_tokens, input_chars=27028) | claude-haiku-5-5: empty reply (stop_reason=max_to"
-    ]
+    "posts_generated": 7,
+    "flagged_for_compliance": 6
   },
   "status": "ok",
-  "finished": "2026-11-03T00:39:06+00:00",
-  "seconds": 210.8,
-  "persist": {
-    "status": "ok",
-    "files": [
-      "data/posts.csv",
-      "output/last_run.json",
-      "output/insights.json",
-      "output/memo.md",
-      "output/content_queue.csv",
-      "output/run_history.jsonl"
-    ]
-  }
+  "finished": "2026-11-03T00:50:05+00:00",
+  "seconds": 59.1
 }
