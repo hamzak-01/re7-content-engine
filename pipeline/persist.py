@@ -69,25 +69,51 @@ def push(message: str = "pipeline run") -> dict:
     return report
 
 
+def _fetch(rel: str) -> bytes | None:
+    """Contents API first (no CDN lag, works with the token), raw URL as a fallback."""
+    try:
+        r = requests.get(f"{API}/repos/{REPO}/contents/{rel}", headers=_headers(), params={"ref": BRANCH}, timeout=20)
+        if r.status_code == 200:
+            j = r.json()
+            if j.get("encoding") == "base64" and j.get("content"):
+                return base64.b64decode(j["content"])
+            if j.get("download_url"):  # files over 1 MB come without inline content
+                r2 = requests.get(j["download_url"], headers=_headers(), timeout=30)
+                if r2.status_code == 200:
+                    return r2.content
+    except Exception:  # noqa: BLE001
+        pass
+    try:
+        r = requests.get(f"https://raw.githubusercontent.com/{REPO}/{BRANCH}/{rel}", headers=_headers(), timeout=20)
+        if r.status_code == 200:
+            return r.content
+    except Exception:  # noqa: BLE001
+        pass
+    return None
+
+
 def pull() -> dict:
-    """Fetch the latest committed data/outputs from the data branch if newer than local."""
+    """Fetch the latest committed data/outputs from the data branch, once per app session.
+    If nothing could be fetched the marker is not written, so the next rerun tries again."""
     marker = os.path.join(ROOT, "output", ".pulled")
     if os.path.exists(marker):
         return {"status": "skipped", "reason": "already pulled this session"}
     report = {"status": "ok", "files": []}
     try:
         for rel in FILES:
-            raw = f"https://raw.githubusercontent.com/{REPO}/{BRANCH}/{rel}"
-            r = requests.get(raw, headers=_headers(), timeout=20)
-            if r.status_code != 200:
+            content = _fetch(rel)
+            if content is None:
                 continue
             path = os.path.join(ROOT, rel)
             os.makedirs(os.path.dirname(path), exist_ok=True)
             with open(path, "wb") as f:
-                f.write(r.content)
+                f.write(content)
             report["files"].append(rel)
-        os.makedirs(os.path.dirname(marker), exist_ok=True)
-        open(marker, "w").write(json.dumps(report))
+        if report["files"]:
+            os.makedirs(os.path.dirname(marker), exist_ok=True)
+            open(marker, "w").write(json.dumps(report))
+        else:
+            report = {"status": "empty", "reason": "no files found on the data branch yet"}
     except Exception as e:  # noqa: BLE001
         report = {"status": "failed", "error": str(e)[:200]}
     return report
