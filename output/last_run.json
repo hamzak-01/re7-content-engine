@@ -1,5 +1,5 @@
 {
-  "started": "2026-11-03T00:26:00+00:00",
+  "started": "2026-11-03T00:35:35+00:00",
   "mode": "live",
   "pull": {
     "status": "skipped",
@@ -22,7 +22,7 @@
       "status": "ok",
       "fetched": 100,
       "new": 100,
-      "seconds": 6.2
+      "seconds": 7.0
     },
     "telegram": {
       "status": "ok",
@@ -40,7 +40,7 @@
       "status": "ok",
       "fetched": 60,
       "new": 60,
-      "seconds": 4.8
+      "seconds": 5.5
     },
     "seed_rows_superseded_by_live": 24
   },
@@ -57,25 +57,12 @@
   },
   "create": {
     "posts_generated": 3,
-    "flagged_for_compliance": 2,
+    "flagged_for_compliance": 3,
     "warnings": [
-      "used a cut-off reply; claude-sonnet-5-5: empty reply (stop_reason=max_tokens, input_chars=27025) | claude-haiku-5-5: empty reply (stop_reason=max_tokens, input_chars=27025) | claude-opus-5-5: reply st",
-      "used a cut-off reply; claude-sonnet-5-5: empty reply (stop_reason=max_tokens, input_chars=26873) | claude-haiku-5-5: empty reply (stop_reason=max_tokens, input_chars=26873) | claude-opus-5-5: reply st"
+      "content: Claude API call failed; attempts: claude-sonnet-5-5: empty reply (stop_reason=max_tokens, input_chars=27028) | claude-haiku-5-5: empty reply (stop_reason=max_to"
     ]
   },
   "status": "ok",
-  "finished": "2026-11-03T00:29:34+00:00",
-  "seconds": 213.4,
-  "persist": {
-    "status": "ok",
-    "files": [
-      "data/posts.csv",
-      "output/last_run.json",
-      "output/insights.json",
-      "output/memo.md",
-      "output/content_queue.csv",
-      "output/run_history.jsonl",
-      "output/sources_cache.json"
-    ]
-  }
+  "finished": "2026-11-03T00:39:06+00:00",
+  "seconds": 210.8
 }
